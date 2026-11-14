@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RR Pressure War Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+:root{--pink:#EC008C;--blue:#254AA5;--navy:#0B1E4A;--grey:#6B7385;--line:#E3E6EE;--soft:#F6F7FB}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#1d2433;background:#fff;font-size:14px}
+.wrap{max-width:1240px;margin:0 auto;padding:18px}
+.hero{background:linear-gradient(110deg,var(--navy) 0%,var(--blue) 60%,var(--pink) 100%);color:#fff;padding:22px 26px;border-radius:16px}
+.hero h1{margin:0;font-size:26px}.hero p{margin:6px 0 0;opacity:.9;line-height:1.45}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin:16px 0 14px}
+.tab{background:none;border:0;padding:10px 14px;font:inherit;cursor:pointer;color:#444;border-bottom:3px solid transparent}
+.tab.on{color:var(--pink);border-bottom-color:var(--pink);font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:6px}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kpi .l{color:var(--grey);font-size:12px}.kpi .v{font-size:24px;font-weight:700;color:var(--navy)}.kpi .s{font-size:12px;color:#1c7a45}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:820px){.two{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.card h4{margin:0 0 4px;display:flex;align-items:center;gap:8px;font-size:16px}
+.rank{display:inline-block;min-width:28px;height:28px;line-height:28px;text-align:center;border-radius:8px;background:var(--pink);color:#fff;font-weight:700}
+.prr{margin-left:auto;font-size:20px;font-weight:700;color:var(--navy)}
+.chip{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;margin:2px 4px 2px 0;background:#EEF1F8;color:var(--navy)}
+.chip.rr{background:var(--pink);color:#fff}.chip.warn{background:#FFF4D6;color:#7A5600}
+.muted{color:var(--grey);font-size:12.5px;line-height:1.5}
+.moment{border-left:5px solid var(--pink);background:#FAFBFE;padding:10px 14px;border-radius:8px;margin-bottom:8px;line-height:1.55}
+.moment.bad{border-left-color:#9aa1b2}
+h2{color:var(--navy);font-size:19px;margin:18px 0 8px}h3{color:var(--navy);font-size:16px;margin:14px 0 6px}
+select,input{font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;min-width:240px;max-width:100%}
+.ctrl{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:8px 0 12px}
+.seg button{font:inherit;border:1px solid var(--line);background:#fff;padding:6px 14px;cursor:pointer}
+.seg button:first-child{border-radius:8px 0 0 8px}.seg button:last-child{border-radius:0 8px 8px 0}
+.seg button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.note{background:#EEF3FF;border-radius:10px;padding:10px 14px;margin:10px 0;line-height:1.5}
+.warnbox{background:#FFF7E0;border-radius:10px;padding:10px 14px;margin:10px 0;line-height:1.5}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th{background:var(--navy);color:#fff;text-align:left;padding:6px 8px;position:sticky;top:0}
+td{padding:5px 8px;border-bottom:1px solid var(--line)}tr:nth-child(even) td{background:var(--soft)}
+.tbl{max-height:560px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+.plot{width:100%}
+ul{margin:4px 0 8px 18px;padding:0;line-height:1.55}
+.method p{line-height:1.6;margin:6px 0}
+/* ===== stadium mode ===== */
+html{scroll-behavior:smooth}
+body{background:#050B24;color:#1d2433}
+#bg{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+#dim{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 60%,rgba(5,11,36,.0) 0%,rgba(5,11,36,.55) 100%);opacity:0;transition:opacity .2s linear}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;z-index:30;background:linear-gradient(90deg,#FFD54A,#EC008C,#ffffff);box-shadow:0 0 12px #EC008C}
+.intro{position:relative;z-index:2;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:3.5vh;text-align:center;color:#fff;pointer-events:none}
+.intro .low{position:absolute;left:50%;transform:translateX(-50%);top:66vh;width:min(780px,92vw)}
+.intro .low p{background:rgba(5,11,36,.55);backdrop-filter:blur(6px);border-radius:14px;padding:12px 18px;margin:0 auto}
+.intro .kicker{letter-spacing:.42em;font-size:12px;font-weight:600;color:#FFD54A;text-transform:uppercase;opacity:0;animation:fadeUp 1.2s .2s forwards}
+.intro h1{margin:.25em 0 .2em;font-size:clamp(30px,5.2vw,68px);line-height:1.02;font-weight:800;letter-spacing:-.01em;
+  background:linear-gradient(100deg,#fff 0%,#FFC2E3 40%,#fff 60%,#FFE38A 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 30px rgba(236,0,140,.7));opacity:0;animation:fadeUp 1.2s .45s forwards, shine 6s 1.6s linear infinite}
+.intro p{max-width:760px;font-size:clamp(14px,1.6vw,18px);line-height:1.55;color:#E7ECFF;opacity:0;animation:fadeUp 1.2s .8s forwards;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+.cue{position:absolute;bottom:5vh;left:50%;transform:translateX(-50%);color:#fff;font-size:12px;letter-spacing:.3em;opacity:.85;text-transform:uppercase}
+.cue span{display:block;margin:8px auto 0;width:22px;height:36px;border:2px solid #fff;border-radius:14px;position:relative}
+.cue span::after{content:"";position:absolute;left:50%;top:6px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:#E4007C;animation:wheel 1.6s infinite}
+@keyframes wheel{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(14px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes shine{to{background-position:-250% 0}}
+.wrap{position:relative;z-index:2}
+.stage{background:rgba(255,255,255,.93);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px);border-radius:22px;
+  box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.4) inset;padding:18px 22px 26px;margin-bottom:60px}
+.tabs{position:sticky;top:8px;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-radius:14px;padding:0 8px;margin:0 0 14px;box-shadow:0 8px 24px rgba(11,30,74,.12)}
+.hero{display:none}
+.reveal{opacity:0;transform:translateY(46px) scale(.97) perspective(900px) rotateX(9deg);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.card{background:#fff;transition:transform .25s ease,box-shadow .25s ease}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(228,0,124,.16)}
+.card.gold{position:relative;border:0;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(120deg,#FFD54A,#EC008C,#ffffff,#FFD54A) border-box;border:2px solid transparent;background-size:100% 100%,300% 300%;animation:goldflow 5s linear infinite}
+@keyframes goldflow{to{background-position:0 0,300% 0}}
+.card.gold .rank{background:linear-gradient(135deg,#F2B705,#E4007C);box-shadow:0 0 14px rgba(242,183,5,.8)}
+.kpi{background:#fff}
+.plot{background:#fff;border-radius:12px}
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none}.intro h1,.intro p,.intro .kicker{animation:none;opacity:1}.card.gold{animation:none}}
+
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div id="dim"></div>
+<div id="progress"></div>
+<section class="intro">
+  <div class="kicker">SupeRR Selector · Season 2 · Round 1</div>
+  <h1>Pressure Reliability<br>War Room</h1>
+  <div class="low"><p>Who delivers when the game is on the line, measured ball by ball, judged moment by moment, adjusted for flat IPL pitches, and built into a <b>varied</b> auction board for Rajasthan Royals.</p></div>
+  <div class="cue">Scroll to enter<span></span></div>
+</section>
+<div class="wrap"><div class="stage">
+  <div class="tabs" id="tabs"></div>
+  <div id="view"></div>
+</div></div>
+<script id="data" type="application/json">__DATA__</script>
+<script id="worms" type="application/json">__WORMS__</script>
+<script>
+
+/* ================= LIVE STADIUM (painted in code + motion layers) ================= */
+(function(){
+  const cv = document.getElementById('bg'), ctx = cv.getContext('2d');
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W = 0, H = 0, DPR = 1, t0 = performance.now(), scrollF = 0, running = true, ready = false;
+  const IW = 1024, IH = 576;
+  const LIGHTS = [[121, 47, 1.0], [455, 103, .8]];               // floodlight positions in the photo
+  const SCREEN = [858, 238, 950, 288];                            // big screen
+  const PITCH = [600, 405];
+  let crowd = [], sparks = [], confetti = [], clouds = [];
+
+  const crestSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
+   <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF4FB0"/><stop offset=".6" stop-color="#EC008C"/><stop offset="1" stop-color="#B8006C"/></linearGradient>
+   <linearGradient id="au" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE38A"/><stop offset="1" stop-color="#C98B00"/></linearGradient>
+   <radialGradient id="ball" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#ff6b6b"/><stop offset="1" stop-color="#9b0d1a"/></radialGradient></defs>
+   <path d="M60 44 L72 14 L86 36 L100 6 L114 36 L128 14 L140 44 Z" fill="url(#au)" stroke="#7a5200" stroke-width="2"/>
+   <circle cx="72" cy="14" r="5" fill="#fff"/><circle cx="100" cy="6" r="5" fill="#fff"/><circle cx="128" cy="14" r="5" fill="#fff"/>
+   <path d="M30 52 H170 V128 C170 180 135 212 100 232 C65 212 30 180 30 128 Z" fill="url(#g)" stroke="url(#au)" stroke-width="7"/>
+   <path d="M42 64 H158 V128 C158 172 128 200 100 218 C72 200 42 172 42 128 Z" fill="none" stroke="#ffffff" stroke-width="2.5"/>
+   <g stroke="#FFE38A" stroke-width="5" stroke-linecap="round"><line x1="80" y1="150" x2="80" y2="200"/><line x1="100" y1="150" x2="100" y2="200"/><line x1="120" y1="150" x2="120" y2="200"/></g>
+   <rect x="76" y="144" width="48" height="6" rx="3" fill="#fff"/>
+   <circle cx="100" cy="108" r="30" fill="url(#ball)" stroke="#fff" stroke-width="2"/>
+   <path d="M78 90 C92 102 92 114 78 126 M122 90 C108 102 108 114 122 126" fill="none" stroke="#fff" stroke-width="2.4" stroke-dasharray="3 3"/>
+  </svg>`;
+  const crest = new Image(); crest.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(crestSVG);
+
+  const K = innerWidth < 800 ? 2 : 3;
+  const scene = document.createElement('canvas'); scene.width = IW * K; scene.height = IH * K;
+  const CX = 610, CY = 450, RX = 415, RY = 145, D2R = Math.PI / 180;
+  function mulberry(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function paintScene(){
+    const c = scene.getContext('2d'); c.setTransform(K, 0, 0, K, 0, 0); const R = mulberry(11); crowd = [];
+    const lin = (x0, y0, x1, y1, st) => { const g = c.createLinearGradient(x0, y0, x1, y1); st.forEach(([o, col]) => g.addColorStop(o, col)); return g; };
+    const rad = (x, y, r, st) => { const g = c.createRadialGradient(x, y, 0, x, y, r); st.forEach(([o, col]) => g.addColorStop(o, col)); return g; };
+    const blob = (x, y, rx, ry, c0, c1) => { c.save(); c.translate(x, y); c.scale(1, ry / rx); c.fillStyle = rad(0, 0, rx, [[0, c0], [1, c1]]); c.beginPath(); c.arc(0, 0, rx, 0, 6.29); c.fill(); c.restore(); };
+    // ---- dusk sky
+    c.fillStyle = lin(0, 0, 0, 300, [[0, '#1b1840'], [.3, '#43306e'], [.6, '#8d5594'], [.82, '#dd86b2'], [1, '#f6b9cb']]); c.fillRect(0, 0, IW, IH);
+    for (let i = 0; i < 34; i++){ const y = 10 + R() * 190, rx = 70 + R() * 190; const hi = y > 110;
+      blob(R() * IW, y, rx, rx * (.1 + R() * .1), hi ? `rgba(255,${150 + R() * 40 | 0},200,${.10 + R() * .12})` : `rgba(${70 + R() * 40 | 0},60,130,${.14 + R() * .14})`, 'rgba(0,0,0,0)'); }
+    // ---- hills
+    c.fillStyle = lin(0, 140, 0, 260, [[0, '#3a2c5e'], [1, '#5a3a72']]);
+    c.beginPath(); c.moveTo(470, 262); c.bezierCurveTo(560, 215, 640, 150, 720, 152); c.bezierCurveTo(800, 156, 850, 190, 930, 172); c.bezierCurveTo(970, 164, 1000, 160, 1024, 158); c.lineTo(1024, 262); c.closePath(); c.fill();
+    c.fillStyle = 'rgba(30,22,60,.55)'; c.beginPath(); c.moveTo(560, 262); c.bezierCurveTo(640, 205, 700, 180, 760, 196); c.bezierCurveTo(840, 216, 900, 200, 1024, 205); c.lineTo(1024, 262); c.closePath(); c.fill();
+    // ---- city
+    for (let i = 0; i < 70; i++){ const x = 600 + R() * 424, w = 8 + R() * 26, h = 6 + R() * 26; c.fillStyle = `hsl(${225 + R() * 30},32%,${20 + R() * 16}%)`; c.fillRect(x, 252 - h, w, h);
+      for (let k = 0; k < 5; k++){ c.fillStyle = R() < .5 ? 'rgba(255,224,170,.85)' : 'rgba(150,205,255,.85)'; c.fillRect(x + 1 + R() * (w - 2), 252 - h + 1 + R() * (h - 2), .9, .9); } }
+    // ---- architecture helpers
+    const arch = (x, y, w, h, col) => { c.fillStyle = col; c.beginPath(); c.moveTo(x, y + h); c.lineTo(x, y + w / 2); c.arc(x + w / 2, y + w / 2, w / 2, Math.PI, 0); c.lineTo(x + w, y + h); c.closePath(); c.fill(); };
+    const win = () => R() < .09 ? '#ffd9a0' : (R() < .5 ? '#5a2a62' : '#6b3470');
+    const dome = (x, y, r) => { c.fillStyle = lin(x - r, 0, x + r, 0, [[0, '#fbc8d6'], [.45, '#ee97b4'], [1, '#a45686']]);
+      c.beginPath(); c.moveTo(x - r, y); c.bezierCurveTo(x - r * 1.2, y - r * .95, x - r * .4, y - r * 1.3, x, y - r * 1.6); c.bezierCurveTo(x + r * .4, y - r * 1.3, x + r * 1.2, y - r * .95, x + r, y); c.closePath(); c.fill();
+      c.strokeStyle = '#f9d38a'; c.lineWidth = Math.max(.5, r * .07); c.beginPath(); c.moveTo(x, y - r * 1.6); c.lineTo(x, y - r * 2.05); c.stroke();
+      c.fillStyle = '#f9d38a'; c.beginPath(); c.arc(x, y - r * 1.78, Math.max(.5, r * .1), 0, 6.29); c.fill();
+      c.fillStyle = '#c97a9c'; c.fillRect(x - r * 1.1, y - .6, r * 2.2, Math.max(1, r * .16)); };
+    const tower = (x, top, w, bot, r) => {
+      c.fillStyle = lin(x - w / 2, 0, x + w / 2, 0, [[0, '#fbaac8'], [.55, '#ec74aa'], [1, '#a34a88']]); c.fillRect(x - w / 2, top, w, bot - top);
+      c.fillStyle = lin(0, top, 0, bot, [[0, 'rgba(60,20,80,0)'], [1, 'rgba(60,20,80,.5)']]); c.fillRect(x - w / 2, top, w, bot - top);
+      const n = Math.max(1, Math.round(w / 11)), aw = w / (n * 1.9), gap = (w - n * aw) / (n + 1);
+      for (let y = top + 7; y < bot - 12; y += Math.max(16, w * .7)){
+        c.fillStyle = '#f9cbd8'; c.fillRect(x - w / 2 - 1.5, y - 5, w + 3, 1.6);
+        for (let k = 0; k < n; k++) arch(x - w / 2 + gap + k * (aw + gap), y, aw, aw * 1.9, win()); }
+      c.fillStyle = '#f9cbd8'; c.fillRect(x - w / 2 - 2.5, top - 1, w + 5, 2.4);
+      c.fillStyle = '#d98aa8'; [-.8, 0, .8].forEach(k => c.fillRect(x + k * r - .5, top - r * .9, 1, r * .9));
+      c.fillStyle = '#f3b0c4'; c.fillRect(x - r * 1.2, top - r * .9 - 1.4, r * 2.4, 1.6);
+      dome(x, top - r * .9 - 1, r);
+      [-1, 1].forEach(k => dome(x + k * (w / 2 - 1), top - 1, r * .32)); };
+    // ---- right: arcade + screen
+    c.fillStyle = lin(0, 244, 0, 300, [[0, '#eea5bc'], [1, '#9a5484']]); c.fillRect(606, 246, 250, 56);
+    c.fillStyle = '#f9cbd8'; c.fillRect(604, 244, 254, 2.2);
+    for (let x = 612; x < 846; x += 11) arch(x, 254, 7, 17, win());
+    for (let x = 626; x < 846; x += 44) dome(x, 244, 4.2);
+    tower(850, 226, 15, 300, 6.5); tower(960, 226, 15, 300, 6.5);
+    c.fillStyle = '#1a1030'; c.fillRect(856, 236, 98, 54);
+    c.fillStyle = lin(858, 238, 950, 288, [[0, '#ff6fbc'], [.5, '#b34fd6'], [1, '#49c6ff']]); c.fillRect(858, 238, 92, 50);
+    c.fillStyle = 'rgba(255,255,255,.85)'; c.fillRect(864, 246, 34, 5); c.fillRect(864, 256, 22, 3); c.fillStyle = 'rgba(255,255,255,.35)'; for (let k = 0; k < 6; k++) c.fillRect(906 + k * 7, 280 - (6 + R() * 26), 4.5, 6 + R() * 26);
+    c.fillStyle = lin(0, 244, 0, 302, [[0, '#eea5bc'], [1, '#9a5484']]); c.fillRect(968, 250, 60, 52); for (let x = 974; x < 1024; x += 11) arch(x, 257, 7, 16, win());
+    [[890, 222], [925, 220], [1000, 232]].forEach(([x, y], i) => { c.strokeStyle = '#cfc6e6'; c.lineWidth = .7; c.beginPath(); c.moveTo(x, y + 16); c.lineTo(x, y); c.stroke(); c.fillStyle = ['#ec008c', '#ffffff', '#ffd54a'][i]; c.beginPath(); c.moveTo(x, y); c.lineTo(x + 8, y + 2); c.lineTo(x, y + 4.5); c.fill(); });
+    // ---- main pavilion facade
+    c.fillStyle = lin(0, 150, 0, 300, [[0, '#f79fc0'], [.5, '#e56fa6'], [1, '#8f3f80']]); c.fillRect(96, 150, 510, 152);
+    c.fillStyle = '#f9cbd8'; c.fillRect(94, 148, 514, 2.6);
+    for (let y = 156; y < 290; y += 21){ c.fillStyle = 'rgba(249,203,216,.7)'; c.fillRect(96, y - 4, 510, 1.2); for (let x = 102; x < 600; x += 12) arch(x, y, 7.5, 14, win()); }
+    for (let x = 118; x < 600; x += 34) dome(x, 148, 5.2);
+    // commentary gantry + flags
+    c.fillStyle = '#35264f'; c.fillRect(316, 98, 70, 28); c.strokeStyle = 'rgba(210,190,240,.5)'; c.lineWidth = .6;
+    for (let x = 316; x < 386; x += 7){ c.beginPath(); c.moveTo(x, 98); c.lineTo(x + 7, 126); c.moveTo(x + 7, 98); c.lineTo(x, 126); c.stroke(); }
+    c.fillStyle = '#ffe9b8'; for (let x = 320; x < 384; x += 6) c.fillRect(x, 112, 3, 1.6);
+    c.fillStyle = '#35264f'; [322, 350, 380].forEach(x => c.fillRect(x, 126, 2, 26));
+    [326, 343, 360, 377].forEach((x, i) => { c.strokeStyle = '#cfc6e6'; c.lineWidth = .7; c.beginPath(); c.moveTo(x, 98); c.lineTo(x, 84); c.stroke(); c.fillStyle = i % 2 ? '#ffffff' : '#ec008c'; c.beginPath(); c.moveTo(x, 84); c.lineTo(x + 8, 86); c.lineTo(x, 88.5); c.fill(); });
+    tower(150, 136, 22, 300, 8.5); tower(222, 136, 22, 300, 8.5); tower(470, 136, 22, 300, 8.5); tower(532, 136, 22, 300, 8.5);
+    tower(300, 118, 34, 300, 12); tower(402, 118, 34, 300, 12);
+    tower(66, 124, 64, 345, 25);
+    c.fillStyle = '#fff5fa'; c.beginPath(); c.arc(66, 236, 7, 0, 6.29); c.fill(); c.strokeStyle = '#c0508c'; c.lineWidth = 1.2; c.stroke(); c.lineWidth = .8; c.beginPath(); c.moveTo(66, 236); c.lineTo(66, 231.5); c.moveTo(66, 236); c.lineTo(69.5, 237); c.stroke();
+    // ---- floodlight towers
+    const lamp = (x, y, w, h, bot) => { c.fillStyle = lin(x - 2, 0, x + 2, 0, [[0, '#b9b3d0'], [1, '#6d6690']]); c.fillRect(x - w * .05, y, w * .1, bot - y);
+      c.save(); c.translate(x, y); c.rotate(-.06); c.fillStyle = '#2b2440'; c.fillRect(-w / 2, -h / 2, w, h);
+      c.shadowColor = '#fff'; c.shadowBlur = 5; c.fillStyle = '#fffdf2'; const nx = 7, ny = 4;
+      for (let i = 0; i < nx; i++) for (let j = 0; j < ny; j++) c.fillRect(-w / 2 + 1.5 + i * (w - 3) / nx, -h / 2 + 1.5 + j * (h - 3) / ny, (w - 3) / nx - 1, (h - 3) / ny - 1);
+      c.restore(); c.shadowBlur = 0; };
+    lamp(121, 47, 42, 26, 260); lamp(455, 103, 28, 17, 200);
+    // ---- stands
+    const PAL = ['#f06bb0', '#e8479c', '#ff8cc6', '#d63a8f', '#f7a8d2', '#c2337f', '#ec008c', '#ec008c', '#f25aa8', '#9a3aa6', '#6a45b0', '#4a3a9a', '#ffffff', '#ffd0e6', '#2c1c4a'];
+    const ring = (s0, s1, a0, a1, lift, big) => {
+      c.fillStyle = lin(0, CY - RY * s1 - lift, 0, CY + RY * s1, [[0, '#4d2664'], [.5, '#3a1c52'], [1, '#1c0f30']]);
+      c.beginPath(); c.ellipse(CX, CY - lift, RX * s1, RY * s1, 0, a0, a1); c.ellipse(CX, CY - lift, RX * s0, RY * s0, 0, a1, a0, true); c.closePath(); c.fill();
+      const ds = .0125;
+      for (let s = s0 + ds * .5; s < s1 - ds * .3; s += ds){
+        let a = a0;
+        while (a < a1){
+          const sj = s + (R() - .5) * ds * .9, x = CX + Math.cos(a) * RX * sj, y = CY - lift + Math.sin(a) * RY * sj;
+          const sz = (1.05 + Math.max(0, y - 230) / 330 * 1.8) * (big || 1);
+          const aa = a; a += (sz * 1.2) / Math.hypot(RX * s * Math.sin(a), RY * s * Math.cos(a));
+          if (x < -4 || x > IW + 4 || y > IH + 4 || y < 0) continue;
+          if ((((aa / D2R) % 13) + 13) % 13 < .5 || R() < .05) continue;
+          c.globalAlpha = .68 + R() * .32; const col = PAL[(R() * PAL.length) | 0]; c.fillStyle = col;
+          c.fillRect(x - sz / 2, y - sz * .6, sz, sz * 1.15);
+          if (sz > 1.7){ c.fillStyle = 'rgba(255,225,205,.75)'; c.fillRect(x - sz * .22, y - sz * .95, sz * .44, sz * .4); }
+          if (crowd.length < 2600 && R() < .022) crowd.push({x, y, ph: R() * 6.28, sp: .6 + R() * 1.6, flash: 0, c: R() < .7 ? '#ff9ad2' : '#ffffff'});
+        }
+      }
+      c.globalAlpha = 1;
+    };
+    const fascia = (s, a0, a1, lift, h) => {
+      c.strokeStyle = '#231136'; c.lineWidth = h; c.beginPath(); c.ellipse(CX, CY - lift + h / 2, RX * s, RY * s, 0, a0, a1); c.stroke();
+      const cols = ['#ff4fb0', '#ffffff', '#ff9ad2', '#7fd8ff', '#ffd54a', '#ec008c', '#ec008c']; let a = a0; c.lineWidth = 1.5; c.shadowBlur = 4;
+      while (a < a1){ const len = (2 + R() * 6) * D2R; c.strokeStyle = c.shadowColor = cols[(R() * cols.length) | 0]; c.beginPath(); c.ellipse(CX, CY - lift + h * .35, RX * s, RY * s, 0, a, Math.min(a1, a + len)); c.stroke(); a += len + .25 * D2R; }
+      c.shadowBlur = 0; };
+    const A0 = 150 * D2R, A1 = 272 * D2R;
+    ring(1.62, 1.72, A0, A1, 27); fascia(1.62, A0, A1, 27, 8);
+    ring(1.47, 1.60, A0, A1, 18); fascia(1.47, A0, A1, 18, 8);
+    ring(1.32, 1.45, A0, A1, 9); fascia(1.32, A0, A1, 9, 8);
+    tower(596, 150, 26, 300, 10);
+    ring(1.055, 1.30, 0, Math.PI * 2, 0);
+    ring(1.30, 2.05, 92 * D2R, 150 * D2R, 0, 1.15);
+    // ---- boundary LED boards
+    c.lineWidth = 6.5; c.strokeStyle = '#1d0f30'; c.beginPath(); c.ellipse(CX, CY, RX * 1.025, RY * 1.025, 0, 0, 6.29); c.stroke();
+    c.lineWidth = 4.2; c.strokeStyle = '#ec008c'; c.shadowColor = '#ff4fb0'; c.shadowBlur = 5; c.beginPath(); c.ellipse(CX, CY - 1.5, RX * 1.025, RY * 1.025, 0, Math.PI, Math.PI * 2); c.stroke();
+    c.setLineDash([9, 30]); c.strokeStyle = '#ffffff'; c.beginPath(); c.ellipse(CX, CY - 1.5, RX * 1.025, RY * 1.025, 0, Math.PI, Math.PI * 2); c.stroke(); c.setLineDash([]); c.shadowBlur = 0;
+    // ---- field
+    c.save(); c.beginPath(); c.ellipse(CX, CY, RX, RY, 0, 0, 6.29); c.clip();
+    c.fillStyle = rad(CX - 60, CY - 30, RX, [[0, '#58b455'], [.6, '#3d9646'], [1, '#226b36']]); c.fillRect(CX - RX, CY - RY, RX * 2, RY * 2);
+    c.save(); c.translate(CX, CY); c.scale(1, RY / RX); c.rotate(-.42);
+    for (let i = -16; i < 16; i += 2){ c.fillStyle = 'rgba(255,255,255,.075)'; c.fillRect(i * 30, -700, 30, 1400); }
+    c.rotate(Math.PI / 2); for (let i = -16; i < 16; i += 2){ c.fillStyle = 'rgba(0,45,10,.10)'; c.fillRect(i * 30, -700, 30, 1400); }
+    c.restore();
+    c.globalCompositeOperation = 'screen'; blob(400, 395, 300, 110, 'rgba(255,255,235,.16)', 'rgba(0,0,0,0)'); blob(700, 420, 260, 90, 'rgba(255,230,245,.10)', 'rgba(0,0,0,0)'); c.globalCompositeOperation = 'source-over';
+    c.strokeStyle = 'rgba(255,255,255,.9)'; c.lineWidth = 1.1; c.beginPath(); c.ellipse(CX, CY, RX * .955, RY * .955, 0, 0, 6.29); c.stroke();
+    c.setLineDash([4, 5]); c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = .9; c.beginPath(); c.ellipse(600, 405, 150, 52, 0, 0, 6.29); c.stroke(); c.setLineDash([]);
+    const mat = (x, y, w, h, rot, col, edge) => { c.save(); c.translate(x, y); c.scale(1, .4); c.rotate(rot); c.fillStyle = col; c.fillRect(-w / 2, -h / 2, w, h); c.strokeStyle = edge; c.lineWidth = 1.5; c.strokeRect(-w / 2 + 2, -h / 2 + 2, w - 4, h - 4);
+      c.fillStyle = edge; c.fillRect(-w * .3, -h * .16, w * .6, h * .1); c.fillRect(-w * .2, h * .08, w * .4, h * .08); c.restore(); };
+    mat(472, 350, 64, 30, -.25, '#f04fa5', 'rgba(255,255,255,.8)'); mat(790, 442, 86, 44, -.25, '#f04fa5', 'rgba(255,255,255,.8)');
+    mat(690, 340, 60, 26, .25, '#2c3f8f', 'rgba(255,255,255,.75)'); mat(305, 402, 70, 30, .3, '#2c3f8f', 'rgba(255,255,255,.75)'); mat(385, 438, 58, 28, .3, '#d8344a', 'rgba(255,255,255,.8)');
+    // pitch square
+    const dx = .906, dy = -.423, px = .30, py = .64;
+    [[-2, '#7fbf63'], [-1, '#a9c97c'], [1, '#a9c97c'], [2, '#7fbf63'], [0, '#dcc995']].forEach(([k, col]) => { const ox = 600 + k * px * 9, oy = 405 + k * py * 9, L = 46, w2 = 4.4; c.fillStyle = col; c.beginPath();
+      c.moveTo(ox - dx * L - px * w2, oy - dy * L - py * w2); c.lineTo(ox + dx * L - px * w2, oy + dy * L - py * w2); c.lineTo(ox + dx * L + px * w2, oy + dy * L + py * w2); c.lineTo(ox - dx * L + px * w2, oy - dy * L + py * w2); c.closePath(); c.fill(); });
+    c.strokeStyle = '#fff'; c.lineWidth = .8; [-38, 38].forEach(L => { c.beginPath(); c.moveTo(600 + dx * L - px * 6, 405 + dy * L - py * 6); c.lineTo(600 + dx * L + px * 6, 405 + dy * L + py * 6); c.stroke(); });
+    // players
+    const man = (x, y, col) => { c.fillStyle = 'rgba(0,30,0,.35)'; c.beginPath(); c.ellipse(x + 2.2, y + .6, 3, 1, 0, 0, 6.29); c.fill(); c.fillStyle = col; c.fillRect(x - .9, y - 5, 1.8, 3.2); c.fillStyle = '#20183a'; c.fillRect(x - .8, y - 1.8, 1.6, 1.8); c.fillStyle = '#f2c9a8'; c.beginPath(); c.arc(x, y - 5.8, .95, 0, 6.29); c.fill(); };
+    [[566, 421], [634, 389], [520, 380], [500, 372], [430, 362], [680, 378], [720, 392], [752, 396], [640, 430], [606, 362], [830, 394], [846, 438], [884, 462], [790, 490], [505, 330], [420, 330]].forEach(([x, y], i) => man(x, y, i < 2 ? '#2f4fd0' : (i === 9 || i === 3 ? '#ffffff' : '#ff4fa8')));
+    c.restore();
+    // ---- grade
+    c.globalCompositeOperation = 'screen'; c.fillStyle = rad(121, 47, 560, [[0, 'rgba(255,215,235,.22)'], [1, 'rgba(0,0,0,0)']]); c.fillRect(0, 0, IW, IH);
+    c.fillStyle = rad(455, 103, 380, [[0, 'rgba(255,215,235,.14)'], [1, 'rgba(0,0,0,0)']]); c.fillRect(0, 0, IW, IH);
+    c.fillStyle = lin(0, 170, 0, 310, [[0, 'rgba(245,150,195,0)'], [.5, 'rgba(245,150,195,.12)'], [1, 'rgba(245,150,195,0)']]); c.fillRect(0, 170, IW, 140);
+    c.globalCompositeOperation = 'source-over';
+    c.fillStyle = lin(0, IH, 330, 330, [[0, 'rgba(18,8,36,.55)'], [1, 'rgba(18,8,36,0)']]); c.fillRect(0, 0, IW, IH);
+    ready = true;
+  }
+
+  function build(){
+    DPR = Math.min(window.devicePixelRatio || 1, 1.6);
+    W = innerWidth; H = innerHeight; cv.width = W * DPR; cv.height = H * DPR; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    sparks = Array.from({length: 60}, () => newSpark(true));
+    confetti = Array.from({length: 45}, () => newConf(true));
+    clouds = Array.from({length: 4}, (_, i) => ({x: i * 300 - 100, y: 30 + Math.random() * 90, r: 160 + Math.random() * 120, v: 4 + Math.random() * 5}));
+  }
+  function newSpark(init){
+    return {a: Math.random() * Math.PI * 2, d: init ? Math.random() : 0, v: .003 + Math.random() * .006, sz: 1.6 + Math.random() * 3.4, spin: Math.random() * 6.28,
+            hue: Math.random() < .45 ? '#FFD54A' : (Math.random() < .5 ? '#FF4FB0' : '#ffffff')};
+  }
+  function newConf(init){
+    return {x: Math.random() * IW, y: init ? Math.random() * IH * .7 : -10, v: 6 + Math.random() * 10, sw: Math.random() * 6.28, c: ['#EC008C', '#FFD54A', '#ffffff', '#FF7DC4'][(Math.random() * 4) | 0]};
+  }
+  function star4(x, y, s, rot, col, alpha){
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.globalAlpha = alpha; ctx.fillStyle = col;
+    ctx.beginPath(); ctx.moveTo(0, -s); ctx.quadraticCurveTo(0, 0, s, 0); ctx.quadraticCurveTo(0, 0, 0, s); ctx.quadraticCurveTo(0, 0, -s, 0); ctx.quadraticCurveTo(0, 0, 0, -s); ctx.fill();
+    ctx.restore();
+  }
+
+  let last = performance.now();
+  function frame(now){
+    const t = (now - t0) / 1000, dt = Math.min(.05, (now - last) / 1000); last = now;
+    const sf = Math.min(scrollF, 1.3);
+    // camera: cover-fit, slow cinematic drift, push toward the pitch on scroll
+    const base = Math.max(W / IW, H / IH);
+    const zoom = 1.08 + .05 * Math.sin(t * .07) + .55 * sf;
+    const s = base * zoom;
+    const fx = 512 + (PITCH[0] - 512) * Math.min(sf, 1) + (reduce ? 0 : 14 * Math.sin(t * .05));
+    const fy = 300 + (PITCH[1] - 300) * Math.min(sf, 1) + (reduce ? 0 : 6 * Math.cos(t * .043));
+    // keep the photo covering the screen
+    const minFx = W / 2 / s, maxFx = IW - W / 2 / s, minFy = H / 2 / s, maxFy = IH - H / 2 / s;
+    const cxI = Math.min(Math.max(fx, minFx), maxFx), cyI = Math.min(Math.max(fy, minFy), maxFy);
+    const SX = ix => W / 2 + (ix - cxI) * s, SY = iy => H / 2 + (iy - cyI) * s;
+
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#1d0b2e'; ctx.fillRect(0, 0, W, H);
+    ctx.drawImage(scene, SX(0), SY(0), IW * s, IH * s);
+
+    // drifting dusk clouds
+    ctx.globalCompositeOperation = 'screen';
+    clouds.forEach(c => { c.x += c.v * dt; if (c.x - c.r > IW) c.x = -c.r;
+      const g = ctx.createRadialGradient(SX(c.x), SY(c.y), 0, SX(c.x), SY(c.y), c.r * s);
+      g.addColorStop(0, 'rgba(255,150,210,.10)'); g.addColorStop(1, 'rgba(255,150,210,0)'); ctx.fillStyle = g;
+      ctx.beginPath(); ctx.ellipse(SX(c.x), SY(c.y), c.r * s, c.r * s * .35, 0, 0, 6.29); ctx.fill(); });
+
+    // crowd: travelling wave of light + twinkle + camera flashes
+    if (ready){
+      const wave = ((t * 120) % (IW + 400)) - 200;
+      ctx.globalCompositeOperation = 'lighter';
+      const ps = Math.max(1, s * 1.3);
+      for (let i = 0; i < crowd.length; i++){
+        const p = crowd[i];
+        const wv = Math.exp(-Math.pow(p.x - wave, 2) / (2 * 55 * 55));
+        const tw = Math.max(0, Math.sin(t * 3 * p.sp + p.ph));
+        let a = wv * .55 * tw + .08 * tw;
+        if (p.flash > 0) p.flash -= .045; else if (!reduce && Math.random() < .00035) p.flash = 1;
+        const x = SX(p.x), y = SY(p.y) - wv * 1.6 * s;
+        if (p.flash > 0){ ctx.globalAlpha = p.flash; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x, y, ps * (1 + 2.2 * p.flash), 0, 6.29); ctx.fill(); }
+        if (a > .03){ ctx.globalAlpha = a; ctx.fillStyle = p.c; ctx.fillRect(x - ps / 2, y - ps / 2, ps, ps); }
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    // floodlights: flicker, bloom, starburst, flare streak
+    LIGHTS.forEach(([lx, ly, k], i) => {
+      const x = SX(lx), y = SY(ly), fl = .82 + .18 * Math.sin(t * 11 + i * 2) * Math.sin(t * 2.7 + i);
+      const R = 120 * k * s / base;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, R);
+      g.addColorStop(0, `rgba(255,255,255,${.95 * fl})`); g.addColorStop(.12, `rgba(255,236,250,${.55 * fl})`); g.addColorStop(1, 'rgba(236,0,140,0)');
+      ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, R, 0, 6.29); ctx.fill();
+      ctx.save(); ctx.translate(x, y); ctx.rotate(t * .08 + i);
+      for (let r = 0; r < 8; r++){ ctx.rotate(Math.PI / 4); ctx.fillStyle = `rgba(255,255,255,${.10 * fl})`; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-2, -R * 1.5); ctx.lineTo(2, -R * 1.5); ctx.fill(); }
+      ctx.restore();
+      ctx.fillStyle = `rgba(255,200,235,${.22 * fl})`; ctx.fillRect(x - R * 2.2, y - 1, R * 4.4, 2);
+      [[.6, 10, 'rgba(255,120,200,.10)'], [1.25, 18, 'rgba(255,220,120,.07)']].forEach(([m, rr, c]) => {   // ghost flares toward screen centre
+        const gx = x + (W / 2 - x) * m * 1.4, gy = y + (H / 2 - y) * m * 1.4; ctx.fillStyle = c; ctx.beginPath(); ctx.arc(gx, gy, rr * s / base, 0, 6.29); ctx.fill(); });
+    });
+
+    // big screen glow pulse
+    { const [a, b, c, d] = SCREEN; ctx.globalAlpha = .18 + .12 * Math.sin(t * 4); ctx.fillStyle = '#ff7dc4'; ctx.fillRect(SX(a), SY(b), (c - a) * s, (d - b) * s); ctx.globalAlpha = 1; }
+
+    // floating crest over the pitch
+    const bob = Math.sin(t * 1.5) * 4, ch = 92 * s / base * (1 + .25 * sf), cw = ch * .84;
+    const px = SX(PITCH[0]), py = SY(PITCH[1]), ccx = px, ccy = py - ch * .95 + bob * s / base;
+    const pool = ctx.createRadialGradient(px, py, 2, px, py, cw);
+    pool.addColorStop(0, 'rgba(255,90,180,.55)'); pool.addColorStop(1, 'rgba(255,90,180,0)');
+    ctx.save(); ctx.translate(px, py); ctx.scale(1, .32); ctx.translate(-px, -py); ctx.fillStyle = pool; ctx.beginPath(); ctx.arc(px, py, cw, 0, 6.29); ctx.fill(); ctx.restore();
+    const colg = ctx.createLinearGradient(0, py, 0, ccy - ch * .6); colg.addColorStop(0, 'rgba(255,120,200,.32)'); colg.addColorStop(1, 'rgba(255,120,200,0)');
+    ctx.fillStyle = colg; ctx.beginPath(); ctx.moveTo(px - cw * .4, py); ctx.lineTo(px - cw * .18, ccy - ch * .6); ctx.lineTo(px + cw * .18, ccy - ch * .6); ctx.lineTo(px + cw * .4, py); ctx.fill();
+    const halo = ctx.createRadialGradient(ccx, ccy, ch * .05, ccx, ccy, ch * 1.05);
+    halo.addColorStop(0, `rgba(255,80,170,${.45 + .2 * Math.sin(t * 2.4)})`); halo.addColorStop(.5, 'rgba(255,213,74,.14)'); halo.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(ccx, ccy, ch * 1.05, 0, 6.29); ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+    if (crest.complete){ const turn = Math.cos(t * .6); ctx.save(); ctx.translate(ccx, ccy); ctx.scale(.6 + .4 * Math.abs(turn), 1); ctx.drawImage(crest, -cw / 2, -ch / 2, cw, ch); ctx.restore(); }
+    ctx.globalCompositeOperation = 'lighter';
+    const shx = ccx - cw / 2 + ((t * .45) % 1.6) * cw;
+    const sh = ctx.createLinearGradient(shx - 14, 0, shx + 14, 0); sh.addColorStop(0, 'rgba(255,255,255,0)'); sh.addColorStop(.5, 'rgba(255,255,255,.3)'); sh.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = sh; ctx.fillRect(ccx - cw / 2, ccy - ch / 2, cw, ch);
+    sparks.forEach((sp, i) => {
+      sp.d += sp.v; sp.a += .004; sp.spin += .05; if (sp.d > 1) sparks[i] = newSpark(false);
+      const rr = ch * (.3 + sp.d * .9), x = ccx + Math.cos(sp.a) * rr, y = ccy + Math.sin(sp.a) * rr * .75;
+      star4(x, y, sp.sz * (1 + .5 * Math.sin(t * 6 + i)) * Math.max(.7, ch / 110), sp.spin, sp.hue, Math.max(0, Math.sin(sp.d * Math.PI) * (.6 + .4 * Math.sin(t * 8 + i))));
+    });
+    ctx.globalCompositeOperation = 'source-over';
+
+    // confetti
+    confetti.forEach((c, i) => { if (!reduce){ c.y += c.v * dt; c.sw += 2 * dt; } if (c.y > IH * .75) confetti[i] = newConf(false);
+      ctx.save(); ctx.translate(SX(c.x + Math.sin(c.sw) * 6), SY(c.y)); ctx.rotate(c.sw); ctx.globalAlpha = .85; ctx.fillStyle = c.c; ctx.fillRect(-2.5, -1.2, 5, 2.4); ctx.restore(); });
+    ctx.globalAlpha = 1;
+
+    // grade: darker top for the title, vignette
+    const top = ctx.createLinearGradient(0, 0, 0, H * .45); top.addColorStop(0, 'rgba(10,4,24,.55)'); top.addColorStop(1, 'rgba(10,4,24,0)');
+    ctx.fillStyle = top; ctx.fillRect(0, 0, W, H * .45);
+    const vg = ctx.createRadialGradient(W / 2, H * .55, Math.min(W, H) * .35, W / 2, H * .55, Math.max(W, H) * .8);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(10,4,24,.5)'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+
+    if (running && !reduce) requestAnimationFrame(frame);
+  }
+  function onScroll(){
+    scrollF = scrollY / innerHeight;
+    document.getElementById('dim').style.opacity = Math.min(1, scrollF * 1.1);
+    const max = document.documentElement.scrollHeight - innerHeight;
+    document.getElementById('progress').style.width = (max > 0 ? scrollY / max * 100 : 0) + '%';
+    if (reduce) frame(performance.now());
+  }
+  addEventListener('resize', () => { build(); if (reduce) frame(performance.now()); });
+  addEventListener('scroll', onScroll, {passive: true});
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running && !reduce){ last = performance.now(); requestAnimationFrame(frame); } });
+  paintScene(); build(); onScroll();
+  [crest].forEach(im => im.addEventListener('load', () => { if (reduce) frame(performance.now()); }));
+  requestAnimationFrame(frame);
+})();
+
+/* ================= SCROLL REVEALS ================= */
+const io = ('IntersectionObserver' in window) ? new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ e.target.classList.add('in'); countUp(e.target); io.unobserve(e.target); }
+}), {threshold: .12, rootMargin: '0px 0px -6% 0px'}) : null;
+function countUp(el){
+  el.querySelectorAll('[data-count]').forEach(n => {
+    if (n.dataset.done) return; n.dataset.done = 1;
+    const end = parseFloat(n.dataset.count), dec = +(n.dataset.dec || 0), t0 = performance.now(), dur = 1400;
+    const step = now => { const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      n.textContent = (end * e).toLocaleString('en-US', {minimumFractionDigits: dec, maximumFractionDigits: dec}); if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  });
+}
+function armReveals(){
+  const els = document.querySelectorAll('#view .card, #view .kpi, #view .moment, #view h2, #view .plot, #view .tbl, #view .note, #view .warnbox, #view .two > div > p, #view .ctrl');
+  const counts = new Map();
+  els.forEach(el => {
+    const parent = el.parentElement, i = counts.get(parent) || 0; counts.set(parent, i + 1);
+    el.classList.add('reveal'); el.style.transitionDelay = Math.min(i, 8) * 70 + 'ms';
+    if (io) io.observe(el); else { el.classList.add('in'); countUp(el); }
+  });
+  document.querySelectorAll('#view .card').forEach(c => { if (c.querySelector('.rank') && c.querySelector('.rank').textContent.trim() === '1') c.classList.add('gold'); });
+}
+
+const D = JSON.parse(document.getElementById('data').textContent);
+const W = JSON.parse(document.getElementById('worms').textContent);
+const V = D.validation, RR = D.rr;
+const PINK='#EC008C', BLUE='#254AA5', GREY='#C9CFDD';
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const f1 = v => v == null ? '–' : Number(v).toFixed(1);
+const PCFG = {displayModeBar:false, responsive:true};
+const LAY = (o) => Object.assign({margin:{l:50,r:14,t:40,b:40}, font:{family:'Inter, sans-serif', size:12}, plot_bgcolor:'#fff', paper_bgcolor:'#fff',
+  xaxis:{gridcolor:'#EEF0F5'}, yaxis:{gridcolor:'#EEF0F5', zerolinecolor:'#bbb'}, legend:{orientation:'h', y:-0.22}}, o);
+
+const TABS = [['war','🏆 War Room'],['moments','⚡ Pressure Moments'],['lab','🔬 Player Lab'],['rr','🩷 RR Fit'],['method','📐 Method & Proof'],['board','📋 Full Leaderboard']];
+let cur = 'war';
+const st = {mDisc:'bat', mPick:null, mMom:0, lDisc:'bat', l1:null, l2:'', tDisc:'bat', tRole:'All', tNat:'All', tQ:''};
+
+function chips(c, kind){
+  let h = `<span class="chip">${esc(c.role)}</span><span class="chip">${esc(c.nationality)}</span>`;
+  if (kind==='bat') h += `<span class="chip">${esc(c.hand)}</span>`;
+  h += c.ipl_seasons ? `<span class="chip">IPL: ${esc(c.ipl_team)}</span>` : `<span class="chip warn">IPL-untested</span>`;
+  if (c.in_rr) h += `<span class="chip rr">Already RR</span>`;
+  return h;
+}
+function headline(c, kind){
+  const p = c.pressure, m = c.moment_stats;
+  return kind==='bat'
+   ? `Under pressure: <b>SR ${p.sr}</b> vs ${p.xsr} expected · avg ${p.avg} · dots ${p.dot}% vs ${p.xdot}% · ${m.won}/${m.n} pressure moments won`
+   : `Under pressure: <b>econ ${p.econ}</b> vs ${p.xecon} expected · balls/wkt ${p.bpw} · dots ${p.dot}% vs ${p.xdot}% · ${m.won}/${m.n} pressure overs won`;
+}
+const band = c => `model rank ${c.raw_rank} · 80% band ${c.rank_band[0]}–${c.rank_band[1]} · P(top 10) ${Math.round(c.p_top10)}%`;
+const seg = (key, val) => `<div class="seg"><button data-seg="${key}" data-v="bat" class="${val==='bat'?'on':''}">Batters</button><button data-seg="${key}" data-v="bowl" class="${val==='bowl'?'on':''}">Bowlers</button></div>`;
+
+function renderTabs(){
+  document.getElementById('tabs').innerHTML = TABS.map(([k,l]) => `<button class="tab ${k===cur?'on':''}" data-tab="${k}">${l}</button>`).join('');
+  document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { cur = b.dataset.tab; try{location.hash = cur}catch(e){}; render(); const stg = document.querySelector('.stage'); if (stg) { const top = stg.getBoundingClientRect().top + scrollY; if (scrollY > top) scrollTo({top: top - 10, behavior: 'smooth'}); } });
+}
+
+function war(){
+  let h = `<div class="kpis">
+    <div class="kpi"><div class="l">Balls modelled</div><div class="v"><span data-count="195124">0</span></div><div class="s">867 matches · IPL + T20I 2022–26</div></div>
+    <div class="kpi"><div class="l">Pressure balls</div><div class="v">Top 20% leverage</div><div class="s">56% fall outside the death overs</div></div>
+    <div class="kpi"><div class="l">Batting score repeatability</div><div class="v"><span data-count="${V.bat.split_half_prr}" data-dec="2">0.00</span></div><div class="s">naive clutch score: ${V.bat.split_half_naive.toFixed(2)}</div></div>
+    <div class="kpi"><div class="l">Bowling score repeatability</div><div class="v"><span data-count="${V.bowl.split_half_prr}" data-dec="2">0.00</span></div><div class="s">naive clutch score: ${Math.abs(V.bowl.split_half_naive).toFixed(2)}</div></div></div>
+    <div class="muted">Repeatability = correlation of a player's score in odd-numbered vs even-numbered matches. A score that doesn't repeat is measuring luck.</div><div class="two">`;
+  for (const [key, kind, title] of [['bat_top','bat','Top 10 batters under pressure'],['bowl_top','bowl','Top 10 bowlers under pressure']]){
+    h += `<div><h2>${title}</h2>`;
+    for (const c of D[key]) h += `<div class="card"><h4><span class="rank">${c.rank}</span>${esc(c.name)}<span class="prr">${f1(c.prr)}</span></h4>${chips(c, kind)}
+      <div class="muted" style="margin-top:6px">${headline(c, kind)}</div><div class="muted">${band(c)}</div></div>`;
+    h += `</div>`;
+  }
+  h += `</div><h2>Why the board is varied, and who missed out</h2><div class="two"><div>
+    <b>Batting rules:</b> ≤3 openers · ≥2 No. 3–4 · ≥3 middle order or finisher · ≥2 left-handers · ≤5 overseas · ≤2 IPL-untested<ul>
+    ${D.bat_excluded.map(e => `<li><b>${esc(e.name)}</b> (PRR ${e.prr}, ${esc(e.role)}): ${esc(e.reason)}</li>`).join('')}</ul></div><div>
+    <b>Bowling rules:</b> ≥3 death bowlers · ≥2 new-ball · ≥2 wrist spin · ≥1 finger spin · ≥2 left-arm · ≤5 spinners · ≤6 overseas<ul>
+    ${D.bowl_excluded.map(e => `<li><b>${esc(e.name)}</b> (PRR ${e.prr}, ${esc(e.role)}): ${esc(e.reason)}</li>`).join('')}</ul></div></div>
+    <div class="note">Variety only decides who enters the ten. It never reorders them: ranks 1–10 follow the Pressure Reliability Rating (PRR), and nobody below the model's top 25 can be pulled in to fill a role.</div>`;
+  return h;
+}
+
+function cardsFor(kd){ const cs = Object.values(kd==='bat' ? D.bat_cards : D.bowl_cards); cs.sort((a,b) => a.raw_rank - b.raw_rank); return cs; }
+
+function moments(){
+  const cs = cardsFor(st.mDisc), top = new Set(D[st.mDisc+'_top'].map(c => c.id));
+  if (!st.mPick || !cs.find(c => c.id === st.mPick)) { st.mPick = D[st.mDisc+'_top'][0].id; st.mMom = 0; }
+  const c = cs.find(x => x.id === st.mPick);
+  const all = c.moments.map(m => ['Signature', m]).concat(c.blemish.map(m => ['Blemish', m]));
+  let h = `<p class="muted" style="font-size:14px">Every rating here is backed by <b>real match situations</b>. Pick a player to replay the moments that define him, and the one that went wrong. The line is his team's win probability after every ball; pink dots are the balls he faced or bowled.</p>
+   <div class="ctrl">${seg('mDisc', st.mDisc)}<select id="mPick">${cs.map(x => `<option value="${x.id}" ${x.id===st.mPick?'selected':''}>${top.has(x.id)?'★ ':''}${esc(x.name)} (model #${x.raw_rank})</option>`).join('')}</select></div>
+   <h2 style="margin-top:4px">${esc(c.name)} · PRR ${f1(c.prr)}</h2>${chips(c, st.mDisc)}<div class="muted" style="margin:6px 0 10px">${headline(c, st.mDisc)}</div>`;
+  all.forEach(([t, m], i) => {
+    h += `<div class="moment ${t==='Blemish'?'bad':''}"><b>${t}</b> · ${esc(m.date)} · ${esc(m.comp)} vs ${esc(m.opp)}${m.ko?' · <b>KNOCKOUT</b>':''}<br>
+      <b>Walked into:</b> ${esc(m.situation)}<br><b>Did:</b> ${esc(m.did)}<br>
+      <b>Win probability:</b> ${esc(m.wp)} · credited swing <b>${m.wpa>0?'+':''}${m.wpa.toFixed(1)} pts</b> · ${esc(m.result)}</div>`;
+  });
+  h += `<div class="ctrl"><b>Replay a moment</b><select id="mMom">${all.map(([t,m],i) => `<option value="${i}" ${i===st.mMom?'selected':''}>${t}: ${esc(m.date)} vs ${esc(m.opp)}</option>`).join('')}</select></div>
+    <div id="worm" class="plot"></div><div class="muted">Credited swing adds up the win-probability change on every ball he faced (or bowled) from the moment pressure began. It can exceed the start-to-finish change when team-mates lost ground at the other end.</div>`;
+  setTimeout(() => {
+    document.getElementById('mPick').onchange = e => { st.mPick = +e.target.value; st.mMom = 0; render(); };
+    document.getElementById('mMom').onchange = e => { st.mMom = +e.target.value; render(); };
+    const [t, m] = all[Math.min(st.mMom, all.length-1)];
+    const w = W[String(m.match_id)]; if (!w) return;
+    const kd = st.mDisc;
+    const mine = []; w.striker.forEach((s, i) => { if ((kd==='bat' ? s : w.bowler[i]) === c.id) mine.push(i); });
+    const innP = mine.length ? w.inn[mine[0]] : 1;
+    const first = kd==='bat' ? innP===1 : innP===2;
+    const y = w.p1.map(v => (first ? v : 1 - v) * 100);
+    const mt = /^(.+?) \d+\/\d+/.exec(m.situation);
+    const team = kd==='bat' ? (mt ? mt[1] : 'His team') : `His team (bowling vs ${m.opp})`;
+    Plotly.newPlot('worm', [
+      {x:w.x, y, mode:'lines', line:{color:BLUE, width:2}, name:`${team} win %`, text:w.label, hovertemplate:'%{text}<br>Win %{y:.0f}%<extra></extra>'},
+      {x:mine.map(i => w.x[i]), y:mine.map(i => y[i]), mode:'markers', marker:{color:PINK, size:8, line:{color:'#fff', width:1}}, name: kd==='bat'?'Balls he faced':'Balls he bowled', text:mine.map(i => w.label[i]), hovertemplate:'%{text}<br>Win %{y:.0f}%<extra></extra>'}
+    ], LAY({height:340, title:{text:esc(m.result), font:{size:13}}, yaxis:{range:[0,100], title:`${team} win %`, gridcolor:'#EEF0F5'}, xaxis:{title:'Overs (0–20 first innings · 20–40 second innings)', gridcolor:'#EEF0F5'},
+      shapes:[{type:'line', x0:20, x1:20, y0:0, y1:100, line:{dash:'dot', color:'#999', width:1}}, {type:'line', x0:0, x1:40, y0:50, y1:50, line:{color:'#E3E6EE', width:1}}]}), PCFG);
+  });
+  return h;
+}
+
+const COMP = {b_runs:'Runs above expected', b_out:'Dismissal avoidance', b_dot:'Dot avoidance', w_runs:'Runs saved', w_wkt:'Wickets above expected', w_dot:'Dot-ball creation', moment:'Moments won', delta:'Rise vs own baseline'};
+function lab(){
+  const cs = cardsFor(st.lDisc);
+  if (!st.l1 || !cs.find(c => c.id === st.l1)) { st.l1 = cs[0].id; st.l2 = ''; }
+  const sel = [cs.find(c => c.id === st.l1)]; if (st.l2 && cs.find(c => c.id === +st.l2)) sel.push(cs.find(c => c.id === +st.l2));
+  const opts = (v) => cs.map(x => `<option value="${x.id}" ${x.id===v?'selected':''}>${esc(x.name)}</option>`).join('');
+  let h = `<div class="ctrl">${seg('lDisc', st.lDisc)}<select id="l1">${opts(st.l1)}</select><span class="muted">compare with</span><select id="l2"><option value="">—</option>${opts(+st.l2)}</select></div>
+    <div id="radar" class="plot"></div>`;
+  sel.forEach((c, i) => {
+    const s = c.splits;
+    h += `<h2>${esc(c.name)}</h2><div class="two"><div><div id="vs${i}" class="plot"></div><div class="muted">${st.lDisc==='bat'
+      ? `Pressure balls: all ${c.pressure.balls} · vs spin ${s.vs_spin[2]} · death ${s.death[2]} · IPL ${s.ipl[2]}`
+      : `Pressure balls: all ${c.pressure.balls} · death ${s.death[2]} · middle ${s.middle[2]} · IPL ${s.ipl[2]}`}</div></div><div>`;
+    if (st.lDisc==='bat') h += `<p><b>Squeeze response</b> (ball after 3+ dots, ${c.squeeze.n} times): scores ${c.squeeze.score}% · out ${c.squeeze.out}%</p>`;
+    else h += `<p><b>Bounce-back</b> (ball after being hit for 4 or 6, ${c.bounce.n} times): dot ${c.bounce.dot}% · boundary again ${c.bounce.bdry}%</p>`;
+    h += `<p><b>Decision vs execution</b> under pressure: decision ${c.decision>0?'+':''}${c.decision} · execution ${c.execution>0?'+':''}${c.execution}</p>
+      <div class="muted">Decision = value of the ${st.lDisc==='bat'?'shot he chose vs the average shot to that ball type':'delivery chosen vs the average delivery to that batting hand'} in that phase. Execution = what happened vs what that choice usually yields.</div>
+      <div id="dna${i}" class="plot"></div></div></div>`;
+  });
+  setTimeout(() => {
+    document.getElementById('l1').onchange = e => { st.l1 = +e.target.value; render(); };
+    document.getElementById('l2').onchange = e => { st.l2 = e.target.value; render(); };
+    Plotly.newPlot('radar', sel.map((c, i) => { const ks = Object.keys(c.components);
+      return {type:'scatterpolar', r:ks.map(k => c.components[k]).concat([c.components[ks[0]]]), theta:ks.map(k => COMP[k]).concat([COMP[ks[0]]]), fill:'toself', name:c.name, line:{color:[PINK,BLUE][i]}, opacity:.7}; }),
+      LAY({height:380, polar:{radialaxis:{range:[-3,3.5]}}, title:{text:'PRR components (z-scores vs eligible players)', font:{size:13}}, margin:{l:60,r:60,t:50,b:30}}), PCFG);
+    sel.forEach((c, i) => {
+      const s = c.splits, bat = st.lDisc==='bat';
+      const lbl = bat ? ['All pressure','vs spin','Death overs','In IPL'] : ['All pressure','Death overs','Middle overs','In IPL'];
+      const act = bat ? [c.pressure.sr, s.vs_spin[0], s.death[0], s.ipl[0]] : [c.pressure.econ, s.death[0], s.middle[0], s.ipl[0]];
+      const exp = bat ? [c.pressure.xsr, s.vs_spin[1], s.death[1], s.ipl[1]] : [c.pressure.xecon, s.death[1], s.middle[1], s.ipl[1]];
+      Plotly.newPlot('vs'+i, [{type:'bar', x:lbl, y:exp, name:'Expected (same situation, same pitch)', marker:{color:GREY}},
+        {type:'bar', x:lbl, y:act, name:'Actual', marker:{color:PINK}, cliponaxis:false, text:act.map(v => v==null?'':(bat?Math.round(v):v.toFixed(2))), textposition:'outside'}],
+        LAY({barmode:'group', height:300, title:{text: bat ? 'Strike rate under pressure vs expected' : 'Economy under pressure vs expected (lower is better)', font:{size:13}}}), PCFG);
+      if (c.dna){ const t = c.dna.top;
+        Plotly.newPlot('dna'+i, [{type:'bar', orientation:'h', y:t.map(x => x.name), x:t.map(x => x.base_share), name:'Normal situations', marker:{color:GREY}},
+          {type:'bar', orientation:'h', y:t.map(x => x.name), x:t.map(x => x.share), name:'Under pressure', marker:{color:BLUE}}],
+          LAY({barmode:'group', height:250, title:{text:`${bat?'Shot':'Delivery'} mix under pressure · drift ${c.dna.drift}`, font:{size:13}}, yaxis:{autorange:'reversed'}, xaxis:{title:'% of balls', gridcolor:'#EEF0F5'}, margin:{l:120,r:14,t:40,b:40}}), PCFG); }
+    });
+  });
+  return h;
+}
+
+function fitBat(c){ const s = c.splits, o = [];
+  if (['Middle order','Finisher'].includes(c.role)) o.push("Plugs RR's biggest leak: Nos. 5–7 under pressure.");
+  if (c.role === 'Top order') o.push("No. 3–4 option: RR's top order sits below league average under pressure.");
+  if (s.death[2] >= 30 && s.death[0] > s.death[1]) o.push(`Death-overs pressure SR ${s.death[0]} vs ${s.death[1]} expected.`);
+  if (s.vs_spin[2] >= 30 && s.vs_spin[0] > s.vs_spin[1]) o.push(`Beats spin under pressure: SR ${s.vs_spin[0]} vs ${s.vs_spin[1]} expected.`);
+  if (c.in_rr) o.push('Already an RR player: the case for building around him.');
+  if (!c.ipl_seasons) o.push('IPL-untested: pressure record comes from T20Is, so price in the risk of adjusting to IPL conditions.');
+  return o.length ? o : ['Pressure-proof top-order option.']; }
+function fitBowl(c){ const s = c.splits, o = [];
+  if (String(c.phase_role).includes('Death') && s.death[2] >= 30 && s.death[0] < s.death[1]) o.push(`Fixes RR's death-overs leak: pressure economy at the death ${s.death[0]} vs ${s.death[1]} expected.`);
+  if (c.kind !== 'Pace' && s.death[2] >= 18 && s.death[0] < s.death[1]) o.push(`A spinner who can bowl at the death (${s.death[0]} vs ${s.death[1]} expected); RR's death spin is −0.32 vs league.`);
+  if (c.kind !== 'Pace') o.push("Adds to RR's middle-overs spin, already a strength, to squeeze the chase.");
+  if (String(c.phase_role).includes('New ball')) o.push('Can take the new ball too: flexibility in the Impact Player era.');
+  if (c.in_rr) o.push('Already an RR player.');
+  return o; }
+function rr(){
+  const cl = RR.close;
+  let h = `<h2>Where RR lost games under pressure (IPL 2025–26)</h2><div class="two"><div id="rrT" class="plot"></div><div id="rrS" class="plot"></div></div><div id="rrB" class="plot"></div>
+    <div class="warnbox">RR won only <b>${cl.won} of ${cl.n}</b> close IPL games in 2025–26 (decided by ≤15 runs or ≤3 wickets). The leaks: Nos. 5–7 and the tail in run chases, death-overs batting, and death-overs bowling (both pace and spin).</div>
+    <h2>How each pick strengthens RR</h2><div class="two"><div>`;
+  D.bat_top.forEach(c => h += `<p><b>${c.rank}. ${esc(c.name)}</b> (${esc(c.role)})<br>${fitBat(c).map(x => '• ' + esc(x)).join('<br>')}</p>`);
+  h += `</div><div>`;
+  D.bowl_top.forEach(c => h += `<p><b>${c.rank}. ${esc(c.name)}</b> (${esc(c.role)})<br>${fitBowl(c).map(x => '• ' + esc(x)).join('<br>')}</p>`);
+  h += `</div></div>`;
+  setTimeout(() => {
+    const tt = RR.team_table.slice().sort((a,b) => a.bat - b.bat);
+    Plotly.newPlot('rrT', [{type:'bar', orientation:'h', y:tt.map(t => t.team), x:tt.map(t => t.bat), marker:{color:tt.map(t => t.team==='Rajasthan Royals'?PINK:GREY)}, text:tt.map(t => t.bat.toFixed(2)), textposition:'outside', hovertemplate:'%{y}: %{x:.2f}<extra></extra>'}],
+      LAY({height:360, title:{text:'Batting: win % gained per 100 pressure balls', font:{size:13}}, margin:{l:170,r:30,t:40,b:30}}), PCFG);
+    const sl = RR.bat_slot;
+    Plotly.newPlot('rrS', [{type:'bar', x:sl.map(r => r.role_slot), y:sl.map(r => r.gap), marker:{color:sl.map(r => r.gap<0?PINK:BLUE)}, text:sl.map(r => `${r.gap>0?'+':''}${r.gap} (n=${r.n})`), textposition:'outside', hovertemplate:'%{x}: %{y:.2f}<extra></extra>'}],
+      LAY({height:360, title:{text:'RR batting vs league, by slot', font:{size:13}}, yaxis:{range:[-0.9,0.7], gridcolor:'#EEF0F5', title:'Gap, win % / 100 pressure balls'}}), PCFG);
+    const ph = RR.bowl_phase_type;
+    Plotly.newPlot('rrB', [{type:'bar', x:ph.map(r => r.phase + ' · ' + r.btype), y:ph.map(r => r.gap), marker:{color:ph.map(r => r.gap<0?PINK:BLUE)}, text:ph.map(r => `${r.gap>0?'+':''}${r.gap} (n=${r.n})`), textposition:'outside', hovertemplate:'%{x}: %{y:.2f}<extra></extra>'}],
+      LAY({height:320, title:{text:'RR bowling vs league, by phase and type', font:{size:13}}, yaxis:{range:[-0.85,0.5], gridcolor:'#EEF0F5'}}), PCFG);
+  });
+  return h;
+}
+
+function method(){
+  let h = `<div class="method"><h2>1 · Pressure = leverage, not overs</h2>
+  <p>A <b>pitch-adjusted win-probability model</b> values every ball. <i>Chase:</i> runs needed vs expected remaining runs for the balls and wickets left on that pitch. <i>Batting first:</i> projected total vs the venue-season par. <b>Leverage</b> for a ball is the expected win-probability swing across everything that could happen (dot, 1, 2, 4, 6, wicket, extra), divided by the innings average so a normal ball scores 1. Pressure index = leverage × 1.2 after three or more dots in a row × 1.2 if a wicket fell in the last six balls. <b>The top 20% of balls are pressure balls.</b> Close finishes contain 84% more of them than other games, and 43% of death-over balls carry below-average leverage (usually dead games).</p>
+  <h2>2 · Flat-wicket correction</h2><p>Every expectation uses the match's <b>scoring environment</b>: a shrunk venue effect plus the competition-season run rate. IPL rose from 8.6 to 9.8 runs per over in 2022–26, so 40 off 25 in 2026 is worth less than in 2022, and a bowler going at 8.5 in 2026 is having a good day.</p>
+  <h2>3 · The rating (PRR)</h2><p>For each process skill (runs, dismissals and dots for batters; runs, wickets and dots for bowlers) we measure <b>actual minus expected</b> on every ball, where expected means the same innings, ball, wickets, required rate, pace or spin, and pitch. Pressure estimate = the player's (shrunk) all-situation skill + his pressure difference × n/(n+200). Then add <b>moments won</b> and <b>rise vs own baseline</b>. Opponents are weighted (associates 0.5, Ireland/Zimbabwe 0.8, A-teams 0.75), as is recency (0.55 in 2022 → 1.0 in 2026); knockouts count × 1.25.</p>
+  <div class="tbl" style="max-height:none"><table><tr><th>Component</th><th>Batting weight</th><th>Bowling weight</th></tr>
+  <tr><td>Runs vs expected</td><td>30%</td><td>25%</td></tr><tr><td>Dismissals / wickets</td><td>20%</td><td>20%</td></tr><tr><td>Dots</td><td>25%</td><td>30%</td></tr><tr><td>Moments won</td><td>15%</td><td>15%</td></tr><tr><td>Rise vs own baseline</td><td>10%</td><td>10%</td></tr></table></div>
+  <div class="two" style="margin-top:12px"><div id="env" class="plot"></div><div id="rel" class="plot"></div></div>
+  <h2>4 · Honest limits</h2><ul>
+  <li>Pressure performance is <b>noisy</b>: even the best score repeats at about 0.3. Every rank carries an 80% band from 300 match-level bootstrap resamples.</li>
+  <li>First-innings win probability is less certain (AUC 0.70 vs 0.90 for chases) because the target is unknown.</li>
+  <li>No line, length, shot direction or edge data, so "decision vs execution" is built from stroke and delivery labels only.</li>
+  <li>Pakistani players are rated but left off the board because they are not available at the IPL auction.</li>
+  <li>DLS-shortened and no-result games are excluded; super overs are not scored.</li></ul></div>`;
+  setTimeout(() => {
+    const env = D.env;
+    Plotly.newPlot('env', [true, false].map(ipl => { const e = env.filter(r => r.ipl === ipl);
+      return {x:e.map(r => r.yr), y:e.map(r => r.actual), mode:'lines+markers+text', text:e.map(r => r.actual.toFixed(2)), textposition:'top center', name: ipl ? 'IPL' : 'T20I', line:{color: ipl ? PINK : BLUE, width:2}}; }),
+      LAY({height:320, title:{text:'Flat-wicket factor: runs per over by season', font:{size:13}}, yaxis:{range:[7.8,10.4], title:'Runs per over', gridcolor:'#EEF0F5'}, xaxis:{dtick:1, gridcolor:'#EEF0F5'}}), PCFG);
+    const cats = ['Batting · odd/even', 'Batting · 22–24→25–26', 'Bowling · odd/even', 'Bowling · 22–24→25–26'];
+    const nv = [V.bat.split_half_naive, V.bat.temporal_naive, V.bowl.split_half_naive, V.bowl.temporal_naive], pv = [V.bat.split_half_prr, V.bat.temporal_prr, V.bowl.split_half_prr, V.bowl.temporal_prr];
+    Plotly.newPlot('rel', [{type:'bar', x:cats, y:nv, name:'Naive clutch score', marker:{color:GREY}, text:nv.map(v => v.toFixed(2)), textposition:'outside'},
+      {type:'bar', x:cats, y:pv, name:'PRR', marker:{color:PINK}, text:pv.map(v => v.toFixed(2)), textposition:'outside'}],
+      LAY({barmode:'group', height:320, title:{text:'Does the score repeat? (correlation)', font:{size:13}}, yaxis:{range:[-0.05,0.42], gridcolor:'#EEF0F5'}}), PCFG);
+  });
+  return h;
+}
+
+function board(){
+  const rows = st.tDisc==='bat' ? D.bat_table : D.bowl_table;
+  const roles = ['All', ...Array.from(new Set(rows.map(r => r.role))).sort()];
+  let t = rows.filter(r => (st.tRole==='All' || r.role===st.tRole) && (st.tNat==='All' || (st.tNat==='Indian' ? r.nat==='India' : r.nat!=='India')) && (!st.tQ || r.name.toLowerCase().includes(st.tQ.toLowerCase())));
+  const bat = st.tDisc==='bat';
+  let h = `<div class="ctrl">${seg('tDisc', st.tDisc)}<select id="tRole">${roles.map(r => `<option ${r===st.tRole?'selected':''}>${esc(r)}</option>`).join('')}</select>
+    <select id="tNat">${['All','Indian','Overseas'].map(r => `<option ${r===st.tNat?'selected':''}>${r}</option>`).join('')}</select><input id="tQ" placeholder="Search name" value="${esc(st.tQ)}"></div>
+    <div class="tbl"><table><tr><th>Rank</th><th>Player</th><th>Role</th><th>Nation</th><th>IPL 2026</th><th>PRR</th><th>80% band</th><th>P(top 10)</th><th>Pressure balls</th>
+    ${bat ? '<th>SR (exp)</th><th>Dot% (exp)</th><th>Avg</th>' : '<th>Econ (exp)</th><th>Dot% (exp)</th><th>Balls/wkt</th>'}<th>On board</th></tr>`;
+  t.forEach(r => { h += `<tr><td>${r.rank}</td><td><b>${esc(r.name)}</b></td><td>${esc(r.role)}</td><td>${esc(r.nat)}</td><td>${esc(r.ipl_team)}</td><td>${f1(r.prr)}</td><td>${r.lo}–${r.hi}</td><td>${Math.round(r.p10)}%</td><td>${r.balls}</td>
+    ${bat ? `<td>${f1(r.sr)} (${f1(r.xsr)})</td><td>${f1(r.dot)} (${f1(r.xdot)})</td><td>${f1(r.avg)}</td>` : `<td>${r.econ} (${r.xecon})</td><td>${f1(r.dot)} (${f1(r.xdot)})</td><td>${f1(r.bpw)}</td>`}<td>${r.selected ? '✓' : ''}</td></tr>`; });
+  h += `</table></div><div class="muted" style="margin-top:6px">${t.length} players. Figures are on pressure balls; "exp" is what the same situations on the same pitches normally produce.</div>`;
+  setTimeout(() => {
+    document.getElementById('tRole').onchange = e => { st.tRole = e.target.value; render(); };
+    document.getElementById('tNat').onchange = e => { st.tNat = e.target.value; render(); };
+    const q = document.getElementById('tQ'); q.oninput = e => { st.tQ = e.target.value; render(); const n = document.getElementById('tQ'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); };
+  });
+  return h;
+}
+
+function render(){
+  renderTabs();
+  const fn = {war, moments, lab, rr, method, board}[cur];
+  document.getElementById('view').innerHTML = fn();
+  armReveals();
+  document.querySelectorAll('[data-seg]').forEach(b => b.onclick = () => {
+    const k = b.dataset.seg; st[k] = b.dataset.v;
+    if (k==='mDisc') st.mPick = null; if (k==='lDisc') { st.l1 = null; st.l2 = ''; } if (k==='tDisc') st.tRole = 'All';
+    render(); });
+}
+try { const h = location.hash.slice(1); if (TABS.some(t => t[0] === h)) cur = h; } catch(e) {}
+window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (TABS.some(t => t[0] === h) && h !== cur) { cur = h; render(); } });
+render();
+</script>
+</body>
+</html>

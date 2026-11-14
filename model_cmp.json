@@ -1,0 +1,36 @@
+{
+ "runs": {
+  "linear": 1.72479,
+  "sklearn_hgb (current)": 1.72003,
+  "lightgbm": 1.72024,
+  "catboost": 1.7199,
+  "catboost + bowler type & batting hand": 1.71931
+ },
+ "own_out": {
+  "linear": 0.20934,
+  "sklearn_hgb (current)": 0.20822,
+  "lightgbm": 0.20857,
+  "catboost": 0.20837,
+  "catboost + bowler type & batting hand": 0.20821
+ },
+ "dot": {
+  "linear": 0.64416,
+  "sklearn_hgb (current)": 0.64116,
+  "lightgbm": 0.64126,
+  "catboost": 0.64099,
+  "catboost + bowler type & batting hand": 0.64067
+ },
+ "bwk": {
+  "linear": 0.20504,
+  "sklearn_hgb (current)": 0.20416,
+  "lightgbm": 0.20462,
+  "catboost": 0.20425,
+  "catboost + bowler type & batting hand": 0.20417
+ },
+ "rem": {
+  "linear": 23.48666,
+  "sklearn_hgb (current)": 22.60783,
+  "lightgbm": 22.59876,
+  "catboost": 22.52924
+ }
+}

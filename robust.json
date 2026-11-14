@@ -1,0 +1,210 @@
+{
+ "sensitivity": {
+  "bat": {
+   "Equal weights on all five components": {
+    "overlap": 7,
+    "spearman": 0.99,
+    "in": [
+     "Fakhar Zaman",
+     "Shashank Singh",
+     "Yashasvi Jaiswal"
+    ],
+    "out": [
+     "Abhishek Sharma",
+     "Phil Salt",
+     "Vaibhav Sooryavanshi"
+    ]
+   },
+   "Process only (no moments, no rise-vs-self)": {
+    "overlap": 9,
+    "spearman": 0.98,
+    "in": [
+     "Daryl Mitchell"
+    ],
+    "out": [
+     "Sikandar Raza"
+    ]
+   },
+   "Rise-vs-self doubled to 20%": {
+    "overlap": 8,
+    "spearman": 0.99,
+    "in": [
+     "Fakhar Zaman",
+     "Yashasvi Jaiswal"
+    ],
+    "out": [
+     "Phil Salt",
+     "Vaibhav Sooryavanshi"
+    ]
+   },
+   "Moments won doubled to 30%": {
+    "overlap": 7,
+    "spearman": 0.982,
+    "in": [
+     "Reeza Hendricks",
+     "Shashank Singh",
+     "Suryakumar Yadav"
+    ],
+    "out": [
+     "Abhishek Sharma",
+     "Phil Salt",
+     "Towhid Hridoy"
+    ]
+   },
+   "No recency weighting": {
+    "overlap": 9,
+    "spearman": 0.987,
+    "in": [
+     "Reeza Hendricks"
+    ],
+    "out": [
+     "Virat Kohli"
+    ]
+   },
+   "No opponent-strength weighting": {
+    "overlap": 9,
+    "spearman": 0.997,
+    "in": [
+     "Fakhar Zaman"
+    ],
+    "out": [
+     "Towhid Hridoy"
+    ]
+   },
+   "No knockout boost": {
+    "overlap": 9,
+    "spearman": 0.999,
+    "in": [
+     "Shashank Singh"
+    ],
+    "out": [
+     "Towhid Hridoy"
+    ]
+   },
+   "Baseline only (no pressure information at all)": {
+    "overlap": 5,
+    "spearman": 0.706,
+    "in": [
+     "Daryl Mitchell",
+     "Harry Brook",
+     "Shashank Singh",
+     "Suryakumar Yadav",
+     "Tim David"
+    ],
+    "out": [
+     "Pathum Nissanka",
+     "Shubman Gill",
+     "Sikandar Raza",
+     "Towhid Hridoy",
+     "Virat Kohli"
+    ]
+   }
+  },
+  "bowl": {
+   "Equal weights on all five components": {
+    "overlap": 9,
+    "spearman": 0.987,
+    "in": [
+     "Krunal Pandya"
+    ],
+    "out": [
+     "Varun Chakravarthy"
+    ]
+   },
+   "Process only (no moments, no rise-vs-self)": {
+    "overlap": 8,
+    "spearman": 0.977,
+    "in": [
+     "Jasprit Bumrah",
+     "Noor Ahmad"
+    ],
+    "out": [
+     "Axar Patel",
+     "Gudakesh Motie"
+    ]
+   },
+   "Rise-vs-self doubled to 20%": {
+    "overlap": 10,
+    "spearman": 0.989,
+    "in": [],
+    "out": []
+   },
+   "Moments won doubled to 30%": {
+    "overlap": 10,
+    "spearman": 0.983,
+    "in": [],
+    "out": []
+   },
+   "No recency weighting": {
+    "overlap": 9,
+    "spearman": 0.989,
+    "in": [
+     "Krunal Pandya"
+    ],
+    "out": [
+     "Varun Chakravarthy"
+    ]
+   },
+   "No opponent-strength weighting": {
+    "overlap": 10,
+    "spearman": 0.995,
+    "in": [],
+    "out": []
+   },
+   "No knockout boost": {
+    "overlap": 10,
+    "spearman": 0.999,
+    "in": [],
+    "out": []
+   },
+   "Baseline only (no pressure information at all)": {
+    "overlap": 6,
+    "spearman": 0.706,
+    "in": [
+     "Abbas Afridi",
+     "Corbin Bosch",
+     "Jasprit Bumrah",
+     "Prasidh Krishna"
+    ],
+    "out": [
+     "Axar Patel",
+     "Gudakesh Motie",
+     "Kuldeep Yadav",
+     "Rashid Khan"
+    ]
+   }
+  }
+ },
+ "predictive": {
+  "bat": {
+   "PRR": 0.107,
+   "Baseline only": 0.146,
+   "Pressure balls only": 0.071,
+   "Naive clutch (win prob added)": 0.093
+  },
+  "bowl": {
+   "PRR": 0.091,
+   "Baseline only": 0.17,
+   "Pressure balls only": 0.031,
+   "Naive clutch (win prob added)": 0.151
+  }
+ },
+ "transfer": {
+  "bat": {
+   "n": 43,
+   "r": 0.203
+  },
+  "bowl": {
+   "n": 45,
+   "r": 0.195
+  }
+ },
+ "spearman_brown": {
+  "bat": 0.34,
+  "bowl": 0.23
+ },
+ "spearman_brown_naive": {
+  "bat": 0.23,
+  "bowl": 0.2
+ }
+}

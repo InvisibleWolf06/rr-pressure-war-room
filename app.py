@@ -74,8 +74,8 @@ with tabs[0]:
     k1, k2, k3, k4 = st.columns(4)
     k1.metric("Balls modelled", "195,124", "867 matches · IPL + T20I 2022–26")
     k2.metric("Pressure balls", "Top 20% leverage", "56% fall outside the death overs")
-    k3.metric("Batting score repeatability", f"{V['bat']['split_half_prr']:.2f}", f"naive clutch: {V['bat']['split_half_naive']:.2f}")
-    k4.metric("Bowling score repeatability", f"{V['bowl']['split_half_prr']:.2f}", f"naive clutch: {V['bowl']['split_half_naive']:.2f}")
+    k3.metric("Batting: holds across eras", f"{V['bat']['temporal_prr']:.2f}", f"raw clutch score: {V['bat']['temporal_naive']:.2f}")
+    k4.metric("Bowling: holds across eras", f"{V['bowl']['temporal_prr']:.2f}", f"raw clutch score: {V['bowl']['temporal_naive']:.2f}")
     st.caption("Repeatability = correlation of a player's score in odd-numbered vs even-numbered matches. A score that doesn't repeat is luck, not skill.")
 
     cb, cw = st.columns(2)
@@ -88,18 +88,18 @@ with tabs[0]:
                 {chips(c, kind)}<div class="muted" style="margin-top:6px">{headline(c, kind)}</div>
                 <div class="muted">{fmt_band(c)}</div></div>""", unsafe_allow_html=True)
 
-    st.subheader("Why the board is varied — and who missed out")
+    st.subheader("RR auction board")
+    st.markdown("The ranking above is the model's own order. This board answers who RR should bid for: players in rating order, skipping one only "
+                "when he would break a cap or leave too few places for a role the squad needs. Nobody outside the model's top 25 can be pulled in.")
     v1, v2 = st.columns(2)
-    with v1:
-        st.markdown("**Batting rules:** ≤3 openers · ≥2 No.3–4 · ≥3 middle order or finisher · ≥2 left-handers · ≤5 overseas · ≤2 IPL-untested")
-        for e in D["bat_excluded"]:
-            st.markdown(f"- **{e['name']}** (PRR {e['prr']}, {e['role']}) — {e['reason']}")
-    with v2:
-        st.markdown("**Bowling rules:** ≥3 death specialists · ≥2 new-ball · ≥2 wrist spin · ≥1 finger spin · ≥2 left-arm · ≤5 spinners · ≤6 overseas")
-        for e in D["bowl_excluded"]:
-            st.markdown(f"- **{e['name']}** (PRR {e['prr']}, {e['role']}) — {e['reason']}")
-    st.info("Variety only decides who enters the ten. It never reorders them: ranks 1–10 follow the Pressure Reliability Rating (PRR), "
-            "and nobody below the model's top 25 can be pulled in to fill a role.")
+    for col, key, exk, rules in [(v1, "bat_board", "bat_excluded", "≤3 openers · ≥2 No.3–4 · ≥3 middle order or finisher · ≥2 left-handers · ≤5 overseas · ≤2 IPL-untested"),
+                                 (v2, "bowl_board", "bowl_excluded", "≥3 death bowlers · ≥2 new-ball · ≥2 wrist spin · ≥1 finger spin · ≥2 left-arm · ≤5 spinners · ≤6 overseas · no Pakistan nationals")]:
+        with col:
+            st.dataframe(pd.DataFrame([{"#": c["rank"], "Player": c["name"], "Model rank": c["raw_rank"], "Role": c["role"], "PRR": c["prr"]} for c in D[key]]),
+                         hide_index=True, width='stretch')
+            st.caption("Rules: " + rules)
+            for e in D[exk]:
+                st.markdown(f"- **{e['name']}** left out: {e['reason']}")
 
 # ---------------------------------------------------------------- MOMENTS
 def worm_fig(mid, pid, kind, title, team):
@@ -285,13 +285,13 @@ with tabs[3]:
             out.append("Already an RR player.")
         return out
 
-    st.markdown("#### How each pick strengthens RR")
+    st.markdown("#### How each auction-board pick strengthens RR")
     a, b3 = st.columns(2)
     with a:
-        for c in D["bat_top"]:
+        for c in D["bat_board"]:
             st.markdown(f"**{c['rank']}. {c['name']}** ({c['role']})  \n" + "  \n".join("• " + x for x in fit_bat(c)))
     with b3:
-        for c in D["bowl_top"]:
+        for c in D["bowl_board"]:
             st.markdown(f"**{c['rank']}. {c['name']}** ({c['role']})  \n" + "  \n".join("• " + x for x in fit_bowl(c)))
 
 # ---------------------------------------------------------------- METHOD
@@ -304,11 +304,11 @@ A **pitch-adjusted win-probability model** values every ball. *Chase:* runs need
 last 6 balls. **The top 20% of balls are pressure balls.** Close finishes contain 84% more of them than other games, and 43% of death-over balls are *low* pressure (dead games).
 
 #### 2 · Flat-wicket correction
-Every expectation uses the match's **scoring environment**: venue effect (shrunk) + competition-season run rate. IPL rose from 8.6 to 9.8 runs/over in 2022–26,
+Every expectation uses the match's **scoring environment**: venue effect (shrunk) + competition-season run rate. IPL rose from 8.5 to 9.8 runs/over in 2022–26,
 so 40 off 25 in 2026 is worth less than in 2022, and a bowler going at 8.5 in 2026 is excellent.
 
 #### 3 · The rating (PRR)
-For each process skill (runs, dismissals, dots; for bowlers: runs, wickets, dots) we measure **actual minus expected** on every ball. Expected = same innings, same ball,
+For each process skill (runs, dismissals, dots; for bowlers: runs, wickets, dots) I measure **actual minus expected** on every ball. Expected = same innings, same ball,
 wickets, required rate, pace/spin and pitch. Estimate under pressure = player's (shrunk) all-situation skill + his pressure difference × credibility n/(n+200).
 Then add **moments won** (pressure innings/overs where he gained win probability) and **rise vs own baseline**. Opponent weighting: associates 0.5, Ireland/Zim 0.8, A-teams 0.75. Recency 0.55 (2022) → 1.0 (2026). Knockouts ×1.25.
 """)
@@ -336,10 +336,11 @@ Then add **moments won** (pressure innings/overs where he gained win probability
         st.plotly_chart(f, width='stretch')
     st.markdown("""
 #### 4 · Honest limits
-- Pressure performance is **noisy**: even our best score repeats at ~0.3. Every rank carries an 80% band from 300 match-level bootstrap resamples.
+- Pressure performance is **noisy**: rising above your own usual level does not repeat, so the rating mostly rewards holding a high level under pressure. Every rank carries an 80% band from 300 match-level bootstrap resamples.
+- An earlier version reported odd-even repeatability of 0.35 and 0.26; a bug let the two halves overlap. Rankings were unaffected.
 - First-innings win probability is less certain (AUC 0.70 vs 0.90 for chases) because the target is unknown.
 - No line/length, shot direction or edge data: "decision vs execution" is built from stroke and delivery labels only.
-- Pakistani players are rated but excluded from the board: they are not available at the IPL auction.
+- Pakistani players are in the ranking (Sufiyan Muqeem is #3 among bowlers) but left off the RR auction board, since they cannot be bought at an IPL auction.
 - DLS-shortened and no-result games are excluded; super overs are not scored.
 """)
 
@@ -360,5 +361,5 @@ with tabs[5]:
     if q:
         t = t[t.name.str.contains(q, case=False)]
     t = t.rename(columns={"prr": "PRR", "rank": "Rank", "lo": "Band low", "hi": "Band high", "p10": "P(top10)%", "eps": "Pressure moments",
-                          "balls": "Pressure balls", "selected": "On board", "nat": "Nation", "ipl_team": "IPL 2026"})
+                          "balls": "Pressure balls", "selected": "Top 10", "board": "RR board", "nat": "Nation", "ipl_team": "IPL 2026"})
     st.dataframe(t.drop(columns=["id"]), hide_index=True, width='stretch', height=600)

@@ -17,7 +17,8 @@ python pipeline/reliab2.py $OUT          # expected outcomes per ball + reliabil
 python pipeline/moments.py "$D" $OUT     # pressure moments, roles, shot/delivery DNA
 python pipeline/ratings2.py $OUT         # PRR, bootstrap bands, validation
 python pipeline/rr_gaps.py "$D" $OUT     # RR pressure gaps
-python pipeline/select.py $OUT           # variety-aware top 10 + dashboard data
+python pipeline/select.py $OUT           # ranking (model top 10), RR auction board, dashboard data
+python pipeline/robust.py $OUT           # sensitivity, baseline benchmark, IPL vs T20I transfer
 python pipeline/report.py $OUT report.pdf
 cp $OUT/dashboard_data.json $OUT/worms.json data/
 ```

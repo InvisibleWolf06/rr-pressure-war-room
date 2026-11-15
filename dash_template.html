@@ -161,6 +161,14 @@ td{border-bottom:1px solid rgba(255,255,255,.06);padding:7px 10px;white-space:no
 th{white-space:nowrap}
 tr:nth-child(even) td{background:rgba(255,255,255,.025)}
 tr:hover td{background:rgba(236,0,140,.10)}
+.go{font-family:'Barlow Condensed',sans-serif;font-size:15px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;background:linear-gradient(135deg,#EC008C,#B8006C);color:#fff;border:0;border-radius:6px;padding:8px 18px;cursor:pointer;box-shadow:0 6px 18px rgba(236,0,140,.35)}
+.two>div{min-width:0}.tbl{overflow-x:auto}
+.go.sm{font-size:12px;padding:5px 12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}@media(max-width:1000px){.grid3{grid-template-columns:1fr 1fr}}@media(max-width:640px){.grid3{grid-template-columns:1fr}}
+.lk{cursor:pointer;border-bottom:1px dotted rgba(255,255,255,.35)}.lk:hover{color:var(--hot)}
+.eyebrow b{color:var(--hot)}
+.go:disabled{opacity:.45;cursor:default}.go:hover:not(:disabled){filter:brightness(1.12)}
+.chip.av{background:rgba(74,222,128,.12);color:#8EF0B0;border-color:rgba(74,222,128,.4)}.chip.ru{background:rgba(244,197,66,.14);color:var(--gold);border-color:rgba(244,197,66,.4)}.chip.no{background:rgba(255,255,255,.05);color:var(--ink3)}
+.st-available{color:#8EF0B0}.st-rumoured{color:var(--gold)}.st-contracted,.st-rr,.st-retired,.st-ineligible{color:var(--ink3)}
 </style>
 </head>
 <body>
@@ -179,6 +187,10 @@ tr:hover td{background:rgba(236,0,140,.10)}
 </div></div>
 <script id="data" type="application/json">__DATA__</script>
 <script id="worms" type="application/json">__WORMS__</script>
+<script id="simdata" type="application/json">__SIM__</script>
+<script id="labdata" type="application/json">__LAB__</script>
+<script id="scoutdata" type="application/json">__SCOUT__</script>
+<script>__SIMJS__</script>
 <script>
 
 /* ================= LIVE STADIUM (painted in code + motion layers) ================= */
@@ -519,22 +531,27 @@ const PCFG = {displayModeBar:false, responsive:true};
 const LAY = (o) => Object.assign({margin:{l:50,r:14,t:44,b:40}, font:{family:'IBM Plex Sans, sans-serif', size:12, color:'rgba(238,240,247,.78)'}, plot_bgcolor:'rgba(0,0,0,0)', paper_bgcolor:'rgba(0,0,0,0)', hoverlabel:{bgcolor:'#1d0f30', bordercolor:'#EC008C', font:{color:'#fff', family:'IBM Plex Sans'}},
   xaxis:{gridcolor:'rgba(255,255,255,.08)'}, yaxis:{gridcolor:'rgba(255,255,255,.08)', zerolinecolor:'rgba(255,255,255,.25)'}, legend:{orientation:'h', y:-0.22}}, o);
 
-const TABS = [['war','War Room'],['moments','Pressure Moments'],['lab','Player Lab'],['rr','RR Fit'],['method','Method & Proof'],['board','Full Leaderboard']];
+const TABS = [['war','War Room'],['moments','Pressure Moments'],['lab','Player Lab'],['rr','RR Fit'],['scout','Scouting & Auction'],['retain','Retain & Release'],['sim','Match Simulator'],['method','Method & Proof'],['board','Full Leaderboard']];
 const SECT = {
   war: ['Rankings', 'Top ten <em>under pressure</em>', 'Ten batters and ten bowlers in the model\'s own order of Pressure Reliability Rating. The separate RR auction board, with role balance and availability built in, is further down.'],
   moments: ['Match evidence', 'Pressure <em>moments</em>', 'The real situations behind each rating: the score he walked into, what he did, and how far his team\'s chances moved.'],
-  lab: ['Player analysis', 'Player <em>lab</em>', 'Break a rating into its parts, compare two players side by side, and see how a player\'s shot or delivery choices change under pressure.'],
+  lab: ['Player analysis', 'Player <em>lab</em>', 'Click any player to see where he scores, which bowlers and deliveries suit him, and how he changes under pressure. The second view breaks the rating into its parts and compares two players.'],
   rr: ['Squad fit', 'Rajasthan Royals <em>fit</em>', 'Where RR lost ground under pressure in IPL 2025–26, and how each player on the auction board addresses it.'],
+  scout: ['Talent search', 'Scouting &amp; <em>auction plan</em>', 'Underrated players who keep winning the small moments, a wider pool from outside the usual IPL nations, and three fallbacks for every target on RR\'s board.'],
+  retain: ['Squad decisions', 'Retain &amp; <em>release</em>', 'Who RR should keep, who to let go, and who to release and try to buy back for less.'],
+  sim: ['What if', 'Match <em>simulator</em>', 'Stop a real RR game at any ball, swap in a batter or bowler, and replay the rest of the match 2,000 times to see how the result moves.'],
   method: ['Methodology', 'Method &amp; <em>proof</em>', 'How pressure is defined, how the rating is built, and the tests that show it measures skill rather than luck.'],
   board: ['All rated players', 'Full <em>leaderboard</em>', 'Every eligible batter and bowler with pressure-ball numbers against what the same situations normally produce. Filter by role or nationality, or search a name.']};
 let cur = 'war';
-const st = {mDisc:'bat', mPick:null, mMom:0, lDisc:'bat', l1:null, l2:'', tDisc:'bat', tRole:'All', tNat:'All', tQ:''};
+const AVAIL_L = {available:'In auction pool', rumoured:'Release rumoured', contracted:'Under contract', rr:'RR player', retired:'Retired', ineligible:'Not eligible'};
+const st = {tAv:'All', mDisc:'bat', mPick:null, mMom:0, lDisc:'bat', l1:null, l2:'', tDisc:'bat', tRole:'All', tNat:'All', tQ:''};
 
 function chips(c, kind){
   let h = `<span class="chip">${esc(c.role)}</span><span class="chip">${esc(c.nationality)}</span>`;
   if (kind==='bat') h += `<span class="chip">${esc(c.hand)}</span>`;
   h += c.ipl_seasons ? `<span class="chip">IPL: ${esc(c.ipl_team)}</span>` : `<span class="chip warn">IPL-untested</span>`;
   if (c.in_rr) h += `<span class="chip rr">Already RR</span>`;
+  else if (c.avail) h += `<span class="chip ${c.avail==='available'?'av':c.avail==='rumoured'?'ru':'no'}" title="${esc(c.avail_note||'')}">${AVAIL_L[c.avail]}</span>`;
   return h;
 }
 function headline(c, kind){
@@ -547,7 +564,7 @@ const band = c => `model rank ${c.raw_rank} · 80% band ${c.rank_band[0]}–${c.
 const seg = (key, val) => `<div class="seg"><button data-seg="${key}" data-v="bat" class="${val==='bat'?'on':''}">Batters</button><button data-seg="${key}" data-v="bowl" class="${val==='bowl'?'on':''}">Bowlers</button></div>`;
 
 function renderTabs(){
-  document.getElementById('tabs').innerHTML = TABS.map(([k,l],i) => `<button class="tab ${k===cur?'on':''}" data-tab="${k}"><span class="n">0${i+1}</span>${l}</button>`).join('');
+  document.getElementById('tabs').innerHTML = TABS.map(([k,l],i) => `<button class="tab ${k===cur?'on':''}" data-tab="${k}"><span class="n">${String(i+1).padStart(2,"0")}</span>${l}</button>`).join('');
   document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { cur = b.dataset.tab; try{location.hash = cur}catch(e){}; render(); const stg = document.querySelector('.stage'); if (stg) { const top = stg.getBoundingClientRect().top + scrollY; if (scrollY > top) scrollTo({top: top - 10, behavior: 'smooth'}); } });
 }
 
@@ -564,15 +581,24 @@ function war(){
       <div class="muted" style="margin-top:6px">${headline(c, kind)}</div><div class="muted">${band(c)}</div></div>`;
     h += `</div>`;
   }
-  const brow = (c) => `<tr><td>${c.rank}</td><td><b>${esc(c.name)}</b></td><td>${c.raw_rank}</td><td>${esc(c.role)}</td><td>${f1(c.prr)}</td></tr>`;
+  const brow = (c) => `<tr><td>${c.rank}</td><td><b>${esc(c.name)}</b></td><td>${c.raw_rank}</td><td style="white-space:normal">${esc(c.role)}</td><td>${f1(c.prr)}</td><td class="st-${c.avail}" style="white-space:normal" title="${esc(c.avail_note)}">${AVAIL_L[c.avail]}</td></tr>`;
+  const ac = D.avail_counts, buy = k => ac[k].available + ac[k].rumoured, tot = k => Object.values(ac[k]).reduce((a,b)=>a+b,0);
+  const t10 = k => D.avail_top10[k].filter(x => x.avail==='available'||x.avail==='rumoured').length;
   h += `</div><h2>RR auction board</h2>
-    <div class="muted" style="margin-bottom:10px">The ranking answers who performs best under pressure. This board answers who RR should bid for: players in rating order, skipping one only when he would break a cap or leave too few places for a role the squad needs. Nobody outside the model's top 25 can be pulled in.</div>
-    <div class="two"><div><div class="tbl" style="max-height:none"><table><tr><th>#</th><th>Batter</th><th>Model rank</th><th>Role</th><th>PRR</th></tr>${D.bat_board.map(brow).join('')}</table></div>
-    <div class="muted" style="margin-top:8px"><b>Rules:</b> ≤3 openers · ≥2 No. 3–4 · ≥3 middle order or finisher · ≥2 left-handers · ≤5 overseas · ≤2 IPL-untested</div><ul>
-    ${D.bat_excluded.map(e => `<li><b>${esc(e.name)}</b> (model ${D.bat_table.find(r => r.name === e.name).rank}) left out: ${esc(e.reason)}</li>`).join('')}</ul></div>
-    <div><div class="tbl" style="max-height:none"><table><tr><th>#</th><th>Bowler</th><th>Model rank</th><th>Role</th><th>PRR</th></tr>${D.bowl_board.map(brow).join('')}</table></div>
-    <div class="muted" style="margin-top:8px"><b>Rules:</b> ≥3 death bowlers · ≥2 new-ball · ≥2 wrist spin · ≥1 finger spin · ≥2 left-arm · ≤5 spinners · ≤6 overseas · no Pakistan nationals (not available at the auction)</div><ul>
-    ${D.bowl_excluded.map(e => `<li><b>${esc(e.name)}</b> (model ${D.bowl_table.find(r => r.name === e.name).rank}) left out: ${esc(e.reason)}</li>`).join('')}</ul></div></div>`;
+    <div class="muted" style="margin-bottom:10px">The ranking answers who performs best under pressure. This board answers who RR can actually bid for at the IPL 2027 mini-auction (Goa, 16 Dec): players RR already own, players retired from the IPL, players not eligible for the auction and players under contract elsewhere are taken out first. The rest go in rating order, skipping one only when he would break a cap or leave too few places for a role the squad needs.</div>
+    <div class="kpis" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px">
+     <div class="kpi"><div class="l">Batters RR can buy</div><div class="v">${buy('bat')}</div><div class="s">of ${tot('bat')} rated · ${t10('bat')} of the top 10</div></div>
+     <div class="kpi"><div class="l">Bowlers RR can buy</div><div class="v">${buy('bowl')}</div><div class="s">of ${tot('bowl')} rated · ${t10('bowl')} of the top 10</div></div>
+     <div class="kpi"><div class="l">Under contract elsewhere</div><div class="v">${ac.bat.contracted + ac.bowl.contracted}</div><div class="s">assumed kept until the lists land on 17 Nov</div></div>
+     <div class="kpi"><div class="l">Out of reach</div><div class="v">${ac.bat.rr+ac.bowl.rr+ac.bat.retired+ac.bowl.retired+ac.bat.ineligible+ac.bowl.ineligible}</div><div class="s">already RR · retired · not eligible</div></div></div>
+    <div class="warnbox" style="padding:8px 12px;margin-bottom:12px;font-size:13px"><b>Provisional.</b> Retention lists are due on 17 November 2026. Until then everyone in another IPL 2026 squad counts as kept, except players widely reported as likely releases, who stay on the board marked "Release rumoured". Update one file (availability.py) when the lists come out and the board rebuilds itself.</div>
+    <div class="two"><div><div class="tbl" style="max-height:none"><table><tr><th>#</th><th>Batter</th><th>Rank</th><th>Role</th><th>PRR</th><th>Status</th></tr>${D.bat_board.map(brow).join('')}</table></div>
+    <div class="muted" style="margin-top:8px"><b>Rules:</b> buyable only · ≤3 openers · ≥2 No. 3–4 · ≥3 middle order or finisher · ≥2 left-handers · ≤4 IPL-untested · model rank 80 or better</div><ul>
+    ${D.bat_excluded.map(e => `<li><b>${esc(e.name)}</b> (model ${D.bat_table.find(r => r.name === e.name).rank}) not on the board: ${esc(e.reason)}</li>`).join('')}</ul></div>
+    <div><div class="tbl" style="max-height:none"><table><tr><th>#</th><th>Bowler</th><th>Rank</th><th>Role</th><th>PRR</th><th>Status</th></tr>${D.bowl_board.map(brow).join('')}</table></div>
+    <div class="muted" style="margin-top:8px"><b>Rules:</b> buyable only · ≥3 death bowlers · ≥2 new-ball · ≥2 wrist spin · ≥1 finger spin · ≥2 left-arm · ≤5 spinners · ≤4 IPL-untested · model rank 80 or better</div><ul>
+    ${D.bowl_excluded.map(e => `<li><b>${esc(e.name)}</b> (model ${D.bowl_table.find(r => r.name === e.name).rank}) not on the board: ${esc(e.reason)}</li>`).join('')}</ul></div></div>
+    <div class="muted" style="font-size:13px">Nearly everyone RR can buy in this data is from overseas, because domestic Indian players mostly sit outside the T20I and IPL matches in the data pack. The overseas cap is applied when the squad is finalised, not on this list.</div>`;
   return h;
 }
 
@@ -615,7 +641,7 @@ function moments(){
 }
 
 const COMP = {b_runs:'Runs above expected', b_out:'Dismissal avoidance', b_dot:'Dot avoidance', w_runs:'Runs saved', w_wkt:'Wickets above expected', w_dot:'Dot-ball creation', moment:'Moments won', delta:'Rise vs own baseline'};
-function lab(){
+function labRating(){
   const cs = cardsFor(st.lDisc);
   if (!st.l1 || !cs.find(c => c.id === st.l1)) { st.l1 = cs[0].id; st.l2 = ''; }
   const sel = [cs.find(c => c.id === st.l1)]; if (st.l2 && cs.find(c => c.id === +st.l2)) sel.push(cs.find(c => c.id === +st.l2));
@@ -707,7 +733,7 @@ function method(){
   <li>An earlier version reported odd-even figures of 0.35 and 0.26; a bug let the two halves overlap. Rankings were unaffected.</li>
   <li>First-innings win probability is less certain (AUC 0.70 vs 0.90 for chases) because the target is unknown.</li>
   <li>No line, length, shot direction or edge data, so "decision vs execution" is built from stroke and delivery labels only.</li>
-  <li>Pakistani players are in the ranking (Sufiyan Muqeem is #3 among bowlers) but left off the RR auction board because they cannot be bought at an IPL auction.</li>
+  <li>The ranking includes everyone, as the brief asks. The RR auction board leaves out players RR cannot buy: Pakistani nationals (Sufiyan Muqeem is #3 among bowlers), IPL retirees, Harry Brook (serving a two-season IPL ban), RR's own players, and anyone under contract elsewhere until the 17 November retention lists say otherwise.</li>
   <li>DLS-shortened and no-result games are excluded; super overs are not scored.</li></ul></div>`;
   setTimeout(() => {
     const env = D.env;
@@ -726,18 +752,19 @@ function method(){
 function board(){
   const rows = st.tDisc==='bat' ? D.bat_table : D.bowl_table;
   const roles = ['All', ...Array.from(new Set(rows.map(r => r.role))).sort()];
-  let t = rows.filter(r => (st.tRole==='All' || r.role===st.tRole) && (st.tNat==='All' || (st.tNat==='Indian' ? r.nat==='India' : r.nat!=='India')) && (!st.tQ || r.name.toLowerCase().includes(st.tQ.toLowerCase())));
+  let t = rows.filter(r => (st.tRole==='All' || r.role===st.tRole) && (st.tNat==='All' || (st.tNat==='Indian' ? r.nat==='India' : r.nat!=='India')) && (!st.tQ || r.name.toLowerCase().includes(st.tQ.toLowerCase())) && (st.tAv==='All' || (st.tAv==='RR can buy' ? (r.avail==='available'||r.avail==='rumoured') : AVAIL_L[r.avail]===st.tAv)));
   const bat = st.tDisc==='bat';
   let h = `<div class="ctrl">${seg('tDisc', st.tDisc)}<select id="tRole">${roles.map(r => `<option ${r===st.tRole?'selected':''}>${esc(r)}</option>`).join('')}</select>
-    <select id="tNat">${['All','Indian','Overseas'].map(r => `<option ${r===st.tNat?'selected':''}>${r}</option>`).join('')}</select><input id="tQ" placeholder="Search name" value="${esc(st.tQ)}"></div>
+    <select id="tNat">${['All','Indian','Overseas'].map(r => `<option ${r===st.tNat?'selected':''}>${r}</option>`).join('')}</select><select id="tAv">${['All','RR can buy',...Object.values(AVAIL_L)].map(r => `<option ${r===st.tAv?'selected':''}>${r}</option>`).join('')}</select><input id="tQ" placeholder="Search name" value="${esc(st.tQ)}"></div>
     <div class="tbl"><table><tr><th>Rank</th><th>Player</th><th>Role</th><th>Nation</th><th>IPL 2026</th><th>PRR</th><th>80% band</th><th>P(top 10)</th><th>Pressure balls</th>
-    ${bat ? '<th>SR (exp)</th><th>Dot% (exp)</th><th>Avg</th>' : '<th>Econ (exp)</th><th>Dot% (exp)</th><th>Balls/wkt</th>'}<th>Top 10</th><th>RR board</th></tr>`;
+    ${bat ? '<th>SR (exp)</th><th>Dot% (exp)</th><th>Avg</th>' : '<th>Econ (exp)</th><th>Dot% (exp)</th><th>Balls/wkt</th>'}<th>Top 10</th><th>RR board</th><th>Auction status</th></tr>`;
   t.forEach(r => { h += `<tr><td>${r.rank}</td><td><b>${esc(r.name)}</b></td><td>${esc(r.role)}</td><td>${esc(r.nat)}</td><td>${esc(r.ipl_team)}</td><td>${f1(r.prr)}</td><td>${r.lo}–${r.hi}</td><td>${Math.round(r.p10)}%</td><td>${r.balls}</td>
-    ${bat ? `<td>${f1(r.sr)} (${f1(r.xsr)})</td><td>${f1(r.dot)} (${f1(r.xdot)})</td><td>${f1(r.avg)}</td>` : `<td>${r.econ} (${r.xecon})</td><td>${f1(r.dot)} (${f1(r.xdot)})</td><td>${f1(r.bpw)}</td>`}<td>${r.selected ? '✓' : ''}</td><td>${r.board ? '✓' : ''}</td></tr>`; });
+    ${bat ? `<td>${f1(r.sr)} (${f1(r.xsr)})</td><td>${f1(r.dot)} (${f1(r.xdot)})</td><td>${f1(r.avg)}</td>` : `<td>${r.econ} (${r.xecon})</td><td>${f1(r.dot)} (${f1(r.xdot)})</td><td>${f1(r.bpw)}</td>`}<td>${r.selected ? '✓' : ''}</td><td>${r.board ? '✓' : ''}</td><td class="st-${r.avail}">${AVAIL_L[r.avail]}</td></tr>`; });
   h += `</table></div><div class="muted" style="margin-top:6px">${t.length} players. Figures are on pressure balls; "exp" is what the same situations on the same pitches normally produce.</div>`;
   setTimeout(() => {
     document.getElementById('tRole').onchange = e => { st.tRole = e.target.value; render(); };
     document.getElementById('tNat').onchange = e => { st.tNat = e.target.value; render(); };
+    document.getElementById('tAv').onchange = e => { st.tAv = e.target.value; render(); };
     const q = document.getElementById('tQ'); q.oninput = e => { st.tQ = e.target.value; render(); const n = document.getElementById('tQ'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); };
   });
   return h;
@@ -745,15 +772,17 @@ function board(){
 
 function render(){
   renderTabs();
-  const fn = {war, moments, lab, rr, method, board}[cur];
+  const fn = {war, moments, lab, rr, scout, retain, sim, method, board}[cur];
   const sx = SECT[cur], ix = TABS.findIndex(t => t[0]===cur) + 1;
-  document.getElementById('view').innerHTML = `<header class="sec"><div class="eyebrow"><b>0${ix}</b>${sx[0]}</div><h1>${sx[1]}</h1><p>${sx[2]}</p></header>` + fn();
+  document.getElementById('view').innerHTML = `<header class="sec"><div class="eyebrow"><b>${String(ix).padStart(2,"0")}</b>${sx[0]}</div><h1>${sx[1]}</h1><p>${sx[2]}</p></header>` + fn();
   armReveals();
   document.querySelectorAll('[data-seg]').forEach(b => b.onclick = () => {
     const k = b.dataset.seg; st[k] = b.dataset.v;
     if (k==='mDisc') st.mPick = null; if (k==='lDisc') { st.l1 = null; st.l2 = ''; } if (k==='tDisc') st.tRole = 'All';
     render(); });
 }
+__SIMTAB__
+__LABTAB__
 try { const h = location.hash.slice(1); if (TABS.some(t => t[0] === h)) cur = h; } catch(e) {}
 window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (TABS.some(t => t[0] === h) && h !== cur) { cur = h; render(); } });
 render();

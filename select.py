@@ -14,6 +14,11 @@ ext = json.load(open(f'{OUT}/extras.json'))
 val = json.load(open(f'{OUT}/validation.json'))
 rr = json.load(open(f'{OUT}/rr.json'))
 RR_SQUAD = set(rr['squad'])
+AV = pd.read_csv(f'{OUT}/availability.csv').drop_duplicates('player_id').set_index('player_id')
+BUYABLE = ('available', 'rumoured')
+for _R in (bat, bowl):
+    _R['avail'] = AV.status.reindex(_R.index).fillna('available')
+    _R['avail_note'] = AV.note.reindex(_R.index).fillna('')
 
 # ---------- RR-fit split metrics (pressure balls) ----------
 h = b[b.hp & b.legal].copy()
@@ -61,17 +66,18 @@ bat_rules = {'Top order (No.3-4)': (lambda r: r.role == 'Top order', 2),
              'Middle order / finisher': (lambda r: r.role in ('Middle order', 'Finisher'), 3),
              'Left-hander': (lambda r: r.hand == 'LHB', 2)}
 bat_caps = {'Openers': (lambda r: r.role == 'Opener', 3),
-            'Overseas': (lambda r: bool(r.overseas), 5),
-            'IPL-untested': (lambda r: r.ipl_seasons == 0, 2)}
+            'Overseas': (lambda r: bool(r.overseas), 10),  # buyable pool is ~all overseas (domestic Indians outside this dataset); squad slots handled at the table
+            'IPL-untested': (lambda r: r.ipl_seasons == 0, 4)}
 bowl_rules = {'Death specialist': (lambda r: 'Death' in str(r.phase_role), 3),
               'New-ball pace': (lambda r: 'New ball' in str(r.phase_role), 2),
               'Wrist spin': (lambda r: r.kind == 'Wrist spin', 2),
               'Finger spin': (lambda r: r.kind == 'Finger spin', 1),
               'Left-arm': (lambda r: bool(r.left_arm), 2)}
 bowl_caps = {'Spinners': (lambda r: r.kind != 'Pace', 5),
-             'Overseas': (lambda r: bool(r.overseas), 6),
-             'IPL-untested': (lambda r: r.ipl_seasons == 0, 2)}
-gate = lambda R: (R.s_p_top25 >= 0.20) & (R.s_rank <= 25) & (R.nationality != 'Pakistan')  # Pakistani players unavailable at IPL auction
+             'Overseas': (lambda r: bool(r.overseas), 10),
+             'IPL-untested': (lambda r: r.ipl_seasons == 0, 4)}
+# auction board: only players RR can actually buy in the Dec 2026 mini-auction (see availability.py)
+gate = lambda R: R.avail.isin(BUYABLE) & (R.s_rank <= 80)
 # submitted ranking = the model's own top 10; the variety-constrained list is the RR auction board
 bat_board = select(bat, bat_rules, bat_caps, gate)
 bowl_board = select(bowl, bowl_rules, bowl_caps, gate)
@@ -111,7 +117,7 @@ def card(R, p, kind, rank, top_ids):
     d = {'id': int(p), 'name': r['name'], 'rank': rank, 'prr': num(r.s_PRR), 'raw_rank': int(r.s_rank),
          'rank_band': [int(r.s_rank_lo), int(r.s_rank_hi)], 'p_top10': num(r.s_p_top10 * 100, 0), 'p_top25': num(r.s_p_top25 * 100, 0),
          'role': r.role, 'nationality': r.nationality, 'overseas': bool(r.overseas), 'ipl_team': r.ipl_team,
-         'ipl_seasons': int(r.ipl_seasons), 'in_rr': r['name'] in RR_SQUAD, 'moments': best, 'blemish': worst, 'moment_stats': ms,
+         'ipl_seasons': int(r.ipl_seasons), 'in_rr': r['name'] in RR_SQUAD, 'avail': r.avail, 'avail_note': r.avail_note, 'moments': best, 'blemish': worst, 'moment_stats': ms,
          'components': {k: num(r['s_' + k], 2) for k in (['b_runs', 'b_out', 'b_dot'] if kind == 'bat' else ['w_runs', 'w_wkt', 'w_dot']) + ['moment', 'delta']}}
     dna = (ext['bat_dna'] if kind == 'bat' else ext['bowl_dna']).get(str(p))
     d['dna'] = dna
@@ -140,7 +146,7 @@ def table(R, kind, top_ids, board_ids=()):
     for p, r in R.sort_values('s_prr_raw', ascending=False).iterrows():
         row = {'id': int(p), 'name': r['name'], 'prr': num(r.s_PRR), 'rank': int(r.s_rank), 'lo': int(r.s_rank_lo), 'hi': int(r.s_rank_hi),
                'p10': num(r.s_p_top10 * 100, 0), 'role': r.role, 'nat': r.nationality, 'ipl_team': r.ipl_team,
-               'eps': int(r.episodes), 'selected': p in top_ids, 'board': p in board_ids, 'balls': int(r.pb_hb)}
+               'eps': int(r.episodes), 'selected': p in top_ids, 'board': p in board_ids, 'balls': int(r.pb_hb), 'avail': r.avail}
         if kind == 'bat':
             row.update({'hand': r.hand, 'sr': num(r.pb_hp_sr), 'xsr': num(r.pb_hp_xsr), 'dot': num(r.pb_hp_dot), 'xdot': num(r.pb_hp_xdot), 'avg': num(r.pb_hp_avg)})
         else:
@@ -156,10 +162,9 @@ def why_excluded(R, top, pure, rules, caps):
         r = R.loc[p]
         above = [q for q in top if R.loc[q].s_prr_raw > r.s_prr_raw]
         reason = []
-        if r.nationality == 'Pakistan':
-            reason.append('not available at IPL auction (Pakistan national)')
-        if r.s_p_top25 < .20:
-            reason.append('rank too unstable (<20% chance of top 25)')
+        if r.avail not in BUYABLE:
+            reason.append({'rr': 'already an RR player', 'contracted': f"under contract with {r.avail_note.split(' squad')[0]} until the 17 Nov lists",
+                           'retired': r.avail_note, 'ineligible': r.avail_note}[r.avail])
         for k, (f, cap) in caps.items():
             if f(r) and sum(f(R.loc[q]) for q in above) >= cap:
                 reason.append(f'{k} cap ({cap}) already filled by higher-rated players')
@@ -169,6 +174,8 @@ def why_excluded(R, top, pure, rules, caps):
 
 data = {
     'validation': val,
+    'avail_counts': {k: {s: int((R.avail == s).sum()) for s in ['available','rumoured','contracted','rr','retired','ineligible']} for k, R in (('bat', bat), ('bowl', bowl))},
+    'avail_top10': {k: [{'name': R.loc[p]['name'], 'rank': int(R.loc[p].s_rank), 'avail': R.loc[p].avail, 'note': R.loc[p].avail_note} for p in top] for k, R, top in (('bat', bat, pure_bat), ('bowl', bowl, pure_bowl))},
     'thr': ext['thr'],
     'bat_top': [card(bat, p, 'bat', i + 1, bat_top) for i, p in enumerate(bat_top)],
     'bowl_top': [card(bowl, p, 'bowl', i + 1, bowl_top) for i, p in enumerate(bowl_top)],
@@ -192,11 +199,11 @@ print('excluded', data['bat_excluded'], data['bowl_excluded'])
 # ---------- extended export for dashboard: cards for top-30 + notable names, WP worms ----------
 NOTABLE_BAT = ['Virat Kohli', 'Shubman Gill', 'Phil Salt', 'Jos Buttler', 'Abhishek Sharma', 'Yashasvi Jaiswal']
 NOTABLE_BOWL = ['Jasprit Bumrah', 'Sufiyan Muqeem', 'Arshdeep Singh', 'Kagiso Rabada', 'Eshan Malinga']
-def pool(R, notable):
+def pool(R, notable, board):
     top30 = R.sort_values('s_prr_raw', ascending=False).index[:30].tolist()
-    return list(dict.fromkeys(top30 + R[R.name.isin(notable)].index.tolist()))
-bat_cards = {str(int(p)): card(bat, p, 'bat', int(bat.loc[p].s_rank), bat_top) for p in pool(bat, NOTABLE_BAT)}
-bowl_cards = {str(int(p)): card(bowl, p, 'bowl', int(bowl.loc[p].s_rank), bowl_top) for p in pool(bowl, NOTABLE_BOWL)}
+    return list(dict.fromkeys(top30 + list(board) + R[R.name.isin(notable)].index.tolist()))
+bat_cards = {str(int(p)): card(bat, p, 'bat', int(bat.loc[p].s_rank), bat_top) for p in pool(bat, NOTABLE_BAT, bat_board)}
+bowl_cards = {str(int(p)): card(bowl, p, 'bowl', int(bowl.loc[p].s_rank), bowl_top) for p in pool(bowl, NOTABLE_BOWL, bowl_board)}
 
 teams_by_id = {}
 for e in [bat_ep, bowl_ep]:

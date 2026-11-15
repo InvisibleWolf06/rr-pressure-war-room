@@ -89,17 +89,21 @@ with tabs[0]:
                 <div class="muted">{fmt_band(c)}</div></div>""", unsafe_allow_html=True)
 
     st.subheader("RR auction board")
-    st.markdown("The ranking above is the model's own order. This board answers who RR should bid for: players in rating order, skipping one only "
-                "when he would break a cap or leave too few places for a role the squad needs. Nobody outside the model's top 25 can be pulled in.")
+    AVL = {"available": "In auction pool", "rumoured": "Release rumoured", "contracted": "Under contract", "rr": "RR player", "retired": "Retired", "ineligible": "Not eligible"}
+    st.markdown("The ranking above is the model's own order. This board answers who RR can actually buy at the IPL 2027 mini-auction (Goa, 16 Dec): RR's own players, "
+                "IPL retirees, players not eligible for the auction and players under contract elsewhere are taken out first. The rest go in rating order, skipping one only "
+                "when he would break a cap or leave too few places for a role the squad needs.")
+    st.warning("Provisional: retention lists are due on 17 November 2026. Until then everyone in another IPL 2026 squad counts as retained, except widely reported release candidates (marked 'Release rumoured').")
+    st.info("The Match Simulator, Player Lab strengths maps, Scouting & Auction plan and Retain & Release tabs live in the stadium version of this dashboard (app_stadium.py).")
     v1, v2 = st.columns(2)
-    for col, key, exk, rules in [(v1, "bat_board", "bat_excluded", "≤3 openers · ≥2 No.3–4 · ≥3 middle order or finisher · ≥2 left-handers · ≤5 overseas · ≤2 IPL-untested"),
-                                 (v2, "bowl_board", "bowl_excluded", "≥3 death bowlers · ≥2 new-ball · ≥2 wrist spin · ≥1 finger spin · ≥2 left-arm · ≤5 spinners · ≤6 overseas · no Pakistan nationals")]:
+    for col, key, exk, rules in [(v1, "bat_board", "bat_excluded", "buyable only · ≤3 openers · ≥2 No.3–4 · ≥3 middle order or finisher · ≥2 left-handers · ≤4 IPL-untested · model rank ≤80"),
+                                 (v2, "bowl_board", "bowl_excluded", "buyable only · ≥3 death bowlers · ≥2 new-ball · ≥2 wrist spin · ≥1 finger spin · ≥2 left-arm · ≤5 spinners · ≤4 IPL-untested · model rank ≤80")]:
         with col:
-            st.dataframe(pd.DataFrame([{"#": c["rank"], "Player": c["name"], "Model rank": c["raw_rank"], "Role": c["role"], "PRR": c["prr"]} for c in D[key]]),
+            st.dataframe(pd.DataFrame([{"#": c["rank"], "Player": c["name"], "Model rank": c["raw_rank"], "Role": c["role"], "PRR": c["prr"], "Status": AVL.get(c.get("avail"), "")} for c in D[key]]),
                          hide_index=True, width='stretch')
             st.caption("Rules: " + rules)
             for e in D[exk]:
-                st.markdown(f"- **{e['name']}** left out: {e['reason']}")
+                st.markdown(f"- **{e['name']}** not on the board: {e['reason']}")
 
 # ---------------------------------------------------------------- MOMENTS
 def worm_fig(mid, pid, kind, title, team):
@@ -340,7 +344,7 @@ Then add **moments won** (pressure innings/overs where he gained win probability
 - An earlier version reported odd-even repeatability of 0.35 and 0.26; a bug let the two halves overlap. Rankings were unaffected.
 - First-innings win probability is less certain (AUC 0.70 vs 0.90 for chases) because the target is unknown.
 - No line/length, shot direction or edge data: "decision vs execution" is built from stroke and delivery labels only.
-- Pakistani players are in the ranking (Sufiyan Muqeem is #3 among bowlers) but left off the RR auction board, since they cannot be bought at an IPL auction.
+- The ranking includes everyone. The RR auction board leaves out players RR cannot buy: Pakistani nationals (Sufiyan Muqeem is #3 among bowlers), IPL retirees, Harry Brook (IPL ban), RR's own players, and anyone under contract elsewhere until the 17 November retention lists.
 - DLS-shortened and no-result games are excluded; super overs are not scored.
 """)
 
@@ -361,5 +365,5 @@ with tabs[5]:
     if q:
         t = t[t.name.str.contains(q, case=False)]
     t = t.rename(columns={"prr": "PRR", "rank": "Rank", "lo": "Band low", "hi": "Band high", "p10": "P(top10)%", "eps": "Pressure moments",
-                          "balls": "Pressure balls", "selected": "Top 10", "board": "RR board", "nat": "Nation", "ipl_team": "IPL 2026"})
+                          "balls": "Pressure balls", "selected": "Top 10", "board": "RR board", "nat": "Nation", "ipl_team": "IPL 2026", "avail": "Auction status"})
     st.dataframe(t.drop(columns=["id"]), hide_index=True, width='stretch', height=600)

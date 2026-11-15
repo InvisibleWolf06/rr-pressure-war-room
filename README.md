@@ -28,3 +28,17 @@ Needs: pandas, numpy, scikit-learn, pyarrow, matplotlib, reportlab, pillow.
 - `war_room_stadium.html` is the animated stadium dashboard as one self-contained page (open it in any browser; needs internet for Plotly).
 - `app_stadium.py` serves that page inside Streamlit. Use it as the main file on Streamlit Cloud for the stadium look; `app.py` is the plain version.
 - `pipeline/web/` holds the page template and build script.
+
+
+## Auction availability and match simulator (added Nov 2026)
+```
+python -I pipeline/availability.py "<data_dir>" out   # who RR can buy; edit RETIRED/RUMOURED/OVERRIDES after the 17 Nov retention lists
+python -I pipeline/select.py out                     # rebuilds the auction board
+python -I pipeline/lab_export.py "<data_dir>" out       # player lab, hidden gems, wider pool, backups, retain/release
+python -I pipeline/sim_export.py "<data_dir>" out --val
+node pipeline/simval.js out/sim_val.json out/sim_val_wp.csv out/sim_validation.json   # (ALPHA=1 SD=0.2 BS=0.93)
+python -I pipeline/sim_export.py "<data_dir>" out     # writes out/sim.json with validation
+node pipeline/sim_examples.js out/sim.json out/dashboard_data.json out/sim_examples.json
+python pipeline/web/build_dash.py                     # stadium page incl. Match Simulator tab
+```
+Note: simval.js reads ALPHA/SD/BS from the environment; use ALPHA=1 SD=0.2 BS=0.93 to reproduce the shipped numbers.

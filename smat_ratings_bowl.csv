@@ -2,7 +2,7 @@ rank,name,linked_name,team,DPR,pressure_balls,impact_pct,scorecard_pct,turning_b
 1,Yash Thakur,Yash Thakur,Vidarbha,85.1,131,99,92,17,2018/19,2024/25,False,contracted,Punjab Kings,,Death overs,47,6.39,12.4,6.23,8.56
 2,Cheepurapalli Stephen,,Andhra,79.8,115,97,96,16,2015/16,2023/24,True,uncapped,,,Death overs,42,6.06,11.6,5.63,7.72
 3,Yuvraj Singh,,Railways,79.5,61,98,74,11,2020/21,2023/24,False,uncapped,,,New ball,14,7.04,13.6,5.51,7.74
-4,Sayan Ghosh,,Bengal,75.1,88,100,58,18,2017/18,2024/25,True,uncapped,,,Death overs,32,7.33,16.7,8.59,9.27
+4,Sayan Ghosh,,Bengal,75.1,88,100,58,18,2017/18,2024/25,True,uncapped,,"2026/27: 7 wickets, econ 5.87",Death overs,32,7.33,16.7,8.59,9.27
 5,Mayank Dagar,Mayank Dagar,Himachal,73.2,126,84,69,8,2017/18,2022/23,False,ipl_unsigned,,,Middle overs,31,5.83,20.7,5.33,7.54
 6,Ravi Bishnoi,Ravi Bishnoi,Rajasthan,70.7,95,85,85,8,2018/19,2023/24,False,rr,Rajasthan Royals,,Middle overs,25,5.67,16.8,5.87,7.81
 7,KC Cariappa,KC Cariappa,Karnataka,67.8,161,84,74,12,2015/16,2023/24,True,ipl_unsigned,,,Middle overs,30,5.49,19.8,5.85,7.81
@@ -22,7 +22,7 @@ rank,name,linked_name,team,DPR,pressure_balls,impact_pct,scorecard_pct,turning_b
 21,Pankaj Jaswal,,Himachal,60.3,141,80,59,13,2015/16,2022/23,True,uncapped,,,Middle overs,41,7.66,13.6,7.4,8.29
 22,Simarjeet Singh,Simarjeet Singh,Delhi,59.9,73,88,62,9,2019/20,2024/25,False,ipl_unsigned,,,New ball,22,7.32,15.5,7.48,7.51
 23,R Dhawan,Rishi Dhawan,Himachal,59.4,140,63,57,10,2017/18,2022/23,False,retired,,,New ball,34,7.39,16.3,7.5,8.15
-24,JD Unadkat,Jaydev Unadkat,Saurashtra,59.4,294,91,88,26,2015/16,2024/25,True,ipl_released,Sunrisers Hyderabad,,Death overs,65,6.39,14.3,7.22,8.02
+24,JD Unadkat,Jaydev Unadkat,Saurashtra,59.4,294,91,88,26,2015/16,2024/25,True,ipl_released,Sunrisers Hyderabad,"2026/27: 8 wickets, econ 5.56",Death overs,65,6.39,14.3,7.22,8.02
 25,S Kaul,Siddarth Kaul,Punjab,59.0,227,76,44,16,2015/16,2023/24,True,retired,,,Death overs,55,7.69,18.1,7.27,8.18
 26,Kanwar Abhinay,,Himachal,58.9,105,71,34,13,2017/18,2022/23,False,uncapped,,,Middle overs,18,7.3,23.3,6.46,7.89
 27,Akash Madhwal,Akash Madhwal,Uttarakhand,57.0,114,87,39,12,2019/20,2022/23,False,ipl_released,Chennai Super Kings,,Death overs,19,7.45,20.0,8.11,8.45
@@ -30,7 +30,7 @@ rank,name,linked_name,team,DPR,pressure_balls,impact_pct,scorecard_pct,turning_b
 29,Vasuki Koushik,,Karnataka,56.7,167,79,44,20,2018/19,2022/23,False,uncapped,,,Death overs,29,7.73,18.0,7.69,8.2
 30,DS Kulkarni,Dhawal Kulkarni,Mumbai,56.6,252,74,57,18,2015/16,2023/24,True,retired,,,Death overs,46,7.1,18.3,7.26,7.75
 31,K Gowtham,Krishnappa Gowtham,Karnataka,56.6,123,59,44,5,2017/18,2023/24,True,ipl_unsigned,,,Middle overs,26,7.05,21.7,5.8,7.39
-32,C Sakariya,Chetan Sakariya,Saurashtra,56.5,219,74,79,18,2018/19,2022/23,False,ipl_unsigned,,,New ball,40,6.83,13.4,7.97,8.11
+32,C Sakariya,Chetan Sakariya,Saurashtra,56.5,219,74,79,18,2018/19,2022/23,False,ipl_unsigned,,"2026/27: 8 wickets, econ 7.13",New ball,40,6.83,13.4,7.97,8.11
 33,SN Thakur,Shardul Thakur,Mumbai,56.0,180,90,35,14,2015/16,2024/25,True,contracted,Mumbai Indians,,New ball,35,7.82,19.3,7.87,8.03
 34,HP Patel,Harshal Patel,Gujarat,56.0,95,67,75,6,2015/16,2022/23,True,contracted,Gujarat Titans,,Middle overs,30,6.36,18.2,5.75,6.72
 35,S Dube,Shivam Dube,Mumbai,55.7,91,88,27,11,2015/16,2024/25,True,contracted,Chennai Super Kings,,Middle overs,29,8.12,20.6,8.11,8.38
@@ -46,7 +46,7 @@ rank,name,linked_name,team,DPR,pressure_balls,impact_pct,scorecard_pct,turning_b
 45,KK Ahmed,Khaleel Ahmed,Rajasthan,54.0,155,79,62,18,2017/18,2022/23,False,contracted,Sunrisers Hyderabad,,Death overs,33,7.33,15.2,8.01,8.22
 46,I Sharma,Ishant Sharma,Delhi,53.9,95,44,73,5,2018/19,2024/25,False,ipl_released,Gujarat Titans,,New ball,20,6.47,18.4,6.63,7.26
 47,AS Rajpoot,Ankit Rajpoot,Uttar Pradesh,53.7,190,49,78,12,2015/16,2021/22,True,ipl_unsigned,,,Death overs,53,6.82,13.9,7.01,7.58
-48,Avesh Khan,Avesh Khan,Madhya Pradesh,53.7,175,82,53,14,2017/18,2024/25,False,ipl_released,Lucknow Super Giants,,Death overs,38,7.53,16.3,8.3,8.36
+48,Avesh Khan,Avesh Khan,Madhya Pradesh,53.7,175,82,53,14,2017/18,2024/25,False,ipl_released,Lucknow Super Giants,"2026/27: 8 wickets, econ 8.00 (released by LSG on 17 Nov)",Death overs,38,7.53,16.3,8.3,8.36
 49,Harpreet Brar,Harpreet Brar,Punjab,53.3,83,54,68,6,2019/20,2023/24,False,contracted,Punjab Kings,,Middle overs,36,6.74,17.8,6.58,7.54
 50,NA Rathva,,Baroda,53.0,89,39,75,6,2017/18,2023/24,False,uncapped,,,Middle overs,27,6.74,15.6,7.42,7.1
 51,B Aparajith,,Tamil Nadu,52.9,67,52,58,4,2015/16,2023/24,True,uncapped,,,Middle overs,9,5.73,24.7,5.01,6.6
@@ -56,7 +56,7 @@ rank,name,linked_name,team,DPR,pressure_balls,impact_pct,scorecard_pct,turning_b
 55,Suboth Bhati,,Delhi,52.4,178,78,51,21,2015/16,2021/22,True,inactive,,,Death overs,43,7.61,16.5,8.02,8.2
 56,R Parag,Riyan Parag,Assam,52.1,78,43,52,5,2018/19,2023/24,False,rr,Rajasthan Royals,,Middle overs,23,6.56,23.7,6.85,7.64
 57,S Gopal,Shreyas Gopal,Karnataka,52.0,73,37,85,4,2015/16,2023/24,True,contracted,Chennai Super Kings,,Middle overs,38,6.67,13.2,7.56,7.19
-58,Ravi Teja,,Hyderabad (India),51.8,129,67,62,9,2017/18,2023/24,False,uncapped,,,Middle overs,27,7.4,14.6,7.3,7.62
+58,Ravi Teja,,Hyderabad (India),51.8,129,67,62,9,2017/18,2023/24,False,retired,,,Middle overs,27,7.4,14.6,7.3,7.62
 59,Bandaru Ayyappa,,Andhra,51.7,120,78,48,11,2015/16,2022/23,True,uncapped,,,New ball,29,7.49,17.7,9.4,8.3
 60,Akshay Karnewar,,Vidarbha,51.6,120,38,73,5,2015/16,2022/23,True,uncapped,,,Middle overs,42,5.78,19.8,7.35,7.23
 61,M Ashwin,Murugan Ashwin,Tamil Nadu,51.5,100,65,68,7,2015/16,2021/22,True,ipl_unsigned,,,Middle overs,42,6.59,18.6,7.32,7.49
@@ -72,7 +72,7 @@ rank,name,linked_name,team,DPR,pressure_balls,impact_pct,scorecard_pct,turning_b
 71,Baltej Singh,Baltej Singh,Punjab,49.2,120,39,51,8,2015/16,2023/24,True,ipl_unsigned,,,Middle overs,36,7.64,16.6,8.05,8.11
 72,Harsh Tyagi,,Railways,49.0,115,40,30,5,2018/19,2024/25,False,uncapped,,,Middle overs,18,7.04,31.4,6.68,7.55
 73,Washington Sundar,Washington Sundar,Tamil Nadu,48.9,87,33,52,3,2017/18,2023/24,False,contracted,Gujarat Titans,,Middle overs,21,6.22,27.1,5.86,7.04
-74,Mukesh Kumar,Mukesh Kumar,Bengal,48.9,121,63,42,10,2015/16,2023/24,True,contracted,Delhi Capitals,,New ball,19,7.4,19.9,8.63,7.86
+74,Mukesh Kumar,Mukesh Kumar,Bengal,48.9,121,63,42,10,2015/16,2023/24,True,contracted,Delhi Capitals,"2026/27: 9 wickets, econ 7.79",New ball,19,7.4,19.9,8.63,7.86
 75,DJ Hooda,Deepak Hooda,Baroda,48.8,83,46,30,4,2015/16,2021/22,True,ipl_unsigned,,,Middle overs,8,7.02,33.0,6.51,7.26
 76,Shahbaz Ahmed,Shahbaz Ahmed,Bengal,48.8,82,28,52,4,2018/19,2024/25,False,contracted,Lucknow Super Giants,,Middle overs,27,6.68,22.0,6.8,7.74
 77,J Suchith,Jagadeesha Suchith,Karnataka,48.8,211,57,38,9,2015/16,2022/23,True,ipl_unsigned,,,Middle overs,29,6.94,26.1,6.65,7.14
@@ -116,15 +116,15 @@ rank,name,linked_name,team,DPR,pressure_balls,impact_pct,scorecard_pct,turning_b
 115,KR Sen,Kuldeep Sen,Madhya Pradesh,43.5,138,58,9,11,2018/19,2023/24,False,ipl_released,Rajasthan Royals,,New ball,15,8.3,28.1,8.87,8.59
 116,Writtick Chatterjee,Writtick Chatterjee,Bengal,43.4,68,11,74,2,2017/18,2024/25,False,ipl_unsigned,,,Middle overs,15,6.28,18.4,6.44,7.49
 117,Mehdi Hassan,,Hyderabad (India),43.4,96,26,32,4,2015/16,2021/22,True,inactive,,,Middle overs,18,7.42,22.6,8.62,7.8
-118,CV Milind,Chama Milind,Hyderabad (India),43.3,200,38,47,13,2015/16,2023/24,True,ipl_unsigned,,,Death overs,39,7.78,16.8,9.21,8.64
+118,CV Milind,Chama Milind,Hyderabad (India),43.3,200,38,47,13,2015/16,2023/24,True,ipl_unsigned,,"2025/26: 17 wickets in 8 games, econ 7.50",Death overs,39,7.78,16.8,9.21,8.64
 119,Vidyadhar Patil,,Karnataka,42.3,78,52,14,10,2021/22,2021/22,False,inactive,,,Death overs,5,8.09,26.4,9.54,8.83
 120,SS Mundhe,,Nagaland,42.2,72,37,10,8,2015/16,2022/23,True,uncapped,,,New ball,12,7.96,30.6,8.25,8.04
 121,AN Ahmed,Abrar Ahmed,Assam,42.2,70,9,70,0,2015/16,2021/22,True,inactive,,,New ball,25,6.91,16.1,6.51,7.03
 122,Yash Dayal,Yash Dayal,Uttar Pradesh,42.1,72,22,53,5,2018/19,2023/24,False,contracted,Royal Challengers Bengaluru,,New ball,16,6.79,21.0,7.17,7.06
 123,Harishankar Reddy,,Andhra,42.0,104,26,36,5,2017/18,2023/24,False,uncapped,,,New ball,24,8.75,17.5,8.25,8.38
-124,Rajesh Mohanty,,Odisha,41.4,60,5,33,1,2018/19,2021/22,False,inactive,,2025/26: 5/21 v Chhattisgarh,New ball,8,7.29,24.4,6.2,6.69
+124,Rajesh Mohanty,,Odisha,41.4,60,5,33,1,2018/19,2021/22,False,uncapped,,2025/26: 5/21 v Chhattisgarh,New ball,8,7.29,24.4,6.2,6.69
 125,Satyajeet Bachhav,,Maharashtra,40.9,103,17,65,5,2015/16,2021/22,True,inactive,,,Middle overs,40,6.56,19.6,7.86,7.3
-126,Manisankar Murasingh,,Tripura,40.7,123,51,37,10,2015/16,2023/24,True,uncapped,,2026/27: 8 wickets (in domestic T20 since 2015/16),New ball,26,6.84,27.7,9.56,7.64
+126,Manisankar Murasingh,,Tripura,40.7,123,51,37,10,2015/16,2023/24,True,uncapped,,"2026/27: 9 wickets, econ 6.53 (in the SMAT since 2015/16)",New ball,26,6.84,27.7,9.56,7.64
 127,Swapnil Singh,Swapnil Singh,Baroda,40.5,89,11,48,3,2015/16,2022/23,True,ipl_released,Royal Challengers Bengaluru,,Middle overs,31,6.81,22.4,9.37,7.26
 128,Fabid Ahmed,,Puducherry,40.4,89,18,41,3,2015/16,2021/22,True,inactive,,,Middle overs,20,6.95,24.1,7.69,7.2
 129,Shashank Singh,Shashank Singh,Chhattisgarh,40.4,65,20,26,3,2015/16,2023/24,True,contracted,Punjab Kings,,Middle overs,11,8.26,20.7,9.69,8.93
@@ -147,4 +147,4 @@ rank,name,linked_name,team,DPR,pressure_balls,impact_pct,scorecard_pct,turning_b
 146,PN Mankad,Prerak Mankad,Saurashtra,34.0,96,32,28,6,2015/16,2024/25,True,ipl_unsigned,,,Middle overs,19,8.5,19.7,9.19,7.65
 147,Mukhtar Hussain,,Assam,27.8,100,6,45,3,2018/19,2023/24,False,uncapped,,2025/26: 6/20 v Chhattisgarh,New ball,22,7.78,17.5,9.72,7.33
 148,Lalhruai Ralte,,Mizoram,24.3,67,3,4,1,2018/19,2023/24,False,uncapped,,,New ball,13,9.47,29.5,9.58,6.58
-149,K V Sasikanth,,Andhra,23.5,122,3,19,3,2015/16,2023/24,True,uncapped,,,Middle overs,25,8.01,23.6,10.03,7.54
+149,K V Sasikanth,,Andhra,23.5,122,3,19,3,2015/16,2023/24,True,uncapped,,"2026/27: 8 wickets, econ 12.11",Middle overs,25,8.01,23.6,10.03,7.54

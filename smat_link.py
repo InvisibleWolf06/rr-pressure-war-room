@@ -5,86 +5,26 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ipl2027_lists import RET, REL
 from recent_form import ROWS as RECENT, SRC as RECENT_SRC
 DATA, OUT = sys.argv[1], sys.argv[2]
-mp = pd.read_csv(f'{DATA}/competition_team_player_mapping.csv')
-ipl = mp[mp.comp_name.str.startswith('IPL')]
-sq26 = ipl[ipl.comp_name == 'IPL 2026'].drop_duplicates('player_id')
-names = mp.drop_duplicates('player_id')[['player_id', 'player_name']]
-ipl_seasons = ipl.groupby('player_id').comp_name.nunique()
-team26 = sq26.set_index('player_id').team_name
-RETIRED = {'Vijay Shankar', 'Karn Sharma', 'Mohit Sharma', 'Ravichandran Ashwin', 'Piyush Chawla', 'Rishi Dhawan', 'Siddarth Kaul', 'Dhawal Kulkarni', 'Ajinkya Rahane'}  # Rahane retired from the IPL (KKR list, 17 Nov 2026)
-# retired players matched on the Cricsheet name (domestic players are often not in the data pack)
-CS_RETIRED = {'KM Jadhav': 'Kedar Jadhav (all cricket, Jun 2024)', 'SS Tiwary': 'Saurabh Tiwary (Feb 2024)', 'A Mishra': 'Amit Mishra (Sep 2025)',
-              'Parvez Rasool': 'Parvez Rasool (Oct 2025)'}
-def toks(n): return re.sub(r'[^A-Za-z ]', ' ', n).split()
-def is_init(t): return t.isupper() and len(t) <= 3
-idx = {}
-for pid, nm in names.values:
-    t = toks(nm)
-    if t: idx.setdefault(t[-1].lower(), []).append((pid, nm, t))
-OVERRIDE = {'SA Yadav': 'Suryakumar Yadav', 'RK Singh': 'Rinku Singh', 'Atharva Taide': 'Atharwa Taide', 'KV Sharma': 'Karn Sharma', 'DS Kulkarni': 'Dhawal Kulkarni',
-            'Abdul Samad': 'Abdul Samad'}
-by_name = {}
-for pid, nm in names.values: by_name.setdefault(nm, []).append(pid)
-def link(cs):
-    if cs in OVERRIDE:
-        nm = OVERRIDE[cs]; ids = by_name.get(nm, [])
-        ids = sorted(ids, key=lambda p: -ipl_seasons.get(p, 0))
-        return (ids[0], nm, toks(nm)) if ids else (None, nm, toks(nm))
-    t = toks(cs)
-    if not t: return None
-    cand = idx.get(t[-1].lower(), [])
-    full = [c for c in cand if ' '.join(c[2]).lower() == ' '.join(t).lower()]
-    if len(full) >= 1: return sorted(full, key=lambda c: -ipl_seasons.get(c[0], 0))[0]
-    words = [w.lower() for w in t if not is_init(w)]
-    sub = [c for c in cand if words and all(w in [x.lower() for x in c[2]] for w in words) and len(words) >= 2]
-    if len(sub) == 1: return sub[0]
-    inits = ''.join(w for w in t if is_init(w))
-    if inits:
-        ini = [c for c in cand if c[2][0][0].upper() == inits[0] and not is_init(c[2][0])]
-        # prefer players with IPL history when ambiguous
-        if len(ini) > 1: ini = [c for c in ini if c[0] in ipl_seasons.index] or ini
-        if len(ini) == 1: return ini[0]
-    return None
-RET_TOK = [(n, t, toks(n)) for n, t in RET.items()]
-def ret_team(cs, full):
-    """IPL 2027 team if this player is on a 17 Nov 2026 retained list (full name first, then Cricsheet initials + surname)."""
-    if full and full in RET: return RET[full]
-    t = toks(cs)
-    if not t: return None
-    if ' '.join(t) in RET: return RET[' '.join(t)]
-    sur, first = t[-1].lower(), t[0]
-    c = {tm for n, tm, tt in RET_TOK if tt[-1].lower() == sur and (tt[0].lower() == first.lower() or (is_init(first) and tt[0][0].upper() == first[0]))}
-    return c.pop() if len(c) == 1 else None
+from smat_common import Linker, POOL, EXCL_CS
+L = Linker(DATA)
+ipl_seasons = L.ipl_seasons
 # first SMAT season per player (career-length proxy; the data has no birth dates)
 _b0 = pd.read_parquet(f'{OUT}/smat_balls_scored.parquet', columns=['season', 'batter_id', 'bowler_id'])
 FIRST = pd.concat([_b0[['season', 'batter_id']].set_axis(['season', 'p'], axis=1), _b0[['season', 'bowler_id']].set_axis(['season', 'p'], axis=1)]).groupby('p').season.min()
 RECENT_CS = {r[6]: r for r in RECENT if r[6]}
-POOL = ('uncapped', 'ipl_unsigned', 'ipl_released')
-# experienced domestic players aged 33+ by Nov 2026 who are not caught by the 2015/16 rule (birth years from public profiles)
-BORN = {'Krishnappa Gowtham': 1988, 'K Gowtham': 1988, 'JD Unadkat': 1991, 'LI Meriwala': 1991, 'Vishnu Solanki': 1992, 'Sayan Ghosh': 1992, 'KM Asif': 1993}
 out = {}
 for kind in ('bat', 'bowl'):
     R = pd.read_csv(f'{OUT}/smat_{kind}.csv', index_col=0)
     rows = []
     for sid, r in R.iterrows():
-        m = link(r['name'])
-        pid, full = (m[0], m[1]) if m else (None, None)
-        t26 = team26.get(pid) if pid else None
-        ns = int(ipl_seasons.get(pid, 0)) if pid else 0
-        t27 = ret_team(r['name'], full)
-        if full in RETIRED or r['name'] in CS_RETIRED: status = 'retired'
-        elif t27 == 'Rajasthan Royals': status = 'rr'
-        elif t27: status = 'contracted'
-        elif (full in REL) or (t26 and t26 != 'Rajasthan Royals') or (t26 == 'Rajasthan Royals'): status = 'ipl_released'
-        elif ns: status = 'ipl_unsigned'
-        else: status = 'uncapped'
-        if status in ('uncapped', 'ipl_unsigned') and r['last'] < '2022/23' and ns == 0: status = 'inactive'
         first = FIRST.get(sid, r['last'])
-        veteran = bool(first <= '2015/16' or BORN.get(r['name'], 2100) <= 1993 or BORN.get(full or '', 2100) <= 1993)
+        st_ = L.status(r['name'], r['last'], first, in_form=r['name'] in RECENT_CS)
+        full, status, ns, veteran = st_['full'], st_['status'], st_['ipl_seasons'], st_['veteran']
+        t27 = st_['ipl_team']; t26 = None
         recent = RECENT_CS.get(r['name'])
         d = {'id': sid, 'name': r['name'], 'full': full, 'team': r.team, 'rank': int(r['rank']), 'dpr': round(float(r.DPR), 1), 'np': int(r.np),
              'n': int(r.n), 'matches': int(r.matches), 'last': r['last'], 'impact': round(float(r.impact), 2), 'turn': round(float(r.turn), 1), 'big': int(r.big),
-             'conv_p': int(r.conv_p), 'imp_p': int(r.imp_p), 'gem': bool(r.gem), 'ipl_team': t27 or t26, 'ipl_seasons': ns, 'status': status,
+             'conv_p': int(r.conv_p), 'imp_p': int(r.imp_p), 'gem': bool(r.gem), 'ipl_team': t27, 'ipl_seasons': ns, 'status': status,
              'first': first, 'veteran': veteran, 'recent': (recent[3] + ': ' + recent[4]) if recent and recent[2] == kind else None}
         if kind == 'bat':
             d.update(runs=int(r.runs), balls=int(r.balls), sr=round(float(r.sr), 1), avg=round(float(r.avg), 1), hp_sr=round(float(r.hp_sr)), hp_xsr=round(float(r.hp_xsr)),
@@ -190,8 +130,10 @@ byname = {k: {x['name']: x for x in out[k]} for k in out}
 recent = []
 for nm, st, kind, season, line, src, cs, vet in RECENT:
     x = byname[kind].get(cs) if cs else None
-    t27 = RET.get(nm) or ret_team(cs or nm, nm)
-    status = 'retired' if nm in RETIRED else 'rr' if t27 == 'Rajasthan Royals' else 'contracted' if t27 else 'ipl_released' if nm in REL else 'pool'
+    st_ = L.status(cs, '2024/25', '2024/25', True) if cs else None
+    t27 = (st_ or {}).get('ipl_team') if st_ and st_['status'] in ('rr', 'contracted') else L.ret_team(nm, nm)
+    from ipl2027_lists import REL as _REL
+    status = 'retired' if (st_ and st_['status'] == 'retired') else 'rr' if t27 == 'Rajasthan Royals' else 'contracted' if t27 else 'ipl_released' if (nm in _REL or (st_ and st_['status'] == 'ipl_released')) else 'pool'
     recent.append({'name': nm, 'state': st, 'kind': kind, 'season': season, 'line': line, 'src': src, 'veteran': bool(vet or (x and x['veteran'])),
                    'status': status, 'ipl_team': t27, 'dpr': x['dpr'] if x else None, 'rank': x['rank'] if x else None, 'n_rated': len(out[kind]),
                    'pressure': ((f"pressure SR {x['hp_sr']} v {x['hp_xsr']} expected" if kind == 'bat' else f"pressure econ {x['hp_econ']:.2f} v {x['hp_xecon']:.2f} expected") if x else None),

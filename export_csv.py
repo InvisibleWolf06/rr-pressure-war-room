@@ -10,9 +10,20 @@ for k in ('bat', 'bowl'):
            (['runs', 'balls', 'sr', 'avg', 'hp_sr', 'hp_xsr'] if k == 'bat' else ['wk', 'econ', 'bpw', 'hp_econ', 'hp_xecon'])
     pd.DataFrame(S[k])[cols].rename(columns={'dpr': 'DPR', 'np': 'pressure_balls', 'imp_p': 'impact_pct', 'conv_p': 'scorecard_pct', 'big': 'turning_balls',
         'first': 'first_smat_season', 'last': 'last_smat_season', 'full': 'linked_name', 'recent': 'recent_form'}).to_csv(f'{RES}/smat_ratings_{k}.csv', index=False)
-pd.DataFrame([{'kind': k, 'board_pick': v['for'], 'domestic_backup': v['name'], 'state': v['team'], 'role': v['role'], 'DPR': v['dpr'], 'status': v['status'],
-               'smat_seasons': f"{v['first']}-{v['last']}", 'recent_form': v['recent'], 'why': v['why']} for k in ('bat', 'bowl') for v in S['backups'][k].values()]
-             ).to_csv(f'{RES}/domestic_backups.csv', index=False)
+rows = []
+for k in ('bat', 'bowl'):
+    for v in S['backups'][k].values():
+        a = v['alt']
+        rows.append({'kind': k, 'board_pick': v['for'], 'pick_role': v.get('pick_role'), 'backup': v['name'], 'state': v['team'], 'role': v['role'], 'style': v.get('style'),
+                     'scout_score': v['dss'], 'overall_skill': v['S'], 'pressure': v['P'], 'role_fit': v['R'], 'form_2025_27': v['F'], 'plays_regularly': v['D'],
+                     'confidence': v['confidence'], 'ipl_status': v['status'], 'smat_seasons': f"{v['first']}-{v['last']}" if v['first'] else 'not in ball-by-ball data',
+                     'why': v['why'], 'flags': '; '.join(v['notes']), 'alternate': a['name'], 'alternate_state': a['team'], 'alternate_score': a['dss'], 'alternate_confidence': a['confidence']})
+pd.DataFrame(rows).to_csv(f'{RES}/domestic_backups.csv', index=False)
+for k in ('bat', 'bowl'):
+    pd.DataFrame([{'rank': i + 1, 'player': x['name'], 'state': x['team'], 'role': x['role'], 'style': x.get('style'), 'scout_score': x['dss'], 'overall_skill': x['S'],
+                   'pressure': x['P'], 'role_fit': x['R'], 'form_2025_27': x['F'], 'plays_regularly': x['D'], 'confidence': x['confidence'], 'ipl_status': x['status'],
+                   'why': x['why'], 'flags': '; '.join(x['notes'])} for i, x in enumerate(S['scout']['targets'][k])]).to_csv(f'{RES}/domestic_targets_{k}.csv', index=False)
+json.dump(S['scout']['method'], open(f'{RES}/domestic_scout_method.json', 'w'), indent=1)
 pd.DataFrame([{**{x: r[x] for x in ('name', 'state', 'kind', 'season', 'line', 'status', 'ipl_team', 'veteran', 'dpr', 'rank', 'pressure', 'last')},
                'source': S['recent_src'][r['src']][1]} for r in S['recent']]).rename(columns={'line': 'performance', 'dpr': 'DPR', 'rank': 'DPR_rank', 'last': 'last_in_smat_data',
                'status': 'ipl2027_status'}).to_csv(f'{RES}/smat_recent_form_checked.csv', index=False)

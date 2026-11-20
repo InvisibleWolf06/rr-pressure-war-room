@@ -1,0 +1,80 @@
+{
+ "weights": {
+  "S": 0.25,
+  "R": 0.2,
+  "F": 0.3,
+  "P": 0.15,
+  "D": 0.1
+ },
+ "wicket_runs": 10.0,
+ "components": {
+  "S": "Overall skill: run value per ball against expectation (game state, ground, season and the strength of the opposition), SMAT 2015/16-2024/25, shrunk towards average for small samples",
+  "P": "Pressure skill: run value and win probability added on pressure balls (the 20% of balls that can swing a game most)",
+  "R": "Role fit: run value in the phases the board pick is bought for (openers: powerplay; finishers and death bowlers: overs 16-20; spinners: overs 7-15)",
+  "F": "Current form: SMAT 2025/26 and 2026/27 (to 20 Nov 2026), runs per game x strike rate or wickets per game x economy, ranked within each season (55-100; Plate group -20); 35 if not among the leaders",
+  "D": "Dependability: SMAT games since 2021/22 plus 2025-27 games"
+ },
+ "opposition": "Every ball is weighted by the strength of the opposition (a rating of all 38 sides from run-rate margins, opponent-adjusted, 2015/16-2024/25): balls against below-average sides count less, down to 15% against the weakest; expectations also adjust for each opponent team-season",
+ "weak_teams": {
+  "Arunachal Pradesh": 0.15,
+  "Manipur": 0.15,
+  "Mizoram": 0.15,
+  "Sikkim": 0.15,
+  "Nagaland": 0.3,
+  "Bihar": 0.43,
+  "Meghalaya": 0.48
+ },
+ "filters": [
+  "no IPL 2027 contract (all ten retention lists, 17 Nov 2026)",
+  "not retired or excluded (datasets/exclusions.csv)",
+  "not a veteran: not playing the SMAT in 2015/16 and not aged 33+",
+  "active since 2022/23 or in the 2025-27 form lists",
+  "same role (batting slot) or same bowling type (pace/spin) as the board pick"
+ ],
+ "backtest": {
+  "bat": {
+   "windows": [
+    "data to 2018/19, form 2019/20, judged on pressure balls 2020/21 onwards",
+    "data to 2019/20, form 2020/21, judged on pressure balls 2021/22 onwards"
+   ],
+   "n": [
+    108,
+    75
+   ],
+   "dss": 0.099,
+   "scorecard": 0.037,
+   "top20_hit": 0.392,
+   "top20_hit_scorecard": 0.371,
+   "components": {
+    "S": 0.064,
+    "P": 0.021,
+    "R": -0.005,
+    "T": -0.12,
+    "D": -0.146,
+    "F": 0.178
+   }
+  },
+  "bowl": {
+   "windows": [
+    "data to 2018/19, form 2019/20, judged on pressure balls 2020/21 onwards",
+    "data to 2019/20, form 2020/21, judged on pressure balls 2021/22 onwards"
+   ],
+   "n": [
+    104,
+    78
+   ],
+   "dss": 0.126,
+   "scorecard": 0.061,
+   "top20_hit": 0.402,
+   "top20_hit_scorecard": 0.409,
+   "components": {
+    "S": 0.089,
+    "P": -0.044,
+    "R": 0.103,
+    "T": -0.032,
+    "D": 0.204,
+    "F": 0.118
+   }
+  }
+ }
+}

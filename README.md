@@ -63,6 +63,7 @@ python -I pipeline/availability.py "<data_dir>" out
 python -I pipeline/select.py out
 python -I pipeline/lab_export.py "<data_dir>" out
 python -I pipeline/smat_link.py "<data_dir>" out
+python -I pipeline/scout_domestic.py "<data_dir>" out
 python -I pipeline/export_csv.py out results
 python pipeline/web/build_dash.py
 ```
@@ -74,3 +75,12 @@ Result tables in `results/` (computed by the model, regenerate with export_csv.p
 - `smat_ratings_bat.csv`, `smat_ratings_bowl.csv`: domestic pressure rating (DPR), status, veteran flag, recent form
 - `domestic_backups.csv`: one next-generation domestic backup per board pick
 - `smat_recent_form_checked.csv`: recent-form list with IPL 2027 status and DPR
+
+## RR Domestic Scout Score (added 20 Nov 2026, `pipeline/scout_domestic.py`)
+Picks a primary domestic backup and an alternate for every player on RR's auction board, plus a top-25 list of domestic targets.
+- Score = overall skill 25% + role fit 20% + form 2025-27 30% + pressure 15% + plays regularly 10% (all percentiles vs active SMAT players).
+- Skill is run value per ball against expectation (game state, ground, season, opposition team-season), wickets worth 10 runs, small samples shrunk; every ball is weighted by opposition strength (a rating of all 38 sides), so runs against the weakest sides count as little as 15%.
+- Weights were chosen from a back-test (data to 2018/19 or 2019/20, judged on pressure balls afterwards): the score beats scorecard numbers (rank correlation bat 0.10 v 0.04, bowl 0.13 v 0.06). Pressure numbers alone barely predict later pressure performance, so they carry 15%.
+- Filters: no IPL 2027 contract, not retired or excluded, not a veteran (in the SMAT in 2015/16 or aged 33+), active since 2022/23 or in the 2025-27 form lists, same batting slot or bowling type as the board pick. Primaries need medium or high confidence.
+- Editable inputs: `datasets/exclusions.csv` (retired/excluded players, e.g. Ravi Teja), `datasets/birth_years.csv` (veteran check), `datasets/bowling_styles.csv` (pace/spin for players outside the IPL data), `datasets/smat_recent_form.csv` (2025/26 and 2026/27 numbers, with a `level` column for Plate-group games).
+- Outputs: `results/domestic_backups.csv`, `results/domestic_targets_bat.csv`, `results/domestic_targets_bowl.csv`, `results/domestic_scout_method.json`.

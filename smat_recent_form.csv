@@ -1,36 +1,73 @@
-player,state,kind,season,performance,source_id,cricsheet_name,veteran
-Ishan Kishan,Jharkhand,bat,2025/26,"517 runs, SR 197, two hundreds; top scorer, won the title",wiki25,Ishan Kishan,0
-Ankit Kumar,Haryana,bat,2025/26,"448 runs, SR 172, five fifties as captain-opener",wiki25,Ankit Kumar,0
-Kumar Kushagra,Jharkhand,bat,2025/26,"422 runs, avg 60, SR 162",wiki25,Kumar Kushagra,0
-Yashvardhan Dalal,Haryana,bat,2025/26,"398 runs, SR 148.5, five fifties",wiki25,,0
-Virat Singh,Jharkhand,bat,2025/26,"382 runs, SR 170",mykhel25,Virat Singh,0
-Salil Arora,Punjab,bat,2025/26,"358 runs, SR 199; 125* off 45 balls v Jharkhand",mykhel25,,0
-Kunal Chandela,Uttarakhand,bat,2025/26,"350 runs in 7 games, SR 151",mykhel25,Kunal Chandela,0
-Anmolpreet Singh,Punjab,bat,2025/26,"349 runs, SR 175",mykhel25,Anmolpreet Singh,0
-Abhishek Sharma,Punjab,bat,2025/26,304 runs at SR 249; 148 off 52 v Bengal,wiki25,Abhishek Sharma,0
-Nishant Sindhu,Haryana,bat,2025/26,"303 runs, SR 166",mykhel25,N Sindhu,0
-Arsh Ranga,Haryana,bat,2025/26,"284 runs, SR 153",mykhel25,,0
-Ekant Sen,Himachal Pradesh,bat,2025/26,"283 runs in 7 games, SR 151",mykhel25,EC Sen,0
-Rohan Kunnummal,Kerala,bat,2025/26,121* off 60 v Odisha,wiki25,Rohan Kunnummal,0
-Urvil Patel,Gujarat,bat,2025/26,119* off 37 v Services,wiki25,Urvil Patel,0
-Yash Dhull,Delhi,bat,2026/27,leads the run chart: 224 runs incl. 125 off 59 v Bihar,sd26,YV Dhull,0
-Atharva Taide,Vidarbha,bat,2026/27,"208 runs, three fifties in three innings",sd26,Atharva Taide,0
-Suraj Vashisht,Services,bat,2026/27,203 runs,sd26,,0
-Sameer Rizvi,Uttar Pradesh,bat,2026/27,177 runs,smat26,Sameer Rizvi,0
-Vikalp Tiwari,Chhattisgarh,bat,2026/27,169 runs,smat26,,0
-Rajat Patidar,Madhya Pradesh,bat,2026/27,"186 runs in three innings, avg 186",sd26,RM Patidar,0
-Rongsen Jonathan,Nagaland,bat,2026/27,"180 runs, three fifties (age 40)",sd26,,1
-Ashok Sharma,Rajasthan,bowl,2025/26,"22 wickets (joint-most), econ 9.25",wiki25,Ashok Sharma,0
-Sushant Mishra,Jharkhand,bowl,2025/26,"22 wickets, econ 8.92",wiki25,,0
-Anshul Kamboj,Haryana,bowl,2025/26,"21 wickets, econ 8.59",wiki25,A Kamboj,0
-Yash Thakur,Vidarbha,bowl,2025/26,"18 wickets in 7 games, econ 6.80, best 5/16",wiki25,YS Thakur,0
-Anukul Roy,Jharkhand,bowl,2025/26,"18 wickets, econ 7.41; Player of the Series",wiki25,AS Roy,0
-Arshad Khan,Madhya Pradesh,bowl,2025/26,6/9 v Chandigarh,wiki25,,0
-Mukhtar Hussain,Assam,bowl,2025/26,6/20 v Chhattisgarh,wiki25,Mukhtar Hussain,0
-Rajesh Mohanty,Odisha,bowl,2025/26,5/21 v Chhattisgarh,wiki25,Rajesh Mohanty,0
-Raj Limbani,Baroda,bowl,2025/26,15 wickets in 7 games,sdun,,0
-Mayank Yadav,Delhi,bowl,2026/27,9 wickets at econ 4.33; 4/12 v Punjab,sk26,MP Yadav,0
-MD Nidheesh,Kerala,bowl,2026/27,"9-10 wickets, joint top of the chart",smat26,MD Nidheesh,0
-Manvanth Kumar,Karnataka,bowl,2026/27,9 wickets,smat26,,0
-Suraj Kashyap,Bihar,bowl,2026/27,9 wickets,smat26,Suraj Kashyap,0
-Manisankar Murasingh,Tripura,bowl,2026/27,8 wickets (in domestic T20 since 2015/16),smat26,Manisankar Murasingh,1
+player,state,kind,season,matches,runs,balls,sr,wkts,overs,econ,level,role,style,performance,source_id,cricsheet_name,veteran
+Ishan Kishan,Jharkhand,bat,2025/26,10,517,262,197.3,,,,Elite,Opener,,"517 runs, SR 197, two hundreds; top scorer, won the title",wiki25,Ishan Kishan,0
+Ankit Kumar,Haryana,bat,2025/26,11,448,260,172.3,,,,Elite,Opener,,"448 runs, SR 172, five fifties as captain-opener",ct25b,Ankit Kumar,0
+Kumar Kushagra,Jharkhand,bat,2025/26,10,422,261,161.7,,,,Elite,Top order,,"422 runs, avg 60, SR 162",ct25b,Kumar Kushagra,0
+Ajinkya Rahane,Mumbai,bat,2025/26,10,399,244,163.5,,,,Elite,Opener,,"399 runs, SR 164 (retired from the IPL)",ct25b,AM Rahane,1
+Yashvardhan Dalal,Haryana,bat,2025/26,11,398,267,149.1,,,,Elite,Opener,,"398 runs, SR 149, five fifties",ct25b,,0
+Virat Singh,Jharkhand,bat,2025/26,11,382,225,169.8,,,,Elite,Middle order,,"382 runs, SR 170",ct25b,Virat Singh,0
+Salil Arora,Punjab,bat,2025/26,7,358,180,198.9,,,,Elite,Middle order,,"358 runs, SR 199; 125* off 45 v Jharkhand",ct25b,,0
+Anmolpreet Singh,Punjab,bat,2025/26,9,349,199,175.4,,,,Elite,Top order,,"349 runs, SR 175",ct25b,Anmolpreet Singh,0
+Kunal Chandela,Uttarakhand,bat,2025/26,7,350,232,150.9,,,,Elite,Opener,,"350 runs in 7 games, SR 151",ins25,Kunal Chandela,0
+Harpreet Singh,Madhya Pradesh,bat,2025/26,10,334,240,139.2,,,,Elite,Middle order,,"334 runs, SR 139",ct25b,Harpreet Singh,1
+Ayush Mhatre,Mumbai,bat,2025/26,6,325,195,166.7,,,,Elite,Opener,,"325 runs in 6 games, SR 167",ins25,,0
+Smaran Ravichandran,Karnataka,bat,2025/26,7,319,201,158.7,,,,Elite,Middle order,,"319 runs, avg 64, SR 159",ins25,,0
+Devdutt Padikkal,Karnataka,bat,2025/26,6,309,185,167.0,,,,Elite,Top order,,"309 runs, SR 167",ins25,D Padikkal,0
+Abhishek Sharma,Punjab,bat,2025/26,6,304,122,249.2,,,,Elite,Opener,,304 runs at SR 249; 148 off 52 v Bengal,mykhel25,Abhishek Sharma,0
+Nishant Sindhu,Haryana,bat,2025/26,,303,183,166.0,,,,Elite,Middle order,,"303 runs, SR 166",mykhel25,N Sindhu,0
+Harsh Gawli,Madhya Pradesh,bat,2025/26,10,302,253,119.4,,,,Elite,Top order,,"302 runs, SR 119",mykhel25,HP Gawli,0
+Arsh Ranga,Haryana,bat,2025/26,,284,186,153.0,,,,Elite,Middle order,,"284 runs, SR 153",mykhel25,,0
+Ekant Sen,Himachal Pradesh,bat,2025/26,7,283,187,151.0,,,,Elite,Opener,,"283 runs in 7 games, SR 151",mykhel25,EC Sen,0
+Rohan Kunnummal,Kerala,bat,2025/26,,,,,,,,Elite,Opener,,121* off 60 v Odisha,wiki25,Rohan Kunnummal,0
+Urvil Patel,Gujarat,bat,2025/26,,,,,,,,Elite,Opener,,119* off 37 v Services,wiki25,Urvil Patel,0
+Kishan Lyngdoh,Meghalaya,bat,2025/26,5,200,137,146.0,,,,Plate,Top order,,"200 runs in the Plate group, incl. 115",cw25,,0
+Yash Dhull,Delhi,bat,2026/27,4,267,141,189.4,,,,Elite,Top order,,"267 runs in 4 games, SR 189; 125 off 59 v Bihar",ct26b,YV Dhull,0
+Atharva Taide,Vidarbha,bat,2026/27,3,208,135,154.1,,,,Elite,Opener,,"208 runs, three fifties in three innings",ct26b,Atharva Taide,0
+Rajat Patidar,Madhya Pradesh,bat,2026/27,4,207,108,191.7,,,,Elite,Top order,,"207 runs, SR 192",ct26b,RM Patidar,0
+Yashvardhan Dalal,Haryana,bat,2026/27,4,186,141,131.9,,,,Elite,Opener,,"186 runs, SR 132",ct26b,,0
+Shivalik Sharma,Baroda,bat,2026/27,4,177,101,175.2,,,,Elite,Middle order,,"177 runs, SR 175",ct26b,SS Sharma,0
+Sameer Rizvi,Uttar Pradesh,bat,2026/27,4,177,103,171.8,,,,Elite,Middle order,,"177 runs, SR 172",ct26b,Sameer Rizvi,0
+Vikalp Tiwari,Chhattisgarh,bat,2026/27,3,169,74,228.4,,,,Elite,,,"169 runs in 3 games, SR 228",ct26b,,0
+Chinmay Sutar,Mizoram,bat,2026/27,4,169,123,137.4,,,,Elite,,,"169 runs, SR 137",ct26b,,0
+Suryakumar Yadav,Mumbai,bat,2026/27,3,167,62,269.4,,,,Elite,Middle order,,"167 runs, SR 269",ct26b,SA Yadav,0
+Ravi Singh,Railways,bat,2026/27,4,164,78,210.3,,,,Elite,Finisher,,"164 runs, SR 210 (released by RR on 17 Nov)",ct26b,,0
+Salman Nizar,Kerala,bat,2026/27,4,162,105,154.3,,,,Elite,Middle order,,"162 runs, avg 81, SR 154",ct26b,Salman Nizar,0
+Balasubramaniam Sachin,Tamil Nadu,bat,2026/27,4,159,127,125.2,,,,Elite,,,"159 runs, SR 125",ct26b,,0
+Parameeswaran Sivaraman,Puducherry,bat,2026/27,4,156,91,171.4,,,,Elite,,,"156 runs, SR 171",ct26b,Parameeswaran Sivaraman,0
+Abdul Samad,Jammu and Kashmir,bat,2026/27,4,154,88,175.0,,,,Elite,Finisher,,"154 runs, SR 175",ct26b,Abdul Samad,0
+Abishek Porel,Bengal,bat,2026/27,4,154,92,167.4,,,,Elite,Opener,,"154 runs, SR 167 (released by DC on 17 Nov)",ct26b,Abishek Porel,0
+Abhijeet Tomar,Rajasthan,bat,2026/27,4,152,90,168.9,,,,Elite,Opener,,"152 runs, SR 169",ct26b,A Tomar,0
+Shivang Kumar,Madhya Pradesh,bat,2026/27,4,152,90,168.9,,,,Elite,Middle order,,"152 runs, avg 51, SR 169",ct26b,,0
+Amith Sathvik,Tamil Nadu,bat,2026/27,4,151,81,186.4,,,,Elite,Opener,,"151 runs, SR 186",ct26b,,0
+Arjun Azad,Chandigarh,bat,2026/27,4,150,89,168.5,,,,Elite,Top order,,"150 runs, SR 169",ct26b,,0
+Suraj Vashisht,Services,bat,2026/27,,203,,,,,,Elite,,,203 runs,sd26,,0
+Rongsen Jonathan,Nagaland,bat,2026/27,,180,,,,,,Elite,,,"180 runs, three fifties (age 40)",sd26,,1
+Sushant Mishra,Jharkhand,bowl,2025/26,11,,,,22,42.2,8.93,Elite,Death overs,pace,"22 wickets (joint-most), econ 8.93",sk25w,,0
+Ashok Sharma,Rajasthan,bowl,2025/26,9,,,,22,37.1,9.26,Elite,Death overs,pace,"22 wickets (joint-most), econ 9.26",sk25w,Ashok Sharma,0
+Anshul Kamboj,Haryana,bowl,2025/26,11,,,,21,43.1,8.59,Elite,New ball,pace,"21 wickets, econ 8.59",sk25w,A Kamboj,0
+Anukul Roy,Jharkhand,bowl,2025/26,11,,,,18,37.2,7.42,Elite,Middle overs,spin,"18 wickets, econ 7.42; Player of the Series",sk25w,AS Roy,0
+Yash Thakur,Vidarbha,bowl,2025/26,7,,,,18,18.5,8.18,Elite,Death overs,pace,"18 wickets in 7 games, best 5/16",sk25w,YS Thakur,0
+Shivam Shukla,Madhya Pradesh,bowl,2025/26,10,,,,17,34.1,7.26,Elite,Middle overs,spin,"17 wickets, econ 7.26",sk25w,Shivam Shukla,0
+Chama Milind,Hyderabad,bowl,2025/26,8,,,,17,34.4,7.50,Elite,New ball,pace,"17 wickets in 8 games, econ 7.50",sk25w,CV Milind,0
+Tanay Thyagarajan,Hyderabad,bowl,2025/26,9,,,,16,,,Elite,Middle overs,spin,16 wickets in 9 games,ct25w,Tanay Thyagarajan,0
+Arshad Khan,Madhya Pradesh,bowl,2025/26,,,,,,,,Elite,New ball,pace,6/9 v Chandigarh,wiki25,,0
+Mukhtar Hussain,Assam,bowl,2025/26,,,,,,,,Elite,New ball,pace,6/20 v Chhattisgarh,wiki25,Mukhtar Hussain,0
+Rajesh Mohanty,Odisha,bowl,2025/26,,,,,,,,Elite,New ball,pace,5/21 v Chhattisgarh,wiki25,Rajesh Mohanty,0
+Raj Limbani,Baroda,bowl,2025/26,7,,,,15,,,Elite,New ball,pace,15 wickets in 7 games,sdun,,0
+Manvanth Kumar,Karnataka,bowl,2026/27,4,,,,10,16,7.00,Elite,Middle overs,pace,"10 wickets in 4 games, econ 7.00 (joint-most)",ct26w,,0
+MD Nidheesh,Kerala,bowl,2026/27,4,,,,10,14,8.14,Elite,New ball,pace,"10 wickets in 4 games, econ 8.14 (joint-most)",ct26w,MD Nidheesh,0
+Mayank Yadav,Delhi,bowl,2026/27,3,,,,9,9,6.22,Elite,Death overs,pace,"9 wickets in 3 games, econ 6.22",ct26w,MP Yadav,0
+Manisankar Murasingh,Tripura,bowl,2026/27,4,,,,9,15,6.53,Elite,New ball,pace,"9 wickets, econ 6.53 (in the SMAT since 2015/16)",ct26w,Manisankar Murasingh,1
+Mukesh Kumar,Bengal,bowl,2026/27,4,,,,9,12.5,7.79,Elite,Death overs,pace,"9 wickets, econ 7.79",ct26w,Mukesh Kumar,0
+Pratyush Kumar,Jharkhand,bowl,2026/27,4,,,,9,10,7.80,Elite,,pace,"9 wickets in 10 overs, econ 7.80",ct26w,,0
+Suraj Kashyap,Bihar,bowl,2026/27,4,,,,9,16,9.13,Elite,,pace,"9 wickets, econ 9.13",ct26w,Suraj Kashyap,0
+Jaydev Unadkat,Saurashtra,bowl,2026/27,4,,,,8,16,5.56,Elite,Death overs,pace,"8 wickets, econ 5.56",ct26w,JD Unadkat,1
+Chetan Sakariya,Saurashtra,bowl,2026/27,4,,,,8,16,7.13,Elite,New ball,pace,"8 wickets, econ 7.13",ct26w,C Sakariya,0
+Satyanarayana Raju,Andhra,bowl,2026/27,4,,,,8,10.1,7.87,Elite,Death overs,pace,"8 wickets in 10 overs, econ 7.87",ct26w,,0
+Avesh Khan,Madhya Pradesh,bowl,2026/27,4,,,,8,15,8.00,Elite,Death overs,pace,"8 wickets, econ 8.00 (released by LSG on 17 Nov)",ct26w,Avesh Khan,0
+Rohit Kumar,Himachal Pradesh,bowl,2026/27,4,,,,8,14,8.86,Elite,,pace,"8 wickets, econ 8.86",ct26w,,0
+Tripuresh Singh,Madhya Pradesh,bowl,2026/27,4,,,,8,11,10.00,Elite,Death overs,pace,"8 wickets, econ 10.00",ct26w,Tripuresh Singh,0
+Ajay Dev Goud,Hyderabad,bowl,2026/27,3,,,,8,10.2,10.55,Elite,,,"8 wickets in 3 games, econ 10.55",ct26w,Ajay Dev Goud,0
+KV Sasikanth,Andhra,bowl,2026/27,4,,,,8,9.2,12.11,Elite,,pace,"8 wickets, econ 12.11",ct26w,K V Sasikanth,0
+Brijesh Sharma,Jammu and Kashmir,bowl,2026/27,4,,,,8,12,14.50,Elite,,pace,"8 wickets, econ 14.50",ct26w,,0
+Krains Fuletra,Saurashtra,bowl,2026/27,4,,,,7,16,5.44,Elite,Middle overs,spin,"7 wickets, econ 5.44",ct26w,,0
+Sayan Ghosh,Bengal,bowl,2026/27,4,,,,7,15,5.87,Elite,New ball,pace,"7 wickets, econ 5.87",ct26w,Sayan Ghosh,1

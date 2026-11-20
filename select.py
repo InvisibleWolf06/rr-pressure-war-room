@@ -13,9 +13,11 @@ bowl_ep = pd.read_csv(f'{OUT}/bowl_episodes.csv')
 ext = json.load(open(f'{OUT}/extras.json'))
 val = json.load(open(f'{OUT}/validation.json'))
 rr = json.load(open(f'{OUT}/rr.json'))
-RR_SQUAD = set(rr['squad'])
+# RR squad for 2027 after the 17 Nov 2026 retention lists (releases, Curran to LSG, Shami and Siddharth in)
+RR_OUT = {'Shimron Hetmyer', 'Tushar Deshpande', 'Adam Milne', 'Kwena Maphaka', 'Ravi Singh', 'Kuldeep Sen', 'Yudhvir Singh', 'Vignesh Puthur', 'Emanjot Singh Chahal', 'Sam Curran'}
+RR_SQUAD = (set(rr['squad']) - RR_OUT) | {'Mohammed Shami', 'Manimaran Siddharth'}
 AV = pd.read_csv(f'{OUT}/availability.csv').drop_duplicates('player_id').set_index('player_id')
-BUYABLE = ('available', 'rumoured')
+BUYABLE = ('available',)
 for _R in (bat, bowl):
     _R['avail'] = AV.status.reindex(_R.index).fillna('available')
     _R['avail_note'] = AV.note.reindex(_R.index).fillna('')
@@ -163,7 +165,7 @@ def why_excluded(R, top, pure, rules, caps):
         above = [q for q in top if R.loc[q].s_prr_raw > r.s_prr_raw]
         reason = []
         if r.avail not in BUYABLE:
-            reason.append({'rr': 'already an RR player', 'contracted': f"under contract with {r.avail_note.split(' squad')[0]} until the 17 Nov lists",
+            reason.append({'rr': 'already an RR player', 'contracted': f"retained by {r.avail_note.split(' squad')[0]} for 2027",
                            'retired': r.avail_note, 'ineligible': r.avail_note}[r.avail])
         for k, (f, cap) in caps.items():
             if f(r) and sum(f(R.loc[q]) for q in above) >= cap:

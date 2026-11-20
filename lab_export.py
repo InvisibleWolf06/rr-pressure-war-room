@@ -157,7 +157,7 @@ GL = {'top': 'top-order batter', 'mid': 'middle-order batter', 'spin': 'spinner'
 def backups(kind):
     R = bat if kind == 'bat' else bowl; t = G[kind]
     board = [c['id'] for c in D[f'{kind}_board']]
-    buy = R[AV.status.reindex(R.index).fillna('available').isin(['available', 'rumoured']) & ~R.index.isin(board)].copy()
+    buy = R[AV.status.reindex(R.index).fillna('available').isin(['available']) & ~R.index.isin(board)].copy()
     buy['g'] = [grp(kind, p) for p in buy.index]
     buy = buy.join(t[['tier', 'demand', 'gem', 'imp_p']], how='left')
     buy['demand'] = buy.demand.fillna(.3); buy['tier'] = buy.tier.fillna('Low'); buy['gem'] = buy.gem.fillna(-1)
@@ -227,7 +227,21 @@ def rr_row(n):
     row['rec'], row['why'] = rec, why
     return row
 squad_names = [n for n in SAL] + [n for n in rr['squad'] if n not in SAL]
-retain = [rr_row(n) for n in squad_names]
+# what RR actually did on 17 Nov 2026 (official IPL 2027 retention lists)
+ACT_REL = {'Shimron Hetmyer', 'Tushar Deshpande', 'Adam Milne', 'Kwena Maphaka', 'Ravi Singh', 'Kuldeep Sen', 'Yudhvir Singh', 'Vignesh Puthur', 'Emanjot Singh Chahal'}
+ACT_TRADE = {'Sam Curran': 'Traded to LSG'}
+TRADE_IN = {'Mohammed Shami': 'Traded in from LSG', 'Manimaran Siddharth': 'Traded in from LSG'}
+retain = []
+for n in squad_names:
+    r_ = rr_row(n)
+    r_['actual'] = ACT_TRADE.get(n) or ('Released' if n in ACT_REL else 'Retained')
+    m_ret = r_['rec'].startswith('Retain')
+    r_['agree'] = None if r_['actual'].startswith('Traded') or r_['rec'] == 'Review' else (m_ret == (r_['actual'] == 'Retained'))
+    retain.append(r_)
+for n, a in TRADE_IN.items():
+    if (bat.name == n).any() or (bowl.name == n).any():
+        r_ = rr_row(n); r_['actual'] = a; r_['agree'] = None; r_['salary'] = None; retain.append(r_)
+print('retain vs actual:', [(r_['name'], r_['rec'], r_['actual'], r_['agree']) for r_ in retain])
 
 # ---------------- wider pool: pressure performers from outside the usual IPL pipeline ----------------
 MP = pd.read_csv(f'{DATA}/competition_team_player_mapping.csv')
@@ -269,7 +283,7 @@ def scatter(kind):
     t = G[kind]; R = bat if kind == 'bat' else bowl
     return [[int(p), R.loc[p]['name'], int(r.conv * 100), int(r.imp_p * 100), int(r['rank']), r.avail] for p, r in t.iterrows()]
 scout = {'wider': {'bat': wider('bat'), 'bowl': wider('bowl')}, 'scatter': {'bat': scatter('bat'), 'bowl': scatter('bowl')}, 'gems': {'bat': gem_rows('bat'), 'bowl': gem_rows('bowl')}, 'backups': {'bat': backups('bat'), 'bowl': backups('bowl')}, 'retain': retain,
-         'salary_note': 'RR 2026 salaries from public squad lists (crore INR).'}
+         'salary_note': 'RR 2026 salaries from public squad lists (crore INR).', 'purse_2027': 27.05}
 for w in scout['wider']['bat']:
     p = w['id']
     if str(p) not in lab['bat']:

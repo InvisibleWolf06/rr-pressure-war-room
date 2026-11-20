@@ -1,0 +1,29 @@
+name,role,salary_cr_2026,bat_rank,bowl_rank,wins_added_x100,demand,model_call,what_rr_did,model_agrees,why
+Yashasvi Jaiswal,Opener,18.0,13.0,,14.9,High,Retain: core,Retained,True,model rank 13; one of the most reliable players under pressure in the data
+Riyan Parag,Middle order,14.0,111.0,,-12.5,High,Release,Retained,False,model view: rank 111 and -0.1 win-% per pressure ball for RR; frees 14 cr
+Ravindra Jadeja,Left-arm Finger spin,14.0,59.0,41.0,8.1,High,Retain,Retained,True,rank 41; replacing him at auction would cost as much
+Dhruv Jurel,Middle order,14.0,103.0,,-131.2,High,Release,Retained,False,model view: rank 103 and -0.8 win-% per pressure ball for RR; frees 14 cr
+Shimron Hetmyer,Middle order,11.0,118.0,,-53.7,High,Release,Released,True,model view: rank 118 and -0.9 win-% per pressure ball for RR; frees 11 cr
+Jofra Archer,Pace · New ball + Death,12.5,,27.0,77.5,High,Retain,Retained,True,rank 27; replacing him at auction would cost as much
+Ravi Bishnoi,Wrist spin,7.2,,95.0,34.6,High,Release,Retained,False,model view: rank 95 and +0.6 win-% per pressure ball for RR; frees 7.2 cr
+Tushar Deshpande,Pace · New ball + Death,6.5,,90.0,25.7,Medium,Release and buy back,Released,True,"rank 90: worth having at the right price, but 6.5 cr is a premium price and his expected auction demand is medium: release, then bid lower in the auction (risk: another team bids)"
+Sandeep Sharma,Pace · New ball + Death,4.0,,112.0,-6.5,Medium,Release,Retained,False,model view: rank 112 and -0.1 win-% per pressure ball for RR; frees 4 cr
+Nandre Burger,Left-arm Pace · New ball,3.5,,35.0,21.3,Low,Retain,Retained,True,rank 35; replacing him at auction would cost as much
+Sam Curran,Middle order,2.4,74.0,117.0,0.0,Low,Release,Traded to LSG,,model view: rank 74; frees 2.4 cr
+Adam Milne,Pace · New ball + Death,2.4,,46.0,0.9,Low,Retain: value,Released,False,rank 46 on a 2.4 cr salary
+Kwena Maphaka,Squad player,1.5,,,-12.7,,Review,Released,,too little senior T20 data to rate; salary is high for an unproven record
+Vaibhav Sooryavanshi,Opener,1.1,2.0,,74.8,High,Retain: core,Retained,True,model rank 2; one of the most reliable players under pressure in the data
+Donovan Ferreira,Squad player,1.0,,,-7.5,,Release,Retained,False,not rated and -0.1 win-% per pressure ball for RR; frees 1 cr
+Ravi Singh,Squad player,0.95,,,0.0,,Retain: cheap depth,Released,False,"too little senior T20 data to rate; low salary, little to gain by releasing"
+Shubham Dubey,Squad player,0.8,,,-118.5,,Release,Retained,False,not rated and -2.3 win-% per pressure ball for RR; frees 0.8 cr
+Kuldeep Sen,Squad player,0.75,,,0.0,,Retain: cheap depth,Released,False,"too little senior T20 data to rate; low salary, little to gain by releasing"
+Yudhvir Singh,Squad player,0.35,,,14.6,,Retain: cheap depth,Released,False,"too little senior T20 data to rate; low salary, little to gain by releasing"
+Lhuan Pretorius,Squad player,0.3,,,0.0,,Retain: cheap depth,Retained,True,"too little senior T20 data to rate; low salary, little to gain by releasing"
+Vignesh Puthur,Squad player,0.3,,,0.0,,Retain: cheap depth,Released,False,"too little senior T20 data to rate; low salary, little to gain by releasing"
+Sushant Mishra,Squad player,0.3,,,-1.7,,Retain: cheap depth,Retained,True,"too little senior T20 data to rate; low salary, little to gain by releasing"
+Yash Punja,Squad player,0.3,,,28.0,,Retain: cheap depth,Retained,True,"too little senior T20 data to rate; low salary, little to gain by releasing"
+Brijesh Sharma,Squad player,0.3,,,-7.9,,Release,Retained,False,not rated and -0.1 win-% per pressure ball for RR; frees 0.3 cr
+Aman Rao Perala,Squad player,0.3,,,0.0,,Retain: cheap depth,Retained,True,"too little senior T20 data to rate; low salary, little to gain by releasing"
+Dasun Shanaka,Middle order,,89.0,,-23.4,Medium,Release,Retained,False,model view: rank 89
+Emanjot Singh Chahal,Squad player,,,,0.0,,Retain: cheap depth,Released,False,"too little senior T20 data to rate; low salary, little to gain by releasing"
+Mohammed Shami,Pace · New ball,,,84.0,4.4,High,Release,Traded in from LSG,,model view: rank 84

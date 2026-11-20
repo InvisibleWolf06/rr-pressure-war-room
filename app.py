@@ -93,7 +93,7 @@ with tabs[0]:
     st.markdown("The ranking above is the model's own order. This board answers who RR can actually buy at the IPL 2027 mini-auction (Goa, 16 Dec): RR's own players, "
                 "IPL retirees, players not eligible for the auction and players under contract elsewhere are taken out first. The rest go in rating order, skipping one only "
                 "when he would break a cap or leave too few places for a role the squad needs.")
-    st.warning("Provisional: retention lists are due on 17 November 2026. Until then everyone in another IPL 2026 squad counts as retained, except widely reported release candidates (marked 'Release rumoured').")
+    st.info("Built from the official IPL 2027 retention lists of 17 November 2026 (trades included). Players released that day are back in the auction pool.")
     st.info("The Match Simulator, Player Lab strengths maps, Scouting & Auction plan and Retain & Release tabs live in the stadium version of this dashboard (app_stadium.py).")
     v1, v2 = st.columns(2)
     for col, key, exk, rules in [(v1, "bat_board", "bat_excluded", "buyable only · ≤3 openers · ≥2 No.3–4 · ≥3 middle order or finisher · ≥2 left-handers · ≤4 IPL-untested · model rank ≤80"),
@@ -344,7 +344,7 @@ Then add **moments won** (pressure innings/overs where he gained win probability
 - An earlier version reported odd-even repeatability of 0.35 and 0.26; a bug let the two halves overlap. Rankings were unaffected.
 - First-innings win probability is less certain (AUC 0.70 vs 0.90 for chases) because the target is unknown.
 - No line/length, shot direction or edge data: "decision vs execution" is built from stroke and delivery labels only.
-- The ranking includes everyone. The RR auction board leaves out players RR cannot buy: Pakistani nationals (Sufiyan Muqeem is #3 among bowlers), IPL retirees, Harry Brook (IPL ban), RR's own players, and anyone under contract elsewhere until the 17 November retention lists.
+- The ranking includes everyone. The RR auction board leaves out players RR cannot buy: Pakistani nationals (Sufiyan Muqeem is #3 among bowlers), IPL retirees, Harry Brook (IPL ban), RR's own players, and anyone another franchise retained on 17 November 2026.
 - DLS-shortened and no-result games are excluded; super overs are not scored.
 """)
 

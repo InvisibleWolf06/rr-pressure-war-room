@@ -1,0 +1,199 @@
+rank,name,linked_name,team,DPR,pressure_balls,impact_pct,scorecard_pct,turning_balls,first_smat_season,last_smat_season,veteran,status,ipl_team,recent_form,role,runs,balls,sr,avg,hp_sr,hp_xsr
+1,M Shahrukh Khan,M Shahrukh Khan,Tamil Nadu,79.8,45,98,58,12,2015/16,2023/24,True,ipl_released,Gujarat Titans,,Middle order,375,256,146.5,25.0,209,155
+2,AS Roy,Anukul Roy,Jharkhand,75.2,64,99,74,19,2018/19,2021/22,False,contracted,Kolkata Knight Riders,,Middle order,239,140,170.7,29.9,202,165
+3,Karan Shinde,,Andhra,74.6,49,97,58,11,2015/16,2022/23,True,uncapped,,,Top order,149,112,133.0,29.8,169,113
+4,R Parag,Riyan Parag,Assam,73.5,75,95,89,11,2018/19,2023/24,False,rr,Rajasthan Royals,,Top order,869,608,142.9,43.5,161,127
+5,SA Yadav,Suryakumar Yadav,Mumbai,70.9,261,95,93,42,2015/16,2024/25,True,contracted,Mumbai Indians,,Top order,1123,725,154.9,43.2,157,133
+6,A Manohar,Abhinav Manohar,Karnataka,68.0,47,83,97,6,2021/22,2023/24,False,ipl_unsigned,,,Middle order,282,185,152.4,70.5,162,125
+7,Lalit Yadav,Lalit Yadav,Delhi,67.6,106,97,76,25,2017/18,2023/24,False,ipl_unsigned,,,Middle order,529,343,154.2,31.1,163,150
+8,Vishnu Vinod,Vishnu Vinod,Kerala,67.2,93,81,89,10,2017/18,2023/24,False,contracted,Punjab Kings,,Opener,754,514,146.7,41.9,171,141
+9,Tilak Varma,Namboori Tilak Varma,Hyderabad (India),67.0,64,79,86,7,2018/19,2023/24,False,contracted,Mumbai Indians,,Top order,476,341,139.6,43.3,156,132
+10,Rahul Singh,,Services,66.9,122,78,79,11,2017/18,2023/24,False,uncapped,,,Top order,599,403,148.6,33.3,148,115
+11,DJ Hooda,Deepak Hooda,Baroda,65.8,94,74,63,11,2015/16,2021/22,True,ipl_unsigned,,,Top order,845,615,137.4,30.2,156,119
+12,Vishnu Solanki,,Baroda,65.4,121,91,42,17,2017/18,2024/25,True,uncapped,,,Top order,833,702,118.7,30.9,168,145
+13,RM Patidar,Rajat Patidar,Madhya Pradesh,65.3,138,59,87,11,2017/18,2024/25,False,contracted,Royal Challengers Bengaluru,"2026/27: 186 runs in three innings, avg 186",Top order,1132,742,152.6,39.0,134,114
+14,RK Singh,Rinku Singh,Uttar Pradesh,65.3,144,54,93,21,2017/18,2024/25,False,contracted,Kolkata Knight Riders,,Middle order,897,559,160.5,42.7,162,137
+15,Harsh Tyagi,,Railways,65.0,49,95,81,11,2018/19,2024/25,False,uncapped,,,Middle order,274,206,133.0,45.7,163,165
+16,R Tewatia,Rahul Tewatia,Haryana,64.7,102,93,90,19,2017/18,2023/24,False,contracted,Gujarat Titans,,Middle order,566,357,158.5,40.4,171,146
+17,KK Nair,Karun Nair,Karnataka,64.7,156,81,76,19,2015/16,2024/25,True,ipl_released,Delhi Capitals,,Top order,1193,824,144.8,33.1,171,126
+18,A Sheth,,Baroda,64.6,55,95,54,12,2015/16,2024/25,True,uncapped,,,Lower order,213,166,128.3,30.4,165,149
+19,Ritwik Roy Chowdhury,,Bengal,64.5,70,95,53,13,2018/19,2024/25,False,uncapped,,,Middle order,237,184,128.8,29.6,164,131
+20,R Dhawan,Rishi Dhawan,Himachal,63.4,69,90,66,12,2017/18,2022/23,False,retired,,,Middle order,409,313,130.7,34.1,177,149
+21,Aniruddha Joshi,,Karnataka,63.1,72,87,68,11,2015/16,2021/22,True,inactive,,,Middle order,368,282,130.5,36.8,139,122
+22,Manisankar Murasingh,,Tripura,62.6,60,81,60,14,2015/16,2023/24,True,uncapped,,,Middle order,530,371,142.9,26.5,183,145
+23,HV Patel,Harshal Patel,Haryana,62.5,75,70,66,9,2015/16,2023/24,True,contracted,Gujarat Titans,,Opener,634,399,158.9,26.4,183,120
+24,VR Iyer,Venkatesh Iyer,Madhya Pradesh,62.4,82,79,88,12,2015/16,2024/25,True,contracted,Royal Challengers Bengaluru,,Middle order,901,654,137.8,50.1,166,137
+25,AV Wankhade,,Vidarbha,62.2,179,93,81,22,2015/16,2024/25,True,uncapped,,,Middle order,831,608,136.7,41.5,131,133
+26,Sumit Kumar,Sumit Kumar 1,Haryana,62.2,93,83,70,11,2018/19,2023/24,False,ipl_unsigned,,,Middle order,417,308,135.4,34.8,151,126
+27,Mandeep Singh,Mandeep Singh,Punjab,61.8,165,67,90,12,2015/16,2023/24,True,ipl_unsigned,,,Top order,1097,763,143.8,43.9,140,129
+28,Sachin Baby,Sachin Baby,Kerala,61.2,204,63,82,31,2015/16,2022/23,True,ipl_unsigned,,,Top order,1109,825,134.4,44.4,141,144
+29,AM Rahane,Ajinkya Rahane,Mumbai,60.9,160,76,70,15,2018/19,2024/25,False,retired,Kolkata Knight Riders,,Opener,606,445,136.2,33.7,151,136
+30,Vikas Hathwala,,Services,60.6,73,88,23,13,2015/16,2021/22,True,inactive,,,Middle order,358,308,116.2,23.9,145,120
+31,Dhruv Raval,,Gujarat,60.3,67,65,66,4,2017/18,2021/22,False,inactive,,,Opener,384,283,135.7,32.0,157,108
+32,SS Iyer,Shreyas Iyer,Mumbai,59.7,212,72,87,17,2015/16,2024/25,True,contracted,Punjab Kings,,Top order,1204,815,147.7,40.1,139,123
+33,Punit Bisht,,Meghalaya,59.7,71,70,73,8,2018/19,2021/22,False,inactive,,,Top order,483,304,158.9,30.2,141,116
+34,Chirag Gandhi,,Gujarat,59.6,138,84,58,19,2015/16,2023/24,True,uncapped,,,Middle order,730,609,119.9,40.6,127,119
+35,Virat Singh,,Jharkhand,59.4,219,82,78,27,2015/16,2021/22,True,inactive,,"2025/26: 382 runs, SR 170",Top order,1231,946,130.1,47.3,146,135
+36,Shubham Ranjane,,Goa,59.3,44,85,41,9,2018/19,2021/22,False,inactive,,,Middle order,256,223,114.8,32.0,134,135
+37,KB Arun Karthik,,Puducherry,58.9,142,84,21,13,2015/16,2022/23,True,uncapped,,,Top order,509,430,118.4,21.2,139,126
+38,Tanmay Agarwal,,Hyderabad (India),58.8,179,52,40,10,2015/16,2023/24,True,uncapped,,,Opener,883,701,126.0,26.0,132,115
+39,RP Sharma,,Haryana,58.7,65,88,40,12,2015/16,2023/24,True,contracted,Mumbai Indians,,Middle order,309,244,126.6,25.8,149,132
+40,KM Jadhav,Kedar Jadhav,Maharashtra,58.7,154,82,75,20,2015/16,2021/22,True,retired,,,Top order,673,517,130.2,42.1,143,136
+41,S Dube,Shivam Dube,Mumbai,58.7,136,92,56,24,2015/16,2024/25,True,contracted,Chennai Super Kings,,Middle order,547,402,136.1,27.4,159,150
+42,SP Goswami,,Bengal,58.7,185,45,83,8,2015/16,2022/23,True,uncapped,,,Opener,1126,794,141.8,40.2,134,116
+43,P Dogra,,Puducherry,58.2,196,78,68,21,2015/16,2022/23,True,uncapped,,,Top order,943,722,130.6,36.3,128,120
+44,SS Prabhudessai,Suyash Prabhudessai,Goa,58.0,108,87,67,15,2018/19,2023/24,False,ipl_unsigned,,,Middle order,465,321,144.9,29.1,140,139
+45,Upendra Yadav,Upendra Yadav,Uttar Pradesh,58.0,117,81,40,11,2018/19,2023/24,False,ipl_unsigned,,,Top order,537,447,120.1,29.8,131,130
+46,Divyang Hinganekar,,Maharashtra,57.8,48,83,56,10,2017/18,2021/22,False,inactive,,,Middle order,119,81,146.9,23.8,169,152
+47,SV Samson,Sanju Samson,Kerala,57.7,145,76,78,15,2015/16,2023/24,True,contracted,Chennai Super Kings,,Top order,908,676,134.3,41.3,145,132
+48,Atharva Taide,Atharwa Taide,Vidarbha,57.3,115,52,54,5,2018/19,2024/25,False,ipl_unsigned,,"2026/27: 208 runs, three fifties in three innings",Opener,627,504,124.4,33.0,123,107
+49,RD Gaikwad,Ruturaj Gaikwad,Maharashtra,57.2,111,44,78,7,2017/18,2021/22,False,contracted,Chennai Super Kings,,Opener,1119,811,138.0,38.6,131,113
+50,Mangal Mahrour,,Bihar,57.0,45,77,29,7,2018/19,2022/23,False,uncapped,,,Opener,342,346,98.8,31.1,131,129
+51,SS Tiwary,,Jharkhand,57.0,160,75,57,19,2015/16,2021/22,True,retired,,,Top order,650,511,127.2,32.5,148,134
+52,Hari Nishaanth,Hari Nishaanth,Tamil Nadu,56.9,65,56,61,5,2018/19,2023/24,False,ipl_unsigned,,,Opener,680,538,126.4,35.8,132,113
+53,KV Sharma,Karn Sharma,Railways,56.4,140,78,46,16,2015/16,2023/24,True,retired,Chennai Super Kings,,Middle order,529,381,138.8,21.2,149,135
+54,Shivam Chauhan,,Haryana,56.4,206,83,57,23,2017/18,2021/22,False,inactive,,,Top order,626,507,123.5,36.8,123,122
+55,Rajat Dey,,Tripura,55.6,45,52,68,6,2015/16,2023/24,True,uncapped,,,Middle order,486,355,136.9,32.4,136,131
+56,Amit Sinha,,Assam,55.5,85,79,25,14,2015/16,2021/22,True,inactive,,,Middle order,314,302,104.0,28.5,141,130
+57,Subhransu Senapati,,Odisha,55.4,109,61,49,8,2017/18,2024/25,False,uncapped,,,Top order,492,381,129.1,27.3,126,121
+58,Diwesh Pathania,,Services,55.3,58,72,45,7,2017/18,2021/22,False,inactive,,,Lower order,182,131,138.9,20.2,150,135
+59,Chetan Bist,,Nagaland,55.0,54,56,56,5,2017/18,2022/23,False,uncapped,,,Middle order,465,402,115.7,42.3,126,123
+60,BR Sharath,BR Sharath,Karnataka,55.0,52,88,11,7,2017/18,2023/24,False,ipl_unsigned,,,Top order,287,255,112.5,16.9,112,128
+61,N Rana,Nitish Rana,Delhi,54.6,208,69,88,26,2015/16,2024/25,True,ipl_released,Delhi Capitals,,Top order,1372,956,143.5,42.9,136,115
+62,SB Dubey,,Vidarbha,54.6,42,68,54,6,2021/22,2024/25,False,rr,Rajasthan Royals,,Top order,224,170,131.8,28.0,162,130
+63,Vishal Kushwah,,Chhattisgarh,54.3,59,49,70,15,2017/18,2021/22,False,inactive,,,Middle order,309,187,165.2,28.1,220,157
+64,Pallav Kumar Das,,Assam,54.3,129,50,48,7,2015/16,2023/24,True,uncapped,,,Opener,579,411,140.9,21.4,144,106
+65,Yash Nahar,,Maharashtra,54.0,42,56,27,2,2018/19,2021/22,False,inactive,,,Opener,249,204,122.1,22.6,129,117
+66,MK Lomror,Mahipal Lomror,Rajasthan,54.0,72,52,62,9,2017/18,2022/23,False,ipl_released,Mumbai Indians,,Top order,812,658,123.4,40.6,133,125
+67,HH Pandya,Hardik Pandya,Baroda,53.6,74,65,77,9,2015/16,2024/25,True,contracted,Punjab Kings,,Top order,381,296,128.7,47.6,147,132
+68,AP Tare,,Mumbai,53.6,222,60,63,21,2015/16,2022/23,True,uncapped,,,Top order,1008,754,133.7,31.5,145,132
+69,RK Bhui,Ricky Bhui,Andhra,53.3,92,42,95,9,2017/18,2023/24,False,ipl_unsigned,,,Top order,920,599,153.6,46.0,136,126
+70,Rohan Kadam,,Karnataka,53.3,171,47,81,5,2018/19,2021/22,False,inactive,,,Opener,991,755,131.3,47.2,121,113
+71,Saurabh Kumar,,Uttar Pradesh,52.9,42,72,34,7,2015/16,2021/22,True,inactive,,,Middle order,115,88,130.7,14.4,150,134
+72,Parvez Rasool,,Jammu & Kashmir,52.9,74,68,28,7,2015/16,2021/22,True,retired,,,Middle order,358,303,118.2,25.6,123,120
+73,JM Sharma,Jitesh Sharma,Vidarbha,52.5,120,28,79,9,2015/16,2024/25,True,contracted,Royal Challengers Bengaluru,,Opener,961,656,146.5,34.3,126,115
+74,Jay Bista,,Mumbai,52.4,142,29,77,3,2017/18,2021/22,False,inactive,,,Opener,812,586,138.6,36.9,131,117
+75,YBK Jaiswal,Yashasvi Jaiswal,Mumbai,52.4,57,62,44,4,2020/21,2023/24,False,rr,Rajasthan Royals,,Top order,337,262,128.6,25.9,133,120
+76,PN Mankad,Prerak Mankad,Saurashtra,52.4,60,43,77,4,2015/16,2024/25,True,ipl_unsigned,,,Middle order,671,476,141.0,35.3,138,136
+77,KH Devdhar,,Baroda,52.3,212,45,55,10,2015/16,2021/22,True,inactive,,,Opener,1401,1149,121.9,36.9,118,117
+78,Ankit Kaushik,,Chandigarh,52.1,54,55,59,7,2017/18,2021/22,False,inactive,,,Top order,301,236,127.5,33.4,157,150
+79,Shubman Gill,Shubman Gill,Punjab,52.0,98,49,85,6,2018/19,2022/23,False,contracted,Gujarat Titans,,Opener,580,409,141.8,41.4,130,117
+80,M Vohra,Manan Vohra,Chandigarh,51.9,233,47,72,14,2015/16,2024/25,True,ipl_unsigned,,,Opener,1001,768,130.3,40.0,122,121
+81,SN Khan,Sarfaraz Khan,Mumbai,51.6,64,74,27,10,2017/18,2023/24,False,contracted,Chennai Super Kings,,Middle order,279,232,120.3,23.2,141,136
+82,PP Shaw,Prithvi Shaw,Mumbai,51.5,82,43,70,7,2018/19,2024/25,False,contracted,Delhi Capitals,,Opener,718,442,162.4,28.7,156,125
+83,Shashank Chandrakar,,Chhattisgarh,51.5,118,44,52,7,2017/18,2023/24,False,uncapped,,,Opener,614,449,136.7,25.6,132,111
+84,N Jagadeesan,Narayan Jagadeesan,Tamil Nadu,51.5,159,66,55,15,2017/18,2023/24,False,ipl_unsigned,,,Opener,794,662,119.9,37.8,122,127
+85,Qamran Iqbal,,Jammu & Kashmir,51.4,45,61,19,5,2020/21,2023/24,False,uncapped,,,Opener,201,187,107.5,25.1,140,111
+86,V Shankar,Vijay Shankar,Tamil Nadu,51.3,127,63,63,11,2015/16,2023/24,True,retired,,,Top order,625,487,128.3,34.7,113,129
+87,CA Pujara,,Saurashtra,51.3,64,49,73,2,2015/16,2022/23,True,uncapped,,,Opener,623,495,125.9,56.6,148,132
+88,Washington Sundar,Washington Sundar,Tamil Nadu,51.1,68,43,36,3,2017/18,2023/24,False,contracted,Gujarat Titans,,Opener,576,489,117.8,28.8,149,120
+89,Abdul Samad,Abdul Samad,Jammu & Kashmir,51.1,72,51,88,10,2018/19,2023/24,False,contracted,Lucknow Super Giants,,Top order,428,307,139.4,47.6,129,135
+90,P Chopra,,Himachal,50.5,257,37,61,15,2015/16,2022/23,True,uncapped,,,Opener,1104,945,116.8,48.0,119,116
+91,WP Saha,Wriddhiman Saha,Bengal,50.5,93,50,47,5,2015/16,2023/24,True,ipl_unsigned,,,Opener,559,434,128.8,26.6,134,109
+92,B Aparajith,,Tamil Nadu,50.4,93,66,26,8,2015/16,2023/24,True,uncapped,,,Top order,580,529,109.6,27.6,117,117
+93,KR Singh,Kumar Kartikeya Singh,Jharkhand,50.2,67,72,17,13,2015/16,2021/22,True,ipl_unsigned,,,Middle order,144,124,116.1,20.6,143,143
+94,AR Easwaran,,Bengal,50.2,60,39,68,1,2018/19,2023/24,False,uncapped,,,Top order,559,437,127.9,39.9,120,109
+95,Akshay Karnewar,,Vidarbha,50.1,43,73,19,7,2015/16,2022/23,True,uncapped,,,Middle order,298,243,122.6,14.2,156,140
+96,D Padikkal,Devdutt Padikkal,Karnataka,49.8,108,32,79,4,2019/20,2023/24,False,contracted,Royal Challengers Bengaluru,,Opener,778,552,140.9,37.0,130,114
+97,Urvil Patel,Urvil Patel,Gujarat,49.7,67,26,52,0,2017/18,2023/24,False,contracted,Chennai Super Kings,2025/26: 119* off 37 v Services,Opener,584,389,150.1,20.9,131,113
+98,Anuj Rawat,Anuj Rawat,Delhi,49.6,125,46,48,17,2018/19,2024/25,False,contracted,Gujarat Titans,,Top order,578,461,125.4,30.4,131,132
+99,Gurkeerat Singh,,Punjab,49.6,119,66,58,15,2017/18,2023/24,False,uncapped,,,Top order,657,499,131.7,29.9,124,120
+100,Vivek Singh,,Bengal,49.1,119,48,58,8,2015/16,2023/24,True,uncapped,,,Opener,1043,770,135.5,29.0,139,121
+101,IR Jaggi,,Jharkhand,48.9,95,51,91,7,2015/16,2021/22,True,inactive,,,Middle order,592,417,142.0,49.3,115,124
+102,Vijay Sharma,,Uttarakhand,48.9,40,68,28,6,2018/19,2022/23,False,uncapped,,,Middle order,119,112,106.2,29.8,128,150
+103,SP Jackson,Sheldon Jackson,Saurashtra,48.9,137,57,74,14,2015/16,2023/24,True,ipl_unsigned,,,Top order,1058,811,130.5,40.7,120,129
+104,Samarth Vyas,Samarth Vyas,Saurashtra,48.9,97,68,69,9,2019/20,2023/24,False,ipl_unsigned,,,Top order,493,327,150.8,29.0,139,125
+105,Chaitanya Bishnoi,,Haryana,48.8,158,41,39,13,2015/16,2022/23,True,uncapped,,,Opener,755,643,117.4,30.2,127,119
+106,RV Uthappa,Robin Uthappa,Kerala,48.7,62,50,53,3,2015/16,2021/22,True,ipl_unsigned,,,Top order,742,568,130.6,28.5,97,129
+107,R Sanjay Yadav,Sanjay Yadav,Meghalaya,48.7,66,48,37,8,2017/18,2023/24,False,ipl_unsigned,,,Middle order,483,392,123.2,26.8,135,136
+108,Kolla Sumanth,,Hyderabad (India),48.7,48,60,7,3,2015/16,2021/22,True,inactive,,,Middle order,163,148,110.1,12.5,121,135
+109,AA Herwadkar,,Mumbai,48.6,80,41,30,4,2015/16,2022/23,True,uncapped,,,Opener,464,412,112.6,29.0,138,121
+110,Rohan Kunnummal,,Kerala,48.2,68,47,51,4,2018/19,2023/24,False,uncapped,,2025/26: 121* off 60 v Odisha,Opener,358,312,114.7,39.8,119,115
+111,AT Rayudu,Ambati Rayudu,Hyderabad (India),47.9,59,40,52,6,2017/18,2022/23,False,ipl_unsigned,,,Top order,521,409,127.4,30.6,136,132
+112,Akshay Wadkar,,Vidarbha,47.8,70,38,33,2,2017/18,2022/23,False,uncapped,,,Top order,360,361,99.7,32.7,121,112
+113,Pratham Singh,,Railways,47.6,123,22,60,4,2018/19,2023/24,False,uncapped,,,Opener,874,683,128.0,33.6,124,118
+114,AKS Bains,,Himachal,47.6,88,46,23,3,2015/16,2022/23,True,uncapped,,,Opener,429,360,119.2,21.4,110,107
+115,MK Pandey,Manish Pandey,Karnataka,47.5,101,42,74,7,2017/18,2023/24,False,contracted,Kolkata Knight Riders,,Top order,982,730,134.5,37.8,125,119
+116,Ashwin Hebbar,Ashwin Hebbar,Andhra,47.3,158,48,55,13,2015/16,2023/24,True,ipl_unsigned,,,Opener,934,733,127.4,31.1,127,122
+117,S Dhawan,Shikhar Dhawan,Delhi,47.2,42,35,36,1,2019/20,2022/23,False,ipl_unsigned,,,Opener,194,154,126.0,24.2,126,110
+118,Abhimanyu Rana,,Himachal,47.0,49,47,14,2,2015/16,2022/23,True,uncapped,,,Opener,240,222,108.1,21.8,116,106
+119,Nikhil Gangta,,Himachal,46.9,74,21,62,3,2015/16,2022/23,True,uncapped,,,Middle order,370,293,126.3,37.0,120,130
+120,Harpreet Singh,,Chhattisgarh,46.9,247,61,79,21,2015/16,2024/25,True,uncapped,,,Top order,1163,891,130.5,44.7,113,126
+121,Shivam Bhambri,,Chandigarh,46.6,51,39,65,2,2019/20,2024/25,False,uncapped,,,Top order,394,299,131.8,32.8,110,113
+122,Mrunal Devdhar,,Railways,46.6,146,28,32,6,2015/16,2021/22,True,inactive,,,Opener,765,619,123.6,23.9,115,118
+123,Priyank Panchal,,Gujarat,46.4,97,13,57,3,2015/16,2023/24,True,uncapped,,,Opener,956,740,129.2,30.8,121,109
+124,SS Mundhe,,Nagaland,46.4,62,44,68,8,2015/16,2022/23,True,uncapped,,,Top order,598,461,129.7,37.4,121,134
+125,Jatin Wadhwan,,Jammu & Kashmir,46.4,101,42,58,5,2015/16,2021/22,True,inactive,,,Opener,473,381,124.1,36.4,126,117
+126,Aditya Kaushik,,Goa,46.4,178,38,23,12,2015/16,2022/23,True,uncapped,,,Opener,555,508,109.3,26.4,121,122
+127,AD Nath,Akshdeep Nath,Uttar Pradesh,46.0,123,41,47,8,2015/16,2022/23,True,uncapped,,,Middle order,670,551,121.6,31.9,111,117
+128,Amandeep Khare,,Chhattisgarh,45.8,121,36,51,13,2017/18,2023/24,False,uncapped,,,Top order,757,651,116.3,37.9,132,138
+129,DR Shorey,,Delhi,45.6,136,49,37,11,2015/16,2021/22,True,inactive,,,Top order,492,433,113.6,30.8,118,123
+130,Shivam Chaudhary,,Railways,45.5,91,43,36,9,2017/18,2023/24,False,uncapped,,,Opener,586,501,117.0,29.3,108,129
+131,Shashank Singh,Shashank Singh,Chhattisgarh,45.4,71,39,29,6,2015/16,2023/24,True,contracted,Punjab Kings,,Middle order,366,296,123.6,21.5,123,134
+132,PP Chawla,Piyush Chawla,Gujarat,45.0,66,50,40,9,2015/16,2023/24,True,retired,,,Middle order,364,271,134.3,20.2,136,141
+133,Anand Singh,,Jharkhand,44.7,99,51,46,8,2015/16,2021/22,True,inactive,,,Opener,541,447,121.0,31.8,117,119
+134,Babul Kumar,,Bihar,44.4,48,38,26,0,2018/19,2022/23,False,uncapped,,,Top order,461,401,115.0,25.6,96,102
+135,Ankit Lamba,,Rajasthan,44.2,53,49,38,4,2015/16,2021/22,True,inactive,,,Opener,728,683,106.6,34.7,104,107
+136,Rishabh Tiwari,,Chhattisgarh,44.1,65,29,50,1,2017/18,2021/22,False,inactive,,,Opener,352,270,130.4,27.1,122,114
+137,Bavanaka Sandeep,,Hyderabad (India),44.0,82,24,43,7,2015/16,2021/22,True,inactive,,,Middle order,672,571,117.7,32.0,127,134
+138,Aditya Garhwal,,Rajasthan,44.0,65,37,14,1,2017/18,2021/22,False,inactive,,,Opener,257,225,114.2,19.8,114,106
+139,Gurinder Singh,,Meghalaya,43.9,52,18,62,5,2015/16,2021/22,True,inactive,,,Middle order,434,349,124.4,39.5,129,137
+140,Darshan Misal,,Goa,43.6,82,52,5,8,2015/16,2023/24,True,uncapped,,,Middle order,337,331,101.8,16.9,109,136
+141,Sudip Chatterjee,,Bengal,43.5,43,34,19,3,2015/16,2023/24,True,uncapped,,,Top order,398,347,114.7,22.1,121,115
+142,Writtick Chatterjee,Writtick Chatterjee,Bengal,43.5,67,37,56,5,2017/18,2024/25,False,ipl_unsigned,,,Middle order,237,171,138.6,26.3,104,111
+143,Ravi Chauhan,,Services,43.4,56,17,64,0,2017/18,2021/22,False,inactive,,,Opener,709,586,121.0,44.3,96,114
+144,Himanshu Rana,,Haryana,43.2,215,33,41,12,2015/16,2023/24,True,uncapped,,,Top order,799,646,123.7,27.6,112,114
+145,Himmat Singh,Himmat Singh,Delhi,43.1,113,33,61,11,2017/18,2024/25,False,contracted,Lucknow Super Giants,,Middle order,599,472,126.9,35.2,118,137
+146,Swapnil Singh,Swapnil Singh,Baroda,43.0,82,50,38,12,2015/16,2022/23,True,ipl_released,Royal Challengers Bengaluru,,Middle order,532,431,123.4,26.6,118,133
+147,Parth Sahani,,Madhya Pradesh,42.9,95,35,47,7,2015/16,2023/24,True,uncapped,,,Middle order,736,596,123.5,30.7,117,121
+148,DB Ravi Teja,,Meghalaya,42.6,72,34,42,6,2017/18,2021/22,False,inactive,,,Top order,530,510,103.9,37.9,117,130
+149,AL Menaria,,Rajasthan,42.5,71,13,17,2,2015/16,2022/23,True,uncapped,,,Top order,232,208,111.5,23.2,113,98
+150,Ganesh Satish,,Vidarbha,42.4,94,38,8,5,2015/16,2023/24,True,uncapped,,,Top order,530,539,98.3,21.2,94,112
+151,Naushad Shaikh,,Maharashtra,42.3,185,35,45,17,2017/18,2021/22,False,inactive,,,Top order,713,601,118.6,32.4,121,135
+152,Kaif Ahmad,,Bengal,42.2,54,32,53,6,2020/21,2021/22,False,inactive,,,Middle order,177,160,110.6,44.2,100,111
+153,Hiten Dalal,,Delhi,42.1,53,21,55,1,2018/19,2022/23,False,uncapped,,,Opener,515,361,142.7,24.5,108,115
+154,RA Tripathi,Rahul Tripathi,Maharashtra,42.1,93,17,50,2,2015/16,2023/24,True,ipl_released,Kolkata Knight Riders,,Opener,705,561,125.7,30.7,111,123
+155,Rajat Paliwal,,Services,42.0,125,16,29,6,2015/16,2021/22,True,inactive,,,Top order,516,440,117.3,25.8,103,106
+156,Shahbaz Ahmed,Shahbaz Ahmed,Bengal,41.9,50,31,35,7,2018/19,2024/25,False,contracted,Lucknow Super Giants,,Middle order,294,234,125.6,24.5,118,136
+157,Rishav Das,,Assam,41.8,60,27,18,2,2017/18,2023/24,False,uncapped,,,Opener,353,319,110.7,23.5,97,114
+158,Lakhan Singh,,Services,41.5,45,12,51,0,2015/16,2021/22,True,inactive,,,Opener,265,207,128.0,29.4,107,117
+159,Robin Bist,,Rajasthan,41.5,86,27,5,7,2015/16,2021/22,True,inactive,,,Top order,186,188,98.9,18.6,109,126
+160,Sibsankar Roy,,Assam,41.4,52,8,54,1,2015/16,2023/24,True,uncapped,,,Top order,528,422,125.1,33.0,73,108
+161,MA Agarwal,Mayank Agarwal,Karnataka,41.2,111,17,43,5,2015/16,2023/24,True,ipl_unsigned,,,Opener,804,630,127.6,25.9,123,114
+162,Anmolpreet Singh,Anmolpreet Singh,Punjab,41.2,192,31,78,12,2017/18,2023/24,False,ipl_unsigned,,"2025/26: 349 runs, SR 175",Top order,951,673,141.3,36.6,112,130
+163,K Gowtham,Krishnappa Gowtham,Karnataka,41.0,46,25,49,2,2017/18,2023/24,True,ipl_unsigned,,,Middle order,229,160,143.1,20.8,109,133
+164,Dikshanshu Negi,,Uttarakhand,40.9,90,33,21,8,2019/20,2022/23,False,uncapped,,,Middle order,318,280,113.6,24.5,107,137
+165,Nakul Verma,,Services,40.8,77,24,12,1,2015/16,2023/24,True,uncapped,,,Opener,462,436,106.0,22.0,121,110
+166,EC Sen,,Himachal,40.7,57,26,41,5,2018/19,2022/23,False,uncapped,,"2025/26: 283 runs in 7 games, SR 151",Top order,351,280,125.4,27.0,102,112
+167,YV Dhull,Yash Dhull,Delhi,40.6,59,20,47,5,2022/23,2024/25,False,ipl_unsigned,,2026/27: leads the run chart: 224 runs incl. 125 off 59 v Bihar,Top order,284,265,107.2,40.6,115,128
+168,KH Pandya,Krunal Pandya,Baroda,40.5,73,31,34,8,2017/18,2024/25,False,contracted,Royal Challengers Bengaluru,,Top order,591,479,123.4,25.7,116,135
+169,Azim Kazi,,Maharashtra,40.5,51,19,68,3,2018/19,2021/22,False,inactive,,,Middle order,407,330,123.3,50.9,116,141
+170,Rongsen Jonathan,,Nagaland,40.5,44,40,16,0,2018/19,2023/24,False,uncapped,,,Top order,493,474,104.0,24.6,114,111
+171,P Simran Singh,Prabhsimran Singh,Punjab,40.4,132,18,82,5,2018/19,2023/24,False,contracted,Punjab Kings,,Opener,980,691,141.8,39.2,110,108
+172,Chirag Jani,,Saurashtra,40.3,59,27,57,6,2015/16,2024/25,True,uncapped,,,Middle order,421,310,135.8,28.1,129,157
+173,Avneesh Sudha,,Uttarakhand,40.1,42,19,11,1,2019/20,2022/23,False,uncapped,,,Top order,200,177,113.0,16.7,119,128
+174,Shubham Khajuria,,Jammu & Kashmir,40.1,73,19,17,2,2015/16,2023/24,True,uncapped,,,Opener,322,275,117.1,20.1,93,110
+175,Denish Das,,Assam,39.8,42,38,4,1,2020/21,2023/24,False,uncapped,,,Opener,238,271,87.8,18.3,121,111
+176,Saurabh Rawat,,Uttarakhand,39.7,66,18,16,3,2018/19,2021/22,False,inactive,,,Top order,300,265,113.2,21.4,100,113
+177,Shubham Pundir,,Jammu & Kashmir,39.7,84,39,43,4,2017/18,2023/24,False,uncapped,,,Top order,452,401,112.7,34.8,100,115
+178,Aanshul Gupta,,Services,39.2,41,20,7,2,2015/16,2021/22,True,inactive,,,Opener,214,209,102.4,19.5,88,112
+179,SD Lad,,Mumbai,38.9,137,46,33,13,2015/16,2022/23,True,uncapped,,,Top order,757,626,120.9,26.1,106,122
+180,KS Sharma,,Uttar Pradesh,38.9,48,8,45,2,2020/21,2024/25,False,contracted,Chennai Super Kings,,Opener,320,267,119.9,32.0,125,116
+181,Himalay Agarwal,,Hyderabad (India),38.9,60,34,2,5,2015/16,2021/22,True,inactive,,,Top order,218,225,96.9,14.5,113,113
+182,Vishvaraj Jadeja,,Saurashtra,38.6,61,38,27,6,2017/18,2024/25,False,uncapped,,,Top order,303,252,120.2,23.3,118,120
+183,Snehal Kauthankar,,Goa,38.3,40,6,14,0,2015/16,2022/23,True,uncapped,,,Top order,392,363,108.0,23.1,85,123
+184,Abhishek Sharma,Abhishek Sharma,Punjab,37.9,118,24,77,7,2017/18,2023/24,False,contracted,Sunrisers Hyderabad,2025/26: 304 runs at SR 249; 148 off 52 v Bengal,Opener,878,593,148.1,32.5,106,117
+185,Fabid Ahmed,,Puducherry,36.5,61,12,2,4,2015/16,2021/22,True,inactive,,,Middle order,218,224,97.3,14.5,120,140
+186,T Kohli,,Mizoram,34.6,115,11,43,0,2018/19,2022/23,False,uncapped,,,Opener,810,721,112.3,35.2,85,113
+187,GH Vihari,,Andhra,34.5,89,8,38,2,2015/16,2023/24,True,uncapped,,,Opener,574,455,126.2,25.0,103,119
+188,PK Garg,Priyam Garg,Uttar Pradesh,33.9,78,16,35,5,2018/19,2024/25,False,ipl_unsigned,,,Top order,322,257,125.3,24.8,103,122
+189,H Desai,Harvik Desai,Saurashtra,33.9,83,6,12,2,2018/19,2024/25,False,ipl_unsigned,,,Opener,303,265,114.3,16.8,101,105
+190,Kunal Chandela,,Uttarakhand,33.7,61,23,15,5,2020/21,2022/23,False,uncapped,,"2025/26: 350 runs in 7 games, SR 151",Top order,238,216,110.2,21.6,107,132
+191,Kumar Deobrat,,Jharkhand,33.6,90,23,38,8,2015/16,2021/22,True,inactive,,,Middle order,467,364,128.3,23.4,136,148
+192,Govinda Poddar,,Odisha,33.4,104,15,36,6,2015/16,2021/22,True,inactive,,,Top order,436,345,126.4,24.2,95,121
+193,Mohammed Azharuddeen,,Kerala,33.1,71,22,11,2,2015/16,2022/23,True,uncapped,,,Opener,433,382,113.4,16.7,86,122
+194,Rajesh Dhuper,,Odisha,33.0,91,13,19,3,2017/18,2021/22,False,inactive,,,Opener,392,383,102.3,26.1,93,117
+195,Damodaran Rohit,,Puducherry,32.1,75,20,5,4,2018/19,2022/23,False,uncapped,,,Opener,405,408,99.3,18.4,100,110
+196,Techi Doria,,Arunachal Pradesh,31.8,53,15,5,0,2018/19,2023/24,False,uncapped,,,Opener,242,302,80.1,20.2,89,116
+197,KS Bharat,KS Bharat,Andhra,25.6,83,4,9,2,2015/16,2023/24,True,ipl_unsigned,,,Opener,520,478,108.8,17.9,99,112
+198,Lalhmangaiha,,Mizoram,12.8,46,1,1,0,2018/19,2022/23,False,uncapped,,,Opener,240,338,71.0,15.0,43,117

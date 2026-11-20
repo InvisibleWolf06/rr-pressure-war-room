@@ -168,6 +168,7 @@ function scout(){
      D[d + '_board'].map(c => { const bk = SC.backups[d][c.id] || []; const cell = t => { const x = bk.find(y => y.type === t); return x ? `<td style="white-space:normal;min-width:170px"><b class="lk" data-open="${d}|${x.id}">${esc(x.name)}</b> <span class="muted">#${x.rank} · ${x.tier}</span><br><span class="muted" style="font-size:11.5px">${esc(x.why)}</span></td>` : '<td>–</td>'; };
        return `<tr><td>${c.rank}</td><td style="white-space:normal;min-width:150px"><b class="lk" data-open="${d}|${c.id}">${esc(c.name)}</b><br><span class="muted">#${c.raw_rank} · ${esc(c.role)}</span></td>${cell('Cheap value')}${cell('Bidding war')}${cell('Under the radar')}</tr>`; }))).join('')}
    <div class="muted" style="font-size:12px;margin-top:8px">Click any name to open his strengths map. Every name here can be dropped into a real RR match in the Match Simulator.</div>`;
+  h += smatSection();
   setTimeout(() => {
     document.querySelectorAll('[data-gd]').forEach(b => b.onclick = () => { lst.gDisc = b.dataset.gd; render(); });
     document.querySelectorAll('[data-gb]').forEach(b => b.onclick = () => { lst.gBuy = b.dataset.gb === '1'; render(); });
@@ -186,21 +187,26 @@ function scout(){
 /* ---------------- RETAIN & RELEASE ---------------- */
 function retain(){
   const R = SC.retain, col = r => r.startsWith('Retain') ? '#8EF0B0' : r.startsWith('Release and') ? 'var(--gold)' : r === 'Review' ? 'var(--ink2)' : 'var(--hot)';
-  const sum = f => R.filter(f).reduce((a, r) => a + (r.salary || 0), 0);
-  const rel = R.filter(r => r.rec === 'Release'), rb = R.filter(r => r.rec.startsWith('Release and')), kp = R.filter(r => r.rec.startsWith('Retain'));
-  let h = `<p class="muted" style="font-size:14px">The same lens turned on RR's own squad. For each player: what he costs, how he rates under pressure across all T20 cricket, what he actually did for RR in IPL 2025–26 pressure situations, and how much other teams are likely to want him. "Release and buy back" is a common IPL move: let a player go to free his salary, then bid for him again at a lower price, accepting that someone else may take him.</p>
+  const sum = f => R.filter(r => !String(r.actual || '').startsWith('Traded in')).filter(f).reduce((a, r) => a + (r.salary || 0), 0);
+  const R0 = R.filter(r => !String(r.actual || '').startsWith('Traded in'));
+  const rel = R0.filter(r => r.rec === 'Release'), rb = R0.filter(r => r.rec.startsWith('Release and')), kp = R0.filter(r => r.rec.startsWith('Retain'));
+  const sq = R.filter(r => !String(r.actual || '').startsWith('Traded in'));
+  const cmp = sq.filter(r => r.agree !== null && r.agree !== undefined), ag = cmp.filter(r => r.agree);
+  const actCol = a => a === 'Retained' ? '#8EF0B0' : a === 'Released' ? 'var(--hot)' : 'var(--gold)';
+  let h = `<div class="note" style="padding:10px 14px;margin-bottom:12px;font-size:13px"><b>RR's real decisions are in (17 Nov 2026).</b> RR kept ${sq.filter(r => r.actual === 'Retained').length}, released ${sq.filter(r => r.actual === 'Released').length}, sent Sam Curran to LSG and traded in Mohammed Shami and Manimaran Siddharth. They go to the auction with ₹${SC.purse_2027} cr. The model's call matches RR's on <b>${ag.length} of ${cmp.length}</b> players; the "What RR did" column shows where they differ.</div>
+  <p class="muted" style="font-size:14px">The same lens turned on RR's own squad. For each player: what he costs, how he rates under pressure across all T20 cricket, what he actually did for RR in IPL 2025–26 pressure situations, and how much other teams are likely to want him. "Release and buy back" is a common IPL move: let a player go to free his salary, then bid for him again at a lower price, accepting that someone else may take him.</p>
    <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
     <div class="kpi"><div class="l">Retain</div><div class="v">${kp.length}</div><div class="s">₹${sum(r => r.rec.startsWith('Retain')).toFixed(1)} cr kept</div></div>
     <div class="kpi"><div class="l">Release and buy back</div><div class="v">${rb.length}</div><div class="s">₹${sum(r => r.rec.startsWith('Release and')).toFixed(1)} cr freed, part spent again</div></div>
     <div class="kpi"><div class="l">Release</div><div class="v">${rel.length}</div><div class="s">₹${sum(r => r.rec === 'Release').toFixed(1)} cr freed</div></div>
-    <div class="kpi"><div class="l">Purse to spend</div><div class="v">₹${(sum(r => r.rec.startsWith('Release')) + 1.1).toFixed(1)} cr</div><div class="s">freed salaries + ₹1.1 cr left from 2026</div></div></div>
-   <div class="tbl" style="margin-top:12px;max-height:none"><table><tr><th>Player</th><th>Salary</th><th>Bat rank</th><th>Bowl rank</th><th>For RR in pressure (IPL 25–26)</th><th>Wins added</th><th>Demand</th><th>Call</th><th>Why</th></tr>
+    <div class="kpi"><div class="l">Real purse for 2027</div><div class="v">₹${SC.purse_2027} cr</div><div class="s">model plan would free ₹${(sum(r => r.rec.startsWith('Release')) + 1.1).toFixed(1)} cr</div></div></div>
+   <div class="tbl" style="margin-top:12px;max-height:none"><table><tr><th>Player</th><th>Salary</th><th>Bat rank</th><th>Bowl rank</th><th>For RR in pressure (IPL 25–26)</th><th>Wins added</th><th>Demand</th><th>Model call</th><th>What RR did</th><th>Why (model)</th></tr>
    ${R.map(r => `<tr><td><b class="lk" data-open="${r.id_bat && (!r.id_bowl || (r.bat_rank || 999) <= (r.bowl_rank || 999)) ? 'bat|' + r.id_bat : r.id_bowl ? 'bowl|' + r.id_bowl : ''}">${esc(r.name)}</b><br><span class="muted">${esc(r.role)}</span></td>
      <td>${r.salary != null ? '₹' + r.salary + ' cr' : '–'}</td><td>${r.bat_rank || '–'}</td><td>${r.bowl_rank || '–'}</td>
      <td style="white-space:normal;min-width:150px">${r.rr_balls ? `${r.rr_runs} runs off ${r.rr_balls} balls` : ''}${r.rr_balls && r.rr_overs ? '<br>' : ''}${r.rr_overs ? `${r.rr_overs} ov, ${r.rr_conc} runs, ${r.rr_wk} wkts` : ''}${!r.rr_balls && !r.rr_overs ? '<span class="muted">did not play</span>' : ''}</td>
      <td>${r.rr_pb >= 20 ? (r.rr_wpa > 0 ? '+' : '') + (r.rr_wpa / 100).toFixed(2) : '<span class="muted">small sample</span>'}</td><td>${r.demand || '–'}</td>
-     <td style="color:${col(r.rec)};font-weight:600;white-space:normal;min-width:110px">${esc(r.rec)}</td><td style="white-space:normal;min-width:260px;font-size:12px" class="muted">${esc(r.why)}</td></tr>`).join('')}</table></div>
-   <div class="warnbox" style="padding:10px 14px;margin-top:12px;font-size:13px"><b>Model view, not a final call.</b> It weighs only pressure performance, price and likely demand. It cannot see captaincy, wicketkeeping, fitness, age, the Indian-player quota or a player's future, all of which a real retention decision has to weigh. Batting runs for RR are all IPL 2025–26 innings; "Wins added" is the win probability he added for RR on pressure balls (bat + ball), summed over IPL 2025 and 2026: +1.00 is one extra win. Salaries are RR's IPL 2026 figures from public squad lists.</div>`;
+     <td style="color:${col(r.rec)};font-weight:600;white-space:normal;min-width:110px">${esc(r.rec)}</td><td style="white-space:normal;min-width:100px"><b style="color:${actCol(r.actual)}">${esc(r.actual || '')}</b>${r.agree === true ? '<br><span class="muted">matches model</span>' : r.agree === false ? '<br><span style="color:var(--gold)">differs from model</span>' : ''}</td><td style="white-space:normal;min-width:260px;font-size:12px" class="muted">${esc(r.why)}</td></tr>`).join('')}</table></div>
+   <div class="warnbox" style="padding:10px 14px;margin-top:12px;font-size:13px"><b>Model view, set against the real calls.</b> It weighs only pressure performance, price and likely demand. It cannot see captaincy, wicketkeeping, fitness, age, the Indian-player quota or a player's future, all of which a real retention decision has to weigh. Batting runs for RR are all IPL 2025–26 innings; "Wins added" is the win probability he added for RR on pressure balls (bat + ball), summed over IPL 2025 and 2026: +1.00 is one extra win. Salaries are RR's IPL 2026 figures from public squad lists.</div>`;
   setTimeout(() => document.querySelectorAll('[data-open]').forEach(b => b.onclick = () => { const v = b.dataset.open; if (!v) return; const [d, id] = v.split('|'); openLab(d, +id); }));
   return h;
 }

@@ -191,6 +191,7 @@ tr:hover td{background:rgba(236,0,140,.10)}
 <script id="simdata" type="application/json">__SIM__</script>
 <script id="labdata" type="application/json">__LAB__</script>
 <script id="scoutdata" type="application/json">__SCOUT__</script>
+<script id="smatdata" type="application/json">__SMAT__</script>
 <script>__SIMJS__</script>
 <script>
 
@@ -527,7 +528,7 @@ const SECT = {
   moments: ['Match evidence', 'Pressure <em>moments</em>', 'The real situations behind each rating: the score he walked into, what he did, and how far his team\'s chances moved.'],
   lab: ['Player analysis', 'Player <em>lab</em>', 'Click any player to see where he scores, which bowlers and deliveries suit him, and how he changes under pressure. The second view breaks the rating into its parts and compares two players.'],
   rr: ['Squad fit', 'Rajasthan Royals <em>fit</em>', 'Where RR lost ground under pressure in IPL 2025–26, and how each player on the auction board addresses it.'],
-  scout: ['Talent search', 'Scouting &amp; <em>auction plan</em>', 'Underrated players who keep winning the small moments, a wider pool from outside the usual IPL nations, and three fallbacks for every target on RR\'s board.'],
+  scout: ['Talent search', 'Scouting &amp; <em>auction plan</em>', 'Underrated players who keep winning the small moments, a wider pool from outside the usual IPL nations, three fallbacks for every target on RR\'s board, and domestic talent from the Syed Mushtaq Ali Trophy.'],
   retain: ['Squad decisions', 'Retain &amp; <em>release</em>', 'Who RR should keep, who to let go, and who to release and try to buy back for less.'],
   sim: ['What if', 'Match <em>simulator</em>', 'Stop a real RR game at any ball, swap in a batter or bowler, and replay the rest of the match 2,000 times to see how the result moves.'],
   method: ['Methodology', 'Method &amp; <em>proof</em>', 'How pressure is defined, how the rating is built, and the tests that show it measures skill rather than luck.'],
@@ -579,9 +580,9 @@ function war(){
     <div class="kpis" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px">
      <div class="kpi"><div class="l">Batters RR can buy</div><div class="v">${buy('bat')}</div><div class="s">of ${tot('bat')} rated · ${t10('bat')} of the top 10</div></div>
      <div class="kpi"><div class="l">Bowlers RR can buy</div><div class="v">${buy('bowl')}</div><div class="s">of ${tot('bowl')} rated · ${t10('bowl')} of the top 10</div></div>
-     <div class="kpi"><div class="l">Under contract elsewhere</div><div class="v">${ac.bat.contracted + ac.bowl.contracted}</div><div class="s">assumed kept until the lists land on 17 Nov</div></div>
+     <div class="kpi"><div class="l">Under contract elsewhere</div><div class="v">${ac.bat.contracted + ac.bowl.contracted}</div><div class="s">retained by another franchise on 17 Nov</div></div>
      <div class="kpi"><div class="l">Out of reach</div><div class="v">${ac.bat.rr+ac.bowl.rr+ac.bat.retired+ac.bowl.retired+ac.bat.ineligible+ac.bowl.ineligible}</div><div class="s">already RR · retired · not eligible</div></div></div>
-    <div class="warnbox" style="padding:8px 12px;margin-bottom:12px;font-size:13px"><b>Provisional.</b> Retention lists are due on 17 November 2026. Until then everyone in another IPL 2026 squad counts as kept, except players widely reported as likely releases, who stay on the board marked "Release rumoured". Update one file (availability.py) when the lists come out and the board rebuilds itself.</div>
+    <div class="warnbox" style="padding:8px 12px;margin-bottom:12px;font-size:13px"><b>Official lists.</b> Built from the IPL 2027 retention lists announced on 17 November 2026 (trades included). Players released that day are back in the pool, so they appear on the board as "In auction pool" with the releasing team in the note.</div>
     <div class="two"><div><div class="tbl" style="max-height:none"><table><tr><th>#</th><th>Batter</th><th>Rank</th><th>Role</th><th>PRR</th><th>Status</th></tr>${D.bat_board.map(brow).join('')}</table></div>
     <div class="muted" style="margin-top:8px"><b>Rules:</b> buyable only · ≤3 openers · ≥2 No. 3–4 · ≥3 middle order or finisher · ≥2 left-handers · ≤4 IPL-untested · model rank 80 or better</div><ul>
     ${D.bat_excluded.map(e => `<li><b>${esc(e.name)}</b> (model ${D.bat_table.find(r => r.name === e.name).rank}) not on the board: ${esc(e.reason)}</li>`).join('')}</ul></div>
@@ -692,10 +693,11 @@ function rr(){
   let h = `<h2>Where RR lose under pressure</h2><div class="two"><div id="rrT" class="plot"></div><div id="rrS" class="plot"></div></div><div id="rrB" class="plot"></div>
     <div class="warnbox">RR won only <b>${cl.won} of ${cl.n}</b> close IPL games in 2025–26 (decided by ≤15 runs or ≤3 wickets). The leaks: Nos. 5–7 and the tail in run chases, death-overs batting, and death-overs bowling (both pace and spin).</div>
     <h2>How each auction-board pick strengthens RR</h2><div class="two"><div>`;
-  D.bat_board.forEach(c => h += `<p><b>${c.rank}. ${esc(c.name)}</b> (${esc(c.role)})<br>${fitBat(c).map(x => '• ' + esc(x)).join('<br>')}</p>`);
+  const dbk = (d, c) => { const x = SM.backups[d][c.id]; return x ? `<br><span style="color:#8EF0B0">↳ Domestic backup: <b>${esc(x.name)}</b> (${esc(x.team)}, ${esc(x.role)}, DPR ${x.dpr.toFixed(1)}${x.recent ? ', in form ' + esc(x.recent.slice(0, 7)) : ''})</span>` : ''; };
+  D.bat_board.forEach(c => h += `<p><b>${c.rank}. ${esc(c.name)}</b> (${esc(c.role)})<br>${fitBat(c).map(x => '• ' + esc(x)).join('<br>')}${dbk('bat', c)}</p>`);
   h += `</div><div>`;
-  D.bowl_board.forEach(c => h += `<p><b>${c.rank}. ${esc(c.name)}</b> (${esc(c.role)})<br>${fitBowl(c).map(x => '• ' + esc(x)).join('<br>')}</p>`);
-  h += `</div></div>`;
+  D.bowl_board.forEach(c => h += `<p><b>${c.rank}. ${esc(c.name)}</b> (${esc(c.role)})<br>${fitBowl(c).map(x => '• ' + esc(x)).join('<br>')}${dbk('bowl', c)}</p>`);
+  h += `</div></div><div class="muted" style="font-size:12px">Domestic backups are Indian players with no IPL 2027 contract (checked against the 17 Nov 2026 retention lists), no veterans, all active in the SMAT in 2023/24 or later, matched by role; full detail at the bottom of the Scouting &amp; Auction tab.</div>`;
   setTimeout(() => {
     const tt = RR.team_table.slice().sort((a,b) => a.bat - b.bat);
     Plotly.newPlot('rrT', [{type:'bar', orientation:'h', y:tt.map(t => t.team), x:tt.map(t => t.bat), marker:{color:tt.map(t => t.team==='Rajasthan Royals'?PINK:GREY)}, text:tt.map(t => t.bat.toFixed(2)), textposition:'outside', cliponaxis:false, hovertemplate:'%{y}: %{x:.2f}<extra></extra>'}],
@@ -723,7 +725,7 @@ function method(){
   <li>An earlier version reported odd-even figures of 0.35 and 0.26; a bug let the two halves overlap. Rankings were unaffected.</li>
   <li>First-innings win probability is less certain (AUC 0.70 vs 0.90 for chases) because the target is unknown.</li>
   <li>No line, length, shot direction or edge data, so "decision vs execution" is built from stroke and delivery labels only.</li>
-  <li>The ranking includes everyone, as the brief asks. The RR auction board leaves out players RR cannot buy: Pakistani nationals (Sufiyan Muqeem is #3 among bowlers), IPL retirees, Harry Brook (serving a two-season IPL ban), RR's own players, and anyone under contract elsewhere until the 17 November retention lists say otherwise.</li>
+  <li>The ranking includes everyone, as the brief asks. The RR auction board leaves out players RR cannot buy: Pakistani nationals (Sufiyan Muqeem is #3 among bowlers), IPL retirees, Harry Brook (serving a two-season IPL ban), RR's own players, and anyone another franchise retained on 17 November 2026.</li>
   <li>DLS-shortened and no-result games are excluded; super overs are not scored.</li></ul></div>`;
   setTimeout(() => {
     const env = D.env;
@@ -773,6 +775,7 @@ function render(){
 }
 __SIMTAB__
 __LABTAB__
+__SMATTAB__
 try { const h = location.hash.slice(1); if (TABS.some(t => t[0] === h)) cur = h; } catch(e) {}
 window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (TABS.some(t => t[0] === h) && h !== cur) { cur = h; render(); } });
 render();
